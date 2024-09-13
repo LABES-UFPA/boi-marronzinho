@@ -8,6 +8,8 @@ class FlowInitialView extends GetView<FlowInitialController> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(child: Scaffold());
+    return const SafeArea(child: Scaffold(
+      body: Text("Ola Cleidson"),
+    ));
   }
 }
