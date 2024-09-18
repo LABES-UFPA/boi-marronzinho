@@ -9,21 +9,21 @@ class HomePageView extends GetView<HomePageController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFF5C0B32),
         body: Column(
           children: [
-            // AppBar com design personalizado
             Stack(
               children: [
                 ClipPath(
                   clipper: AppBarClipper(),
                   child: Container(
-                    height: 250,
+                    height: 170,
                     decoration: BoxDecoration(
-                      color: Colors.orangeAccent,
+                      color: Color(0xFFFFFFFF),
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 40), // Espaço para a StatusBar
+                        SizedBox(height: 40),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -31,7 +31,6 @@ class HomePageView extends GetView<HomePageController> {
                               icon: Icons.event, 
                               text: 'Boi Marronzinho',
                               onPressed: () {
-                                // Implementação da ação no controller
                                 // controller.onBoiMarronzinhoPressed();
                               },
                             ),
@@ -56,9 +55,13 @@ class HomePageView extends GetView<HomePageController> {
                   ),
                 ),
                 Positioned(
-                  right: 16,
-                  top: 40,
-                  child: Icon(Icons.notifications, color: Colors.yellow),
+                  right: 10,
+                  top: 16,
+                  child: Icon(
+                    Icons.notifications,
+                    color: Color(0xFFFFCC4D),
+                    size: 40,
+                  ),
                 ),
               ],
             ),
@@ -67,10 +70,10 @@ class HomePageView extends GetView<HomePageController> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  buildMenuItem('Eventos', Icons.calendar_today, Colors.orange),
-                  buildMenuItem('Mapa', Icons.map, Colors.redAccent),
-                  buildMenuItem('Sobre nós', Icons.info, Colors.deepOrange),
-                  buildMenuItem('Doe Agora', Icons.favorite, Colors.purple),
+                  buildMenuItem('Eventos', Icons.calendar_today, Color(0xFFF69302)),
+                  buildMenuItem('Mapa', Icons.map, Color(0xFFBA400A)),
+                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623)),
+                  buildMenuItem('Doe Agora', Icons.favorite, Color(0XFF660D0D)),
                 ],
               ),
             ),
@@ -81,28 +84,37 @@ class HomePageView extends GetView<HomePageController> {
   }
 
   Widget buildMenuItem(String text, IconData icon, Color color) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      color: color,
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white, size: 40),
-          SizedBox(width: 20),
-          Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(60),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(40),
+        decoration: BoxDecoration(
+          color: color,
+        ),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 40),
+              SizedBox(width: 20),
+              Text(
+                text,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-// Widget para os botões circulares na AppBar
 class CircleButton extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -137,19 +149,26 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-// Clipper personalizado para criar o efeito da AppBar arredondada
+
 class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.lineTo(0, size.height - 50);
-    path.quadraticBezierTo(0, size.height, 50, size.height);
+    
+    path.lineTo(0, size.height - 60);
+    
+    path.quadraticBezierTo(0, size.height, 60, size.height);
+    
     path.lineTo(size.width, size.height);
+    
     path.lineTo(size.width, 0);
+    
     path.close();
+    
     return path;
   }
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
