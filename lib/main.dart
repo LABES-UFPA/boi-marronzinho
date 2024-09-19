@@ -1,6 +1,7 @@
 import 'package:boi_marronzinho/app/data/providers/bm_api_client/bm_api_client.provider.dart';
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
 import 'package:boi_marronzinho/app/main_getx_app.dart';
+import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/initial/flow_initial/flow_initial_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,7 @@ void main() async {
 }
 
 String getInitPage() {
-  return  FlowInitialModule.path;
+  return  HomeModule.path;
 }
 
 Future<void> initProviders() async {
