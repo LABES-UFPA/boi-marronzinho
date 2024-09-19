@@ -70,10 +70,18 @@ class HomePageView extends GetView<HomePageController> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  buildMenuItem('Eventos', Icons.calendar_today, Color(0xFFF69302)),
-                  buildMenuItem('Mapa', Icons.map, Color(0xFFBA400A)),
-                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623)),
-                  buildMenuItem('Doe Agora', Icons.favorite, Color(0XFF660D0D)),
+                  buildMenuItem('Eventos', Icons.calendar_today, Color(0xFFF69302), () {
+                    controller.onEventosPressed();
+                  }),
+                  buildMenuItem('Mapa', Icons.map, Color(0xFFBA400A), () {
+                    controller.onMapaPressed();
+                  }),
+                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623), () {
+                    controller.onSobreNosPressed();
+                  }),
+                  buildMenuItem('Doe Agora', Icons.favorite, Color(0XFF660D0D), () {
+                    controller.onDoeAgoraPressed();
+                  }),
                 ],
               ),
             ),
@@ -83,31 +91,34 @@ class HomePageView extends GetView<HomePageController> {
     );
   }
 
-  Widget buildMenuItem(String text, IconData icon, Color color) {
+  Widget buildMenuItem(String text, IconData icon, Color color, VoidCallback onPressed) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
         bottomLeft: Radius.circular(60),
       ),
-      child: Container(
-        padding: EdgeInsets.all(40),
-        decoration: BoxDecoration(
-          color: color,
-        ),
-        child: Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: Colors.white, size: 40),
-              SizedBox(width: 20),
-              Text(
-                text,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          padding: EdgeInsets.all(40),
+          decoration: BoxDecoration(
+            color: color,
+          ),
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: Colors.white, size: 40),
+                SizedBox(width: 20),
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -149,7 +160,6 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-
 class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -171,4 +181,3 @@ class AppBarClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-
