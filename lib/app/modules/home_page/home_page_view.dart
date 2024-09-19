@@ -12,114 +12,190 @@ class HomePageView extends GetView<HomePageController> {
         backgroundColor: Color(0xFF5C0B32),
         body: Column(
           children: [
-            Stack(
-              children: [
-                ClipPath(
-                  clipper: AppBarClipper(),
-                  child: Container(
-                    height: 170,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 40),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CircleButton(
-                              icon: Icons.event, 
-                              text: 'Boi Marronzinho',
-                              onPressed: () {
-                                // controller.onBoiMarronzinhoPressed();
-                              },
-                            ),
-                            CircleButton(
-                              icon: Icons.store, 
-                              text: 'Loja',
-                              onPressed: () {
-                                // controller.onLojaPressed();
-                              },
-                            ),
-                            CircleButton(
-                              icon: Icons.person, 
-                              text: 'Perfil',
-                              onPressed: () {
-                                // controller.onPerfilPressed();
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 10,
-                  top: 16,
-                  child: Icon(
-                    Icons.notifications,
-                    color: Color(0xFFFFCC4D),
-                    size: 40,
-                  ),
-                ),
-              ],
-            ),
-            // Itens da lista
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
+              child: Column(
                 children: [
-                  buildMenuItem('Eventos', Icons.calendar_today, Color(0xFFF69302), () {
-                    controller.onEventosPressed();
-                  }),
-                  buildMenuItem('Mapa', Icons.map, Color(0xFFBA400A), () {
-                    controller.onMapaPressed();
-                  }),
-                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623), () {
-                    controller.onSobreNosPressed();
-                  }),
-                  buildMenuItem('Doe Agora', Icons.favorite, Color(0XFF660D0D), () {
-                    controller.onDoeAgoraPressed();
-                  }),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        top: 500,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(60),
+                          decoration: BoxDecoration(
+                            color: Color(0XFF660D0D), //0XFF660D0D
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(80)),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 80),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.favorite,
+                                      color: Colors.white, size: 40),
+                                  SizedBox(width: 20),
+                                  Text(
+                                    'Doe Agora',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 380,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(60),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFB12623),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(80)),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 50),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.info,
+                                      color: Colors.white, size: 40),
+                                  SizedBox(width: 20),
+                                  Text(
+                                    'Sobre nós',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 246,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(55),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFBA400A),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(80)),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 50),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.map,
+                                      color: Colors.white, size: 40),
+                                  SizedBox(width: 20),
+                                  Text(
+                                    'Mapa',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 105,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(63),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF69302),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(80)),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 30),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.calendar_today,
+                                      color: Colors.white, size: 40),
+                                  SizedBox(width: 20),
+                                  Text(
+                                    'Eventos',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        child: Container(
+                          padding: EdgeInsets.all(45),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(80)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleButton(
+                                icon: Icons.event,
+                                text: 'Boi Marronzinho',
+                                onPressed: () {
+                                  // controller.onBoiMarronzinhoPressed();
+                                },
+                              ),
+                              CircleButton(
+                                icon: Icons.store,
+                                text: 'Loja',
+                                onPressed: () {
+                                  // controller.onLojaPressed();
+                                },
+                              ),
+                              CircleButton(
+                                icon: Icons.person,
+                                text: 'Perfil',
+                                onPressed: () {
+                                  // controller.onPerfilPressed();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildMenuItem(String text, IconData icon, Color color, VoidCallback onPressed) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(60),
-      ),
-      child: InkWell(
-        onTap: onPressed,
-        child: Container(
-          padding: EdgeInsets.all(40),
-          decoration: BoxDecoration(
-            color: color,
-          ),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, color: Colors.white, size: 40),
-                SizedBox(width: 20),
-                Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -131,7 +207,8 @@ class CircleButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  CircleButton({required this.icon, required this.text, required this.onPressed});
+  CircleButton(
+      {required this.icon, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -164,17 +241,17 @@ class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    
+
     path.lineTo(0, size.height - 60);
-    
+
     path.quadraticBezierTo(0, size.height, 60, size.height);
-    
+
     path.lineTo(size.width, size.height);
-    
+
     path.lineTo(size.width, 0);
-    
+
     path.close();
-    
+
     return path;
   }
 
