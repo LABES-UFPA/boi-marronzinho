@@ -48,7 +48,7 @@ class DoacoesView extends GetView<DoacoesController> {
                                     style: TextStyle(
                                       fontSize: 36, 
                                       fontWeight: FontWeight.bold, 
-                                      color: Colors.black,// Cor do texto
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
@@ -73,12 +73,12 @@ class DoacoesView extends GetView<DoacoesController> {
             const Text(
               'Ajude o Boi Marronzinho',
               style: TextStyle(
-                fontSize: 24, // Define o tamanho da fonte
-                fontWeight: FontWeight.bold, // Deixa o texto em negrito
-                color: Colors.white, // Cor do texto
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, 
               ),
             ),
-            SizedBox(height: 20), // Espaçamento entre o texto e os botões
+            SizedBox(height: 20), 
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -99,18 +99,16 @@ class DoacoesView extends GetView<DoacoesController> {
     );
   }
 
-  // Função para criar os botões de pagamento
   Widget buildPaymentButton(String text) {
     return Container(
-      width: double.infinity, // Faz o botão ocupar toda a largura disponível
-      padding: EdgeInsets.symmetric(vertical: 20), // Altura do botão
+      width: double.infinity, 
+      padding: EdgeInsets.symmetric(vertical: 20), 
       decoration: BoxDecoration(
-        color: Colors.white, // Cor do botão (branco)
+        color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20), // Arredondar o canto inferior esquerdo
-          bottomRight: Radius.circular(20), // Arredondar o canto inferior direito
-          topLeft: Radius.circular(20), // Arredondar o canto superior esquerdo
-          // O canto superior direito não terá arredondamento
+          bottomLeft: Radius.circular(20), 
+          bottomRight: Radius.circular(20),
+          topLeft: Radius.circular(20), 
         ),
       ),
       child: Center(
