@@ -14,6 +14,10 @@ class HomePageView extends GetView<HomePageController> {
           children: [
             Stack(
               children: [
+                Container(
+                  height: 170,
+                  color: Color(0xFFF69302),
+                ),
                 ClipPath(
                   clipper: AppBarClipper(),
                   child: Container(
@@ -28,21 +32,21 @@ class HomePageView extends GetView<HomePageController> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CircleButton(
-                              icon: Icons.event, 
+                              icon: 'assets/images/logo/ImgBoi.png',
                               text: 'Boi Marronzinho',
                               onPressed: () {
                                 // controller.onBoiMarronzinhoPressed();
                               },
                             ),
                             CircleButton(
-                              icon: Icons.store, 
+                              icon: 'assets/images/icons/shopping-bag.png',
                               text: 'Loja',
                               onPressed: () {
                                 // controller.onLojaPressed();
                               },
                             ),
                             CircleButton(
-                              icon: Icons.person, 
+                              icon: 'assets/images/icons/user.png',
                               text: 'Perfil',
                               onPressed: () {
                                 // controller.onPerfilPressed();
@@ -68,18 +72,22 @@ class HomePageView extends GetView<HomePageController> {
             // Itens da lista
             Expanded(
               child: ListView(
-                padding: EdgeInsets.zero,
+                //padding: EdgeInsets.zero,
                 children: [
-                  buildMenuItem('Eventos', Icons.calendar_today, Color(0xFFF69302), () {
+                  buildMenuItem('Eventos', Icons.event,
+                      Color(0xFFF69302), Color(0xFFBA400A), () {
                     controller.onEventosPressed();
                   }),
-                  buildMenuItem('Mapa', Icons.map, Color(0xFFBA400A), () {
+                  buildMenuItem('Mapa', Icons.location_on, Color(0xFFBA400A),
+                      Color(0xFFB12623), () {
                     controller.onMapaPressed();
                   }),
-                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623), () {
+                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623),
+                      Color(0XFF660D0D), () {
                     controller.onSobreNosPressed();
                   }),
-                  buildMenuItem('Doe Agora', Icons.favorite, Color(0XFF660D0D), () {
+                  buildMenuItem('Doe Agora', Icons.favorite,
+                      Color(0XFF660D0D), Color(0xFF5C0B32), () {
                     controller.onDoeAgoraPressed();
                   }),
                 ],
@@ -91,22 +99,28 @@ class HomePageView extends GetView<HomePageController> {
     );
   }
 
-  Widget buildMenuItem(String text, IconData icon, Color color, VoidCallback onPressed) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(60),
-      ),
-      child: InkWell(
-        onTap: onPressed,
-        child: Container(
-          padding: EdgeInsets.all(40),
-          decoration: BoxDecoration(
-            color: color,
-          ),
-          child: Center(
+  Widget buildMenuItem(String text, IconData icon, Color color,
+      Color nextcolor, VoidCallback onPressed) {
+    return Container(
+      height: 128,
+      color: nextcolor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(60),
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+           
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.all(40),
+            decoration: BoxDecoration(
+              color: color,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                SizedBox(width: 40),
                 Icon(icon, color: Colors.white, size: 40),
                 SizedBox(width: 20),
                 Text(
@@ -127,11 +141,12 @@ class HomePageView extends GetView<HomePageController> {
 }
 
 class CircleButton extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String text;
   final VoidCallback onPressed;
 
-  CircleButton({required this.icon, required this.text, required this.onPressed});
+  CircleButton(
+      {required this.icon, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +162,11 @@ class CircleButton extends StatelessWidget {
               border: Border.all(color: Colors.orangeAccent, width: 2),
               color: Colors.white,
             ),
-            child: Icon(icon, color: Colors.orangeAccent),
-          ),
+              
+                child: Image.asset(icon,
+                fit: BoxFit.scaleDown,),
+              ),
+            
           SizedBox(height: 5),
           Text(
             text,
@@ -164,17 +182,13 @@ class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    
-    path.lineTo(0, size.height - 60);
-    
-    path.quadraticBezierTo(0, size.height, 60, size.height);
-    
-    path.lineTo(size.width, size.height);
-    
+    path.lineTo(0, size.height);
+    path.lineTo(size.width - 60, size.height);
+    path.quadraticBezierTo(
+        size.width, size.height, size.width, size.height - 60);
     path.lineTo(size.width, 0);
-    
     path.close();
-    
+
     return path;
   }
 
