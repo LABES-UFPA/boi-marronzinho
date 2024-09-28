@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:boi_marronzinho/app/data/repositories/register/register_repository.interface.dart';
 import 'package:boi_marronzinho/app/data/request_repository.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import '../../enumerators/endpoints.enum.dart';
 
 
