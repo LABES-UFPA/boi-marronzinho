@@ -22,32 +22,36 @@ class DoacoesView extends GetView<DoacoesController> {
                       color: Color(0xFFFFFFFF),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, top: 40.0, right: 16.0),
+                      padding: const EdgeInsets.all(10),
                       child: Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.arrow_back, color: Colors.black, weight: 40),
+                            icon: Image.asset(
+                              'assets/images/icons/mingcute_arrow-up-fill.png',
+                              height: 40,
+                              width: 40,
+                            ),
                             onPressed: () {
                               Get.back();
                             },
                           ),
                           const Expanded(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                SizedBox(width: 10),
                                 Icon(
                                   Icons.favorite,
                                   color: Colors.black,
                                   size: 30,
                                 ),
-                                SizedBox( width: 10),
+                                SizedBox(width: 5),
                                 Center(
                                   child: Text(
                                     'Doe Agora',
                                     style: TextStyle(
-                                      fontSize: 36, 
-                                      fontWeight: FontWeight.bold, 
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
                                   ),
@@ -62,7 +66,6 @@ class DoacoesView extends GetView<DoacoesController> {
                 ),
               ],
             ),
-
             Container(
               child: Image.asset(
                 "assets/images/logo/logo_boi_marronzinho.png",
@@ -75,10 +78,10 @@ class DoacoesView extends GetView<DoacoesController> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, 
+                color: Colors.white,
               ),
             ),
-            SizedBox(height: 20), 
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -101,14 +104,14 @@ class DoacoesView extends GetView<DoacoesController> {
 
   Widget buildPaymentButton(String text) {
     return Container(
-      width: double.infinity, 
-      padding: EdgeInsets.symmetric(vertical: 20), 
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20), 
+          bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20), 
+          topLeft: Radius.circular(20),
         ),
       ),
       child: Center(
@@ -123,7 +126,6 @@ class DoacoesView extends GetView<DoacoesController> {
       ),
     );
   }
-
 }
 
 class CircleButton extends StatelessWidget {
@@ -165,15 +167,11 @@ class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-
-    path.lineTo(0, size.height - 100);
-
-    path.quadraticBezierTo(0, size.height, 100, size.height);
-
-    path.lineTo(size.width, size.height);
-
+    path.lineTo(0, size.height);
+    path.lineTo(size.width - 60, size.height);
+    path.quadraticBezierTo(
+        size.width, size.height, size.width, size.height - 60);
     path.lineTo(size.width, 0);
-
     path.close();
 
     return path;

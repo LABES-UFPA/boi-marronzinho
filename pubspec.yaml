@@ -31,6 +31,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/logo/logo_boi_marronzinho.png
+    - assets/images/icons/ImgBoi.png
+    - assets/images/icons/user.png
+    - assets/images/icons/shopping-bag.png
+    - assets/images/icons/mingcute_arrow-up-fill.png
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
