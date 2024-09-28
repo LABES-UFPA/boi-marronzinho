@@ -26,10 +26,10 @@ class DoacoesView extends GetView<DoacoesController> {
                       child: Row(
                         children: [
                           IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_rounded,
-                              color: Colors.black,
-                              size: 36,
+                            icon: Image.asset(
+                              'assets/images/icons/mingcute_arrow-up-fill.png',
+                              height: 40,
+                              width: 40,
                             ),
                             onPressed: () {
                               Get.back();
