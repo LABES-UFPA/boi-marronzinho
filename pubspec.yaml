@@ -31,7 +31,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/logo/logo_boi_marronzinho.png
-    - assets/images/logo/ImgBoi.png
+    - assets/images/icons/ImgBoi.png
     - assets/images/icons/user.png
     - assets/images/icons/shopping-bag.png
   

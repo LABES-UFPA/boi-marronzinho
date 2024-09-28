@@ -24,27 +24,30 @@ class SobreNosView extends GetView<SobreNosController> {
                       color: Color(0xFFFFFFFF),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, top: 40.0, right: 16.0),
+                      padding: const EdgeInsets.all(10),
                       child: Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.arrow_back,
-                                color: Colors.black, weight: 40),
+                            icon: Icon(
+                              Icons.arrow_back_rounded,
+                              color: Colors.black,
+                              size: 36,
+                            ),
                             onPressed: () {
                               Get.back();
                             },
                           ),
                           const Expanded(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                SizedBox(width: 10),
                                 Icon(
                                   Icons.info,
                                   color: Colors.black,
                                   size: 30,
                                 ),
-                                SizedBox(width: 10),
+                                SizedBox(width: 5),
                                 Center(
                                   child: Text(
                                     'Sobre Nós',
@@ -64,8 +67,9 @@ class SobreNosView extends GetView<SobreNosController> {
                   ),
                 ),
               ],
-            ),Expanded(child: 
-            SingleChildScrollView(
+            ),
+            Expanded(
+                child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
               child: Column(
                 children: [
@@ -105,15 +109,14 @@ class SobreNosView extends GetView<SobreNosController> {
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                    'Apoio: ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      'Apoio: ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
                   )
-                  
                 ],
               ),
             )),
@@ -130,15 +133,11 @@ class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-
-    path.lineTo(0, size.height - 100);
-
-    path.quadraticBezierTo(0, size.height, 100, size.height);
-
-    path.lineTo(size.width, size.height);
-
+    path.lineTo(0, size.height);
+    path.lineTo(size.width - 60, size.height);
+    path.quadraticBezierTo(
+        size.width, size.height, size.width, size.height - 60);
     path.lineTo(size.width, 0);
-
     path.close();
 
     return path;

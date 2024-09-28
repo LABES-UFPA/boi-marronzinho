@@ -32,7 +32,7 @@ class HomePageView extends GetView<HomePageController> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CircleButton(
-                              icon: 'assets/images/logo/ImgBoi.png',
+                              icon: 'assets/images/icons/ImgBoi.png',
                               text: 'Boi Marronzinho',
                               onPressed: () {
                                 // controller.onBoiMarronzinhoPressed();
@@ -163,8 +163,11 @@ class CircleButton extends StatelessWidget {
               color: Colors.white,
             ),
               
-                child: Image.asset(icon,
-                fit: BoxFit.scaleDown,),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Image.asset(icon,
+                  fit: BoxFit.scaleDown,),
+                ),
               ),
             
           SizedBox(height: 5),
