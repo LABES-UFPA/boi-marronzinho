@@ -35,6 +35,7 @@ flutter:
     - assets/images/icons/user.png
     - assets/images/icons/shopping-bag.png
     - assets/images/icons/mingcute_arrow-up-fill.png
+    - assets/images/eventos/
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
