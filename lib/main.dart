@@ -2,6 +2,7 @@ import 'package:boi_marronzinho/app/data/providers/bm_api_client/bm_api_client.p
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
 import 'package:boi_marronzinho/app/main_getx_app.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
+import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -30,7 +31,7 @@ void main() async {
 }
 
 String getInitPage() {
-  return  HomeModule.path;
+  return LoginModule.path;
 }
 
 Future<void> initProviders() async {
