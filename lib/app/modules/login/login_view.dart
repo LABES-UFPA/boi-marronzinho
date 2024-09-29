@@ -95,16 +95,20 @@ class LoginView extends GetView<DoacoesController> {
   Widget ButtonBox(String text) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(
-        color: Color(0xFFF69302),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
-        ),
-      ),
-      child: Center(
+      child: ElevatedButton(
+        onPressed: () {
+          print('Entrar');
+        },
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFF69302),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              ),
+            ),
+            padding: EdgeInsets.all(14)),
         child: Text(
           text,
           style: TextStyle(
