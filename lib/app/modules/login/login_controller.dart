@@ -28,7 +28,7 @@ class LoginController extends BaseController {
       return 'Senha não válida';
     }
 
-    if (value!.length <= 6) {
+    if (value!.length < 6) {
       return 'Senha não pode ser menor que 6 dígitos';
     }
 
