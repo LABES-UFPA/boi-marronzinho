@@ -124,7 +124,6 @@ class SobreNosView extends GetView<SobreNosController> {
         ),
       ),
     );
-    // TODO: implement build
     throw UnimplementedError();
   }
 }

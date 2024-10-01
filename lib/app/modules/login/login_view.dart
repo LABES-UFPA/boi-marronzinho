@@ -1,9 +1,11 @@
 import 'package:boi_marronzinho/app/modules/doacoes/doacoes_controller.dart';
+import 'package:boi_marronzinho/app/modules/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginView extends GetView<DoacoesController> {
+class LoginView extends GetView<LoginController> {
   LoginView({Key? key}) : super(key: key);
+  final controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,75 +31,160 @@ class LoginView extends GetView<DoacoesController> {
                     topRight: Radius.circular(80),
                   ),
                 ),
-                height: 591,
-                child: Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: const Text(
-                          'Entrar',
-                          style: TextStyle(
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFF69302),
+                height: 470,
+                child: Form(
+                  key: controller.loginFormKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 25),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Text(
+                            'Entrar',
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFF69302),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      InputBox('Email', 'email@exemplo.com', false),
-                      SizedBox(height: 30),
-                      InputBox('Senha', '**********', true),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ButtonBox('Entrar'),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 100, left: 22, right: 22),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Ainda não possui conta?',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                print('cadastre-se');
-                              },
-                              style: TextButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(horizontal: 5)),
-                              child: Text(
-                                'Cadastre-se',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white,
-                                    fontSize: 18),
-                              ),
-                            ),
-                          ],
+                        SizedBox(height: 20),
+                        InputBox(
+                          text: 'Email',
+                          hint: 'email@exemplo.com',
+                          type: TextInputType.emailAddress,
+                          validation: controller.validateEmail,
                         ),
-                      )
-                    ],
+                        SizedBox(height: 30),
+                        InputBox(
+                          text: 'Senha',
+                          hint: '**********',
+                          type: TextInputType.visiblePassword,
+                          isPassword: true,
+                          validation: controller.validatePassword,
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        ButtonBox(
+                          text: 'Entrar',
+                          validation: controller.onLogin,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
+              Container(
+                padding: EdgeInsets.only(top: 60, bottom: 20),
+                color: Color(0xFFBA400A),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Ainda não possui conta?',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        print('cadastre-se');
+                      },
+                      style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 5)),
+                      child: Text(
+                        'Cadastre-se',
+                        style: TextStyle(
+                            color: Colors.white,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget ButtonBox(String text) {
+class InputBox extends StatelessWidget {
+  final String text;
+  final String hint;
+  final bool isPassword;
+  final TextInputType type;
+  final String? Function(String?) validation;
+
+  InputBox({
+    Key? key,
+    required this.text,
+    required this.hint,
+    this.isPassword = false,
+    required this.type,
+    required this.validation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.only(top: 12, left: 14, right: 14, bottom: 0),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFF69302),
+                  height: 0.8),
+            ),
+            TextFormField(
+              obscureText: isPassword,
+              keyboardType: type,
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TextStyle(color: Colors.grey),
+                border: InputBorder.none,
+                errorStyle:
+                    TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
+              ),
+              validator: (value) => validation(value),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonBox extends StatelessWidget {
+  final String text;
+  final Future<void> Function() validation;
+
+  ButtonBox({required this.text, required this.validation});
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          print('Entrar');
+        onPressed: () async {
+          await validation();
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFFF69302),
@@ -116,43 +203,6 @@ class LoginView extends GetView<DoacoesController> {
             fontWeight: FontWeight.bold, // Deixar o texto em negrito
             color: Colors.white, // Cor do texto (preto)
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget InputBox(String text, String hintText, bool isPassword) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(top: 10, left: 14, right: 14),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
-        ),
-      ),
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold, // Deixar o texto em negrito
-                color: Color(0xFFF69302), // Cor do texto (preto)
-              ),
-            ),
-            TextFormField(
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  hintText: hintText,
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none),
-            ),
-          ],
         ),
       ),
     );
