@@ -15,8 +15,8 @@ class SplashView extends GetView<SplashController> {
         backgroundColor: const Color(0xFFF69302),
         body: Center(
             child: SizedBox(
-              width: 210.0.w,
-            height: 385.0.h,
+              width: 200.0.w,
+            height: 375.0.h,
           child: Image.asset(
             "assets/images/logo/logo_boi_marronzinho.png",
             fit: BoxFit.contain,
