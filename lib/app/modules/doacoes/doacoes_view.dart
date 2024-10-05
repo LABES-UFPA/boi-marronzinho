@@ -1,5 +1,6 @@
 import 'package:boi_marronzinho/app/modules/doacoes/doacoes_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class DoacoesView extends GetView<DoacoesController> {
@@ -17,40 +18,40 @@ class DoacoesView extends GetView<DoacoesController> {
                 ClipPath(
                   clipper: AppBarClipper(),
                   child: Container(
-                    height: 100,
+                    height: 100.h,
                     decoration: BoxDecoration(
                       color: Color(0xFFFFFFFF),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10).h,
                       child: Row(
                         children: [
                           IconButton(
                             icon: Image.asset(
                               'assets/images/icons/mingcute_arrow-up-fill.png',
-                              height: 40,
-                              width: 40,
+                              height: 40.h,
+                              width: 40.w,
                             ),
                             onPressed: () {
                               Get.back();
                             },
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(width: 10),
+                                SizedBox(width: 10.w),
                                 Icon(
                                   Icons.favorite,
                                   color: Colors.black,
-                                  size: 30,
+                                  size: 30.sp,
                                 ),
-                                SizedBox(width: 5),
+                                SizedBox(width: 5.w),
                                 Center(
                                   child: Text(
                                     'Doe Agora',
                                     style: TextStyle(
-                                      fontSize: 36,
+                                      fontSize: 36.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
@@ -69,29 +70,29 @@ class DoacoesView extends GetView<DoacoesController> {
             Container(
               child: Image.asset(
                 "assets/images/logo/logo_boi_marronzinho.png",
-                width: 200.0,
-                height: 275.0,
+                width: 200.0.w,
+                height: 275.0.h,
               ),
             ),
-            const Text(
+            Text(
               'Ajude o Boi Marronzinho',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0).h,
               child: Column(
                 children: [
                   buildPaymentButton('PIX'),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   buildPaymentButton('Cartão'),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   buildPaymentButton('Boleto'),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   buildPaymentButton('Outro'),
                 ],
               ),
@@ -105,20 +106,20 @@ class DoacoesView extends GetView<DoacoesController> {
   Widget buildPaymentButton(String text) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20).r,
+          bottomRight: Radius.circular(20).r,
+          topLeft: Radius.circular(20).r,
         ),
       ),
       child: Center(
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold, // Deixar o texto em negrito
             color: Colors.black, // Cor do texto (preto)
           ),
@@ -143,19 +144,19 @@ class CircleButton extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: 60.w,
+            height: 60.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.orangeAccent, width: 2),
+              border: Border.all(color: Colors.orangeAccent, width: 2.w),
               color: Colors.white,
             ),
             child: Icon(icon, color: Colors.orangeAccent),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 5.h),
           Text(
             text,
-            style: TextStyle(color: Colors.black, fontSize: 12),
+            style: TextStyle(color: Colors.black, fontSize: 12.sp),
           ),
         ],
       ),
