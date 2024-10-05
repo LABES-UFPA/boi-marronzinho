@@ -1,5 +1,5 @@
-import 'package:boi_marronzinho/app/modules/doacoes/doacoes_controller.dart';
 import 'package:boi_marronzinho/app/modules/login/login_controller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,100 +13,106 @@ class LoginView extends GetView<LoginController> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Color(0xFFF69302),
-        body: SingleChildScrollView(
-          reverse: true,
-          child: Column(
-            children: [
-              Container(
-                child: Image.asset(
-                  "assets/images/logo/ImgBoi.png",
-                  width: 200.0,
-                  height: 275.0,
-                ),
+        body: Column(
+          children: [
+            Container(
+              child: Image.asset(
+                "assets/images/logo/ImgBoi.png",
+                width: 200.0.w,
+                height: 275.0.h,
               ),
-              Container(
+            ),
+            Expanded(
+              child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFFBA400A),
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(80),
+                    topRight: Radius.circular(80).r,
                   ),
                 ),
-                height: 470,
-                child: Form(
-                  key: controller.loginFormKey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 25),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: const Text(
-                            'Entrar',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFF69302),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: controller.loginFormKey,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20.h, horizontal: 25.w),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  child: Text(
+                                    'Entrar',
+                                    style: TextStyle(
+                                      fontSize: 32.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFF69302),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20.h),
+                                InputBox(
+                                  text: 'Email',
+                                  hint: 'email@exemplo.com',
+                                  type: TextInputType.emailAddress,
+                                  validation: controller.validateEmail,
+                                ),
+                                SizedBox(height: 30.h),
+                                InputBox(
+                                  text: 'Senha',
+                                  hint: '**********',
+                                  type: TextInputType.visiblePassword,
+                                  isPassword: true,
+                                  validation: controller.validatePassword,
+                                ),
+                                SizedBox(
+                                  height: 40.h,
+                                ),
+                                ButtonBox(
+                                  text: 'Entrar',
+                                  validation: controller.onLogin,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20).h,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Ainda não possui conta?',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.sp),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          controller.onCadastroPressed();
+                                        },
+                                        child: Text(
+                                          'Cadastre-se',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              decorationColor: Colors.white,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        InputBox(
-                          text: 'Email',
-                          hint: 'email@exemplo.com',
-                          type: TextInputType.emailAddress,
-                          validation: controller.validateEmail,
-                        ),
-                        SizedBox(height: 30),
-                        InputBox(
-                          text: 'Senha',
-                          hint: '**********',
-                          type: TextInputType.visiblePassword,
-                          isPassword: true,
-                          validation: controller.validatePassword,
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        ButtonBox(
-                          text: 'Entrar',
-                          validation: controller.onLogin,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 60, bottom: 20),
-                color: Color(0xFFBA400A),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Ainda não possui conta?',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        controller.onCadastroPressed();
-                      },
-                      style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 5)),
-                      child: Text(
-                        'Cadastre-se',
-                        style: TextStyle(
-                            color: Colors.white,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.white,
-                            fontSize: 16),
                       ),
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -133,13 +139,13 @@ class InputBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(top: 12, left: 14, right: 14, bottom: 0),
-      decoration: const BoxDecoration(
+      padding: EdgeInsets.only(top: 8.h, left: 14.w, right: 14.w),
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20.r),
+          bottomRight: Radius.circular(20.r),
+          topLeft: Radius.circular(20.r),
         ),
       ),
       child: Center(
@@ -149,10 +155,10 @@ class InputBox extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFF69302),
-                  height: 0.8),
+                  height: 0.8.h),
             ),
             TextFormField(
               obscureText: isPassword,
@@ -162,7 +168,7 @@ class InputBox extends StatelessWidget {
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 errorStyle:
-                    TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
+                    TextStyle(fontSize: 14.sp, overflow: TextOverflow.ellipsis),
               ),
               validator: (value) => validation(value),
             ),
@@ -190,16 +196,16 @@ class ButtonBox extends StatelessWidget {
             backgroundColor: Color(0xFFF69302),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20.r),
+                bottomRight: Radius.circular(20.r),
+                topLeft: Radius.circular(20.r),
               ),
             ),
-            padding: EdgeInsets.all(14)),
+            padding: EdgeInsets.all(10.h)),
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold, // Deixar o texto em negrito
             color: Colors.white, // Cor do texto (preto)
           ),

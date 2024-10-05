@@ -90,7 +90,7 @@ class CadastroView extends GetView<CadastroController> {
                                   validation: controller.onCadastro,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 14).h,
+                                  padding: const EdgeInsets.only(top: 20).h,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
