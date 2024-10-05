@@ -83,7 +83,7 @@ class _AppColors {
 class _AppTextStyles {
   static final TextStyle _default = TextStyle(
     color: AppTheme.colors.black,
-    fontFamily: 'Poppins',
+    fontFamily: 'Inter',
   );
 
   /// Color: Black

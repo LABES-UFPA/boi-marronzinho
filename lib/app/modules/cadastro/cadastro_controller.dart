@@ -1,10 +1,10 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
-import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
+import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginController extends BaseController {
+class CadastroController extends BaseController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
@@ -14,6 +14,15 @@ class LoginController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+  }
+
+  String? validateName(String? value) {
+    
+    if (!GetUtils.isNull(value)) {
+      return 'Campo Obrigatório';
+    }
+    
+    return null;
   }
 
   String? validateEmail(String? value) {
@@ -36,9 +45,8 @@ class LoginController extends BaseController {
     return null;
   }
 
-  Future<void> onLogin() async {
+  Future<void> onCadastro() async {
     if (loginFormKey.currentState?.validate() ?? false) {
-      print('validate');
       setLoading(true);
 
       //final loginRepo = await LoginRepository().login(
@@ -51,10 +59,8 @@ class LoginController extends BaseController {
       Get.offAllNamed(HomeModule.path);
       setLoading(false);
     }
-    
   }
-
   void onCadastroPressed() {
-    Get.toNamed(CadastroModule.path);
+    Get.toNamed(LoginModule.path);
   }
 }

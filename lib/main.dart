@@ -21,7 +21,7 @@ void main() async {
 
   runApp(
     ScreenUtilInit(
-      designSize: const Size(430, 932),
+      designSize: const Size(393, 852),
       ensureScreenSize: true,
       splitScreenMode: false,
       builder: (_, __) => MainGetXApp(initialPage),

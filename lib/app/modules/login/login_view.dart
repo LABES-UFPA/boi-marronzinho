@@ -89,7 +89,7 @@ class LoginView extends GetView<LoginController> {
                     ),
                     TextButton(
                       onPressed: () {
-                        print('cadastre-se');
+                        controller.onCadastroPressed();
                       },
                       style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 5)),
