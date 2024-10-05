@@ -75,7 +75,7 @@ class LoginView extends GetView<LoginController> {
                                   validation: controller.onLogin,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 20).h,
+                                  padding: const EdgeInsets.only(top: 30).h,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -89,7 +89,11 @@ class LoginView extends GetView<LoginController> {
                                         onPressed: () {
                                           controller.onCadastroPressed();
                                         },
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(horizontal: 6.w)
+                                        ),
                                         child: Text(
+                                          
                                           'Cadastre-se',
                                           style: TextStyle(
                                               color: Colors.white,

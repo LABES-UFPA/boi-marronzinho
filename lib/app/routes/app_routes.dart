@@ -5,6 +5,7 @@ import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/initial/flow_initial/flow_initial_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/sobre_nos/sobrenos_module.dart';
+import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 
 class AppPages {
   AppPages._();
@@ -15,6 +16,7 @@ class AppPages {
     DoacoesModule.page,
     SobreNosModule.page,
     LoginModule.page,
-    CadastroModule.page
+    CadastroModule.page,
+    SplashModule.page
   ];
 }

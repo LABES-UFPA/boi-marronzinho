@@ -9,7 +9,6 @@ class CadastroView extends GetView<CadastroController> {
 
   @override
   Widget build(BuildContext context) {
-  print(MediaQuery.of(context));
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -17,7 +16,7 @@ class CadastroView extends GetView<CadastroController> {
         body: Column(
           children: [
             Container(
-                padding: EdgeInsets.symmetric(vertical: 30.h),
+                padding: EdgeInsets.symmetric(vertical: 34.h),
                 child: Text(
                   'Cadastre-se',
                   style: TextStyle(
@@ -90,7 +89,7 @@ class CadastroView extends GetView<CadastroController> {
                                   validation: controller.onCadastro,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 20).h,
+                                  padding: const EdgeInsets.only(top: 30).h,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -104,6 +103,9 @@ class CadastroView extends GetView<CadastroController> {
                                         onPressed: () {
                                           controller.onCadastroPressed();
                                         },
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(horizontal: 6.w)
+                                        ),
                                         child: Text(
                                           'Faça Login',
                                           style: TextStyle(
