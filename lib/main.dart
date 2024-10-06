@@ -3,6 +3,7 @@ import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
 import 'package:boi_marronzinho/app/main_getx_app.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
+import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -21,7 +22,7 @@ void main() async {
 
   runApp(
     ScreenUtilInit(
-      designSize: const Size(430, 932),
+      designSize: const Size(393, 852),
       ensureScreenSize: true,
       splitScreenMode: false,
       builder: (_, __) => MainGetXApp(initialPage),
@@ -31,7 +32,7 @@ void main() async {
 }
 
 String getInitPage() {
-  return LoginModule.path;
+  return SplashModule.path;
 }
 
 Future<void> initProviders() async {

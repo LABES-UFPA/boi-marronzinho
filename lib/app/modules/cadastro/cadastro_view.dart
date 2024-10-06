@@ -1,11 +1,11 @@
-import 'package:boi_marronzinho/app/modules/login/login_controller.dart';
+import 'package:boi_marronzinho/app/modules/cadastro/cadastro_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginView extends GetView<LoginController> {
-  LoginView({Key? key}) : super(key: key);
-  final controller = Get.put(LoginController());
+class CadastroView extends GetView<CadastroController> {
+  CadastroView({Key? key}) : super(key: key);
+  final controller = Get.put(CadastroController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +16,21 @@ class LoginView extends GetView<LoginController> {
         body: Column(
           children: [
             Container(
-              child: Image.asset(
-                "assets/images/logo/ImgBoi.png",
-                width: 200.0.w,
-                height: 275.0.h,
-              ),
-            ),
+                padding: EdgeInsets.symmetric(vertical: 34.h),
+                child: Text(
+                  'Cadastre-se',
+                  style: TextStyle(
+                    fontSize: 40.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFBA400A),
+                  ),
+                )),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFFBA400A),
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(80).r,
+                    topRight: Radius.circular(80.r),
                   ),
                 ),
                 child: Column(
@@ -41,25 +44,28 @@ class LoginView extends GetView<LoginController> {
                                 vertical: 20.h, horizontal: 25.w),
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10.h),
-                                  child: Text(
-                                    'Entrar',
-                                    style: TextStyle(
-                                      fontSize: 32.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFF69302),
-                                    ),
-                                  ),
+                                SizedBox(height: 16.h),
+                                InputBox(
+                                  text: 'Nome',
+                                  hint: 'João',
+                                  type: TextInputType.text,
+                                  validation: controller.validateName,
                                 ),
-                                SizedBox(height: 20.h),
+                                SizedBox(height: 22.h),
+                                InputBox(
+                                  text: 'Sobrenome',
+                                  hint: 'Silva',
+                                  type: TextInputType.text,
+                                  validation: controller.validateName,
+                                ),
+                                SizedBox(height: 22.h),
                                 InputBox(
                                   text: 'Email',
                                   hint: 'email@exemplo.com',
                                   type: TextInputType.emailAddress,
                                   validation: controller.validateEmail,
                                 ),
-                                SizedBox(height: 30.h),
+                                SizedBox(height: 22.h),
                                 InputBox(
                                   text: 'Senha',
                                   hint: '**********',
@@ -67,12 +73,20 @@ class LoginView extends GetView<LoginController> {
                                   isPassword: true,
                                   validation: controller.validatePassword,
                                 ),
+                                SizedBox(height: 22.h),
+                                InputBox(
+                                  text: 'Confirmar Senha',
+                                  hint: '**********',
+                                  type: TextInputType.visiblePassword,
+                                  isPassword: true,
+                                  validation: controller.validatePassword,
+                                ),
                                 SizedBox(
-                                  height: 40.h,
+                                  height: 24.h,
                                 ),
                                 ButtonBox(
-                                  text: 'Entrar',
-                                  validation: controller.onLogin,
+                                  text: 'Cadastrar',
+                                  validation: controller.onCadastro,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 30).h,
@@ -80,7 +94,7 @@ class LoginView extends GetView<LoginController> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Ainda não possui conta?',
+                                        'Já possui conta?',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 16.sp),
@@ -93,8 +107,7 @@ class LoginView extends GetView<LoginController> {
                                           padding: EdgeInsets.symmetric(horizontal: 6.w)
                                         ),
                                         child: Text(
-                                          
-                                          'Cadastre-se',
+                                          'Faça Login',
                                           style: TextStyle(
                                               color: Colors.white,
                                               decoration:
@@ -105,7 +118,7 @@ class LoginView extends GetView<LoginController> {
                                       ),
                                     ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),

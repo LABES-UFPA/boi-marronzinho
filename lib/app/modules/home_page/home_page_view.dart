@@ -1,5 +1,6 @@
 import 'package:boi_marronzinho/app/modules/home_page/home_page_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomePageView extends GetView<HomePageController> {
@@ -15,19 +16,19 @@ class HomePageView extends GetView<HomePageController> {
             Stack(
               children: [
                 Container(
-                  height: 170,
+                  height: 170.h,
                   color: Color(0xFFF69302),
                 ),
                 ClipPath(
                   clipper: AppBarClipper(),
                   child: Container(
-                    height: 170,
+                    height: 170.h,
                     decoration: BoxDecoration(
                       color: Color(0xFFFFFFFF),
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 40),
+                        SizedBox(height: 40.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -59,12 +60,12 @@ class HomePageView extends GetView<HomePageController> {
                   ),
                 ),
                 Positioned(
-                  right: 10,
-                  top: 16,
+                  right: 10.w,
+                  top: 16.h,
                   child: Icon(
                     Icons.notifications,
                     color: Color(0xFFFFCC4D),
-                    size: 40,
+                    size: 40.sp,
                   ),
                 ),
               ],
@@ -102,32 +103,32 @@ class HomePageView extends GetView<HomePageController> {
   Widget buildMenuItem(String text, IconData icon, Color color,
       Color nextcolor, VoidCallback onPressed) {
     return Container(
-      height: 128,
+      height: 128.h,
       color: nextcolor,
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(60),
+          bottomRight: Radius.circular(60).r,
         ),
         child: InkWell(
           onTap: onPressed,
           child: Container(
            
             alignment: Alignment.topLeft,
-            padding: EdgeInsets.all(40),
+            padding: EdgeInsets.all(40).h,
             decoration: BoxDecoration(
               color: color,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 40),
-                Icon(icon, color: Colors.white, size: 40),
-                SizedBox(width: 20),
+                SizedBox(width: 40.w),
+                Icon(icon, color: Colors.white, size: 40.sp),
+                SizedBox(width: 20.w),
                 Text(
                   text,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 36,
+                    fontSize: 36.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -155,25 +156,25 @@ class CircleButton extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: 60.w,
+            height: 60.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.orangeAccent, width: 2),
+              border: Border.all(color: Colors.orangeAccent, width: 2.w),
               color: Colors.white,
             ),
               
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(12.0).h,
                   child: Image.asset(icon,
                   fit: BoxFit.scaleDown,),
                 ),
               ),
             
-          SizedBox(height: 5),
+          SizedBox(height: 5.h),
           Text(
             text,
-            style: TextStyle(color: Colors.black, fontSize: 12),
+            style: TextStyle(color: Colors.black, fontSize: 12.sp),
           ),
         ],
       ),
