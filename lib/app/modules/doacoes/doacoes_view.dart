@@ -42,7 +42,7 @@ class DoacoesView extends GetView<DoacoesController> {
                               children: [
                                 SizedBox(width: 10.w),
                                 Icon(
-                                  Icons.favorite,
+                                  Icons.volunteer_activism,
                                   color: Colors.black,
                                   size: 30.sp,
                                 ),
