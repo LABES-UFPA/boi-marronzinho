@@ -4,7 +4,7 @@ import '../../enumerators/endpoints.enum.dart';
 
 
 final class RegisterRepository extends RequestRepository implements IRegisterRepository {
-  static const String registerUser = '/usuarios/singup';
+  static const String registerUser = '/usuarios/signup';
 
   @override
   Future register({
