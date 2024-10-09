@@ -123,7 +123,7 @@ class VouchersView extends GetView<VouchersController> {
 
   Widget Box(String text, String descricao, Uint8List qrcode) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
