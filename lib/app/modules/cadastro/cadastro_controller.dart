@@ -1,13 +1,16 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/data/repositories/register/register_repository.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CadastroController extends BaseController {
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController sobrenomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   RxString email = ''.obs;
   RxString password = ''.obs;
 
@@ -17,16 +20,13 @@ class CadastroController extends BaseController {
   }
 
   String? validateName(String? value) {
-    
-    if (!GetUtils.isNull(value)) {
+    if (value == null || value.isEmpty) {
       return 'Campo Obrigatório';
     }
-    
     return null;
   }
 
   String? validateEmail(String? value) {
-    
     if (!GetUtils.isEmail(value!)) {
       return 'Formato inválido de email';
     }
@@ -34,7 +34,7 @@ class CadastroController extends BaseController {
   }
 
   String? validatePassword(String? value) {
-    if (GetUtils.isNullOrBlank(value ?? '') == null) {
+    if (GetUtils.isNullOrBlank(value) == true) {
       return 'Senha não válida';
     }
 
@@ -46,20 +46,23 @@ class CadastroController extends BaseController {
   }
 
   Future<void> onCadastro() async {
-    if (loginFormKey.currentState?.validate() ?? false) {
+    if (registerFormKey.currentState?.validate() ?? false) {
       setLoading(true);
+      try {
+        final register = await RegisterRepository().register(
+          firstName: nomeController.text,
+          lastName: sobrenomeController.text,
+          password: passwordController.text,
+          email: emailController.text,
+        );
 
-      //final loginRepo = await LoginRepository().login(
-      // email: emailController.text,
-      // password: passController.text,
-      //);
-
-      //print(loginRepo);
-
-      Get.offAllNamed(HomeModule.path);
-      setLoading(false);
+        Get.offAllNamed(HomeModule.path);
+      } finally {
+        setLoading(false);
+      }
     }
   }
+
   void onCadastroPressed() {
     Get.toNamed(LoginModule.path);
   }

@@ -38,7 +38,7 @@ class CadastroView extends GetView<CadastroController> {
                     Expanded(
                       child: SingleChildScrollView(
                         child: Form(
-                          key: controller.loginFormKey,
+                          key: controller.registerFormKey,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 vertical: 20.h, horizontal: 25.w),
