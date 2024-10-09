@@ -7,15 +7,17 @@ import 'package:get/get.dart';
 class EventosView extends GetView<EventosController> {
   const EventosView({super.key});
 
+  static const Color bgColor = Color(0xFFF69302);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color(0xFFB12623),
+      backgroundColor: bgColor,
       body: Column(
-        children: [
+        children: <Widget>[
           Stack(
-            children: [
+            children: <Widget>[
               ClipPath(
                 clipper: AppBarClipper(),
                 child: Container(
@@ -66,11 +68,33 @@ class EventosView extends GetView<EventosController> {
               )
             ],
           ),
-          /* Foto dos Eventos */
-          const SizedBox(
-            width: 500,
-            height: 500,
-            child: ImageCarousel(),
+          const Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  EventoCard(
+                      nome: '1° Berro do Marronzinho',
+                      localizacao:
+                          'Barracão Boi Marronzinho, Pass. Brasilia 170, Terra Firme',
+                      data:
+                          'Barracão Boi Marronzinho, Pass. Brasilia 170, Terra Firme',
+                      descricao:
+                          'Bora iniciar nosso período junino com muita comidas tipicas e música pra dançar com...'),
+                  EventoCard(
+                      nome: 'Cortejo Cultural Boi Marronzinho',
+                      localizacao: 'Pelas ruas da Terra Firme',
+                      data: 'Domingo 23 de junho às 14:00 horas',
+                      descricao:
+                          'É o dia do cortejo mais esperado por todos, o Boi Marronzinho e seu batalhão cheio de cor e alegria saem pelas ruas do bairro cantando suas toadas que falam...'),
+                  EventoCard(
+                      nome: 'Berrante Regional',
+                      localizacao: 'UFPA perto do Rio',
+                      data: 'Domingo 23 de junho às 14:00 horas',
+                      descricao:
+                          'Venha comer mingau de milho. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum convallis risus ut sodales viverra. Integer eu tempus nulla. Proin gravida leo maximus purus tristique dignissim. Sed blandit, dui sed venenatis lobortis, justo dui mattis orci, nec egestas sapien lacus egestas massa. Fusce ligula diam, scelerisque vitae leo vel, ultricies placerat eros. Aenean in ante convallis, commodo elit et, tempor ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras semper sodales arcu, at elementum dui convallis et. '),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -97,47 +121,76 @@ class AppBarClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-/* Carrossel das imagens dos eventos */
-class ImageCarousel extends StatefulWidget {
-  const ImageCarousel({super.key});
+/* Widget de Evento */
+class EventoCard extends StatelessWidget {
+  final String nome;
+  final String localizacao;
+  final String data;
+  final String descricao;
+  // Callback para a rota do evento
 
-  @override
-  State<ImageCarousel> createState() => _ImageCarouselState();
-}
-
-class _ImageCarouselState extends State<ImageCarousel> {
-  late PageController _pageController;
-
-  static const String pathImagens = 'assets/images/eventos/';
-  List<Image> imagens = [
-    Image.asset('${pathImagens}evento-1.jpg'),
-    Image.asset('${pathImagens}evento-2.jpg'),
-    Image.asset('${pathImagens}evento-3.jpg'),
-  ];
-  int indexImagens = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-  }
+  const EventoCard(
+      {super.key,
+      required this.nome,
+      required this.localizacao,
+      required this.data,
+      required this.descricao});
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: _pageController,
-      onPageChanged: (page) {
-        setState(() {
-          indexImagens = page;
-        });
-      },
-      children: imagens,
-    );
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Center(
+        child: SizedBox(
+      width: screenWidth * 0.8, // 80% da tela
+      height: screenHeight * 0.3, // 30% da tela
+      child: Card(
+        margin: const EdgeInsets.all(10.0),
+        elevation: 5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 0,
+              child: Text(
+                nome,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23,
+                  overflow: TextOverflow.clip,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Text(
+                    'Localização: $localizacao\nData: $data\nDescrição: $descricao',
+                    overflow: TextOverflow.fade,
+                  )),
+            ),
+            Expanded(
+              child: InkWell(
+                  onTap: () => print("Abra o Google Maps"),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        border: Border(top: BorderSide(width: 1))),
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.location_on),
+                        Text("Ver Localização")
+                      ],
+                    ),
+                  )),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }
