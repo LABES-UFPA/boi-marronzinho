@@ -21,7 +21,6 @@ class SplashController extends BaseController {
 
     // Verifica se o usuário está autenticado
     bool isLoggedIn = autetication();
-    print("Is Logged In: $isLoggedIn");
 
     if (isLoggedIn) {
       Get.offNamed(HomeModule.path);  

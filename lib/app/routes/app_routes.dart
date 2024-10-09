@@ -10,6 +10,7 @@ import 'package:boi_marronzinho/app/modules/pix/pix_module.dart';
 import 'package:boi_marronzinho/app/modules/sobre_nos/sobrenos_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:boi_marronzinho/app/modules/troca/troca_module.dart';
+import 'package:boi_marronzinho/app/modules/vouchers/vouchers_module.dart';
 
 class AppPages {
   AppPages._();
@@ -25,6 +26,7 @@ class AppPages {
     LojaModule.page,
     PerfilModule.page,
     TrocaModule.page,
-    PixModule.page
+    PixModule.page,
+    VouchersModule.page
   ];
 }
