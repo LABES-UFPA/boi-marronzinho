@@ -85,7 +85,7 @@ class PerfilView extends GetView<PerfilController> {
                   }),
                   buildMenuItem('Vouchers', Icons.confirmation_num, Color(0xFFB12623),
                       Color(0xFF5C0B32), () {
-                    controller.onTrocaPressed();
+                    controller.onVouchersPressed();
                   }),
                 ],
               ),
