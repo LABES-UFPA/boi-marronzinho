@@ -1,5 +1,5 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
-import 'package:boi_marronzinho/app/modules/pix/pix_module.dart';
+import 'package:boi_marronzinho/app/modules/home_page/doacoes/pix/pix_module.dart';
 import 'package:get/get.dart';
 
 class DoacoesController extends BaseController {
