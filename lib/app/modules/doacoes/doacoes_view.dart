@@ -87,13 +87,13 @@ class DoacoesView extends GetView<DoacoesController> {
               padding: const EdgeInsets.all(16.0).h,
               child: Column(
                 children: [
-                  buildPaymentButton('PIX'),
+                  buildPaymentButton('PIX', (){controller.onPixPressed();}),
                   SizedBox(height: 16.h),
-                  buildPaymentButton('Cartão'),
+                  buildPaymentButton('Cartão',(){controller.onCartaoPressed();}),
                   SizedBox(height: 16.h),
-                  buildPaymentButton('Boleto'),
+                  buildPaymentButton('Boleto', (){controller.onBoletoPressed();}),
                   SizedBox(height: 16.h),
-                  buildPaymentButton('Outro'),
+                  buildPaymentButton('Outro', (){controller.onOutroPressed();}),
                 ],
               ),
             ),
@@ -103,25 +103,29 @@ class DoacoesView extends GetView<DoacoesController> {
     );
   }
 
-  Widget buildPaymentButton(String text) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 20.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20).r,
-          bottomRight: Radius.circular(20).r,
-          topLeft: Radius.circular(20).r,
+   Widget buildPaymentButton(String text, VoidCallback onPressed) {
+    return InkWell(
+      onTap:
+        onPressed,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20).r,
+            bottomRight: Radius.circular(20).r,
+            topLeft: Radius.circular(20).r,
+          ),
         ),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold, // Deixar o texto em negrito
-            color: Colors.black, // Cor do texto (preto)
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold, // Deixar o texto em negrito
+              color: Colors.black, // Cor do texto (preto)
+            ),
           ),
         ),
       ),
