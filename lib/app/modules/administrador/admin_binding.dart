@@ -1,11 +1,11 @@
-import 'package:boi_marronzinho/app/modules/cadastro/cadastro_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/admin_controller.dart';
 import 'package:get/get.dart';
 
-class CadastroBinding extends Bindings {
+class AdminBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CadastroController>(
-      () => CadastroController(),
+    Get.lazyPut<AdminController>(
+      () => AdminController(),
     );
   }
 }
