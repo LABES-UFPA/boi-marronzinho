@@ -59,15 +59,6 @@ class HomePageView extends GetView<HomePageController> {
                     ),
                   ),
                 ),
-                Positioned(
-                  right: 10.w,
-                  top: 16.h,
-                  child: Icon(
-                    Icons.notifications,
-                    color: Color(0xFFFFCC4D),
-                    size: 40.sp,
-                  ),
-                ),
               ],
             ),
             // Itens da lista
