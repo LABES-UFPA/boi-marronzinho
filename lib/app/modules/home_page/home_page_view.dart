@@ -112,7 +112,7 @@ class HomePageView extends GetView<HomePageController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 40.w),
+                SizedBox(width: 20.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 Text(

@@ -6,4 +6,26 @@ class AdminController extends BaseController{
     // TODO: implement onInit
     super.onInit();
   }
+
+  void onEventosPressed() {
+    //Get.toNamed(ProdutosModule.path);
+  }
+  void onProdutosPressed() {
+    //Get.toNamed(ProdutosModule.path);
+  }
+  void onOficinasPressed() {
+    //Get.toNamed(ProdutosModule.path);
+  }
+  void onTrocarProdutoPressed() {
+    //Get.toNamed(ProdutosModule.path);
+  }
+  void onContasPressed() {
+    //Get.toNamed(ProdutosModule.path);
+  }
+  void onScannerPressed() {
+    //Get.toNamed(ProdutosModule.path);
+  }
+
+  
+  
 }

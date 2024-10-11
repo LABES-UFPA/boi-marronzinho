@@ -12,4 +12,7 @@ enum StorageKeys {
   PROFILE_INFO,
 
   VOUCHERS,
+
+  ///
+  OFICINAS,
 }

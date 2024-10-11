@@ -9,19 +9,10 @@ class AdminView extends GetView<AdminController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Item_Troca> items = [
-      Item_Troca(id: 1, name: 'Óleo Usado'),
-      Item_Troca(id: 2, name: 'Garrafa Pet'),
-      Item_Troca(id: 3, name: 'Item 1'),
-      Item_Troca(id: 4, name: 'Item 2'),
-      Item_Troca(id: 5, name: 'Item 3'),
-      Item_Troca(id: 6, name: 'Item 4'),
-      Item_Troca(id: 7, name: 'Item 5'),
-    ];
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFB12623),
+        backgroundColor: Color(0XFF660D0D),
         body: Column(
           children: [
             Stack(
@@ -53,14 +44,14 @@ class AdminView extends GetView<AdminController> {
                               children: [
                                 SizedBox(width: 10.w),
                                 Icon(
-                                  Icons.cached,
+                                  Icons.manage_accounts_outlined,
                                   color: Colors.black,
                                   size: 30.sp,
                                 ),
                                 SizedBox(width: 5.w),
                                 Center(
                                   child: Text(
-                                    'Troca',
+                                    'Administrador',
                                     style: TextStyle(
                                       fontSize: 36.sp,
                                       fontWeight: FontWeight.bold,
@@ -78,26 +69,23 @@ class AdminView extends GetView<AdminController> {
                 ),
               ],
             ),
+            SizedBox(height: 44.h,),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 20.w),
-              child: Text(
-                'Itens aceitos para troca por Boicoins:',
-                style: TextStyle(
-                  fontSize: 28.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  final item = items[index];
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
-                    child: Box(item.name));
-                },
+              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 22.w),
+              child: Column(
+                children: [
+                  Box('Eventos', (){controller.onEventosPressed();}),
+                  SizedBox(height: 20.h),
+                  Box('Produtos',(){controller.onProdutosPressed();}),
+                  SizedBox(height: 20.h),
+                  Box('Oficinas', (){controller.onOficinasPressed();}),
+                  SizedBox(height: 20.h),
+                  Box('Troca Produto por BC', (){controller.onTrocarProdutoPressed();}),
+                  SizedBox(height: 20.h),
+                  Box('Contas Cadastradas', (){controller.onContasPressed();}),
+                  SizedBox(height: 20.h),
+                  Box('Scannear QR Code', (){controller.onScannerPressed();}),
+                ],
               ),
             ),
           ],
@@ -106,33 +94,31 @@ class AdminView extends GetView<AdminController> {
     );
   }
 
-  Widget Box(String text) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 18.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
+  Widget Box(String text, VoidCallback onPressed) {
+    return InkWell(
+      onTap:(){},
+        //onPressed,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20).r,
+            bottomRight: Radius.circular(20).r,
+            topLeft: Radius.circular(20).r,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Center(
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 22.sp,
+              fontWeight: FontWeight.bold, 
+              color: Colors.black,
             ),
           ),
-        ],
+        ),
       ),
     );
   }
