@@ -1,5 +1,7 @@
 
 import 'package:boi_marronzinho/app/modules/administrador/admin_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
@@ -29,6 +31,8 @@ class AppPages {
     TrocaModule.page,
     PixModule.page,
     VouchersModule.page,
-    AdminModule.page
+    AdminModule.page,
+    OficinasAdminModule.page,
+    AddOficinaModule.page
   ];
 }

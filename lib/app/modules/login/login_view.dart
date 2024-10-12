@@ -205,11 +205,11 @@ class ButtonBox extends StatelessWidget {
                 topLeft: Radius.circular(20.r),
               ),
             ),
-            padding: EdgeInsets.all(10.h)),
+            padding: EdgeInsets.all(12.h)),
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 18.sp,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold, // Deixar o texto em negrito
             color: Colors.white, // Cor do texto (preto)
           ),

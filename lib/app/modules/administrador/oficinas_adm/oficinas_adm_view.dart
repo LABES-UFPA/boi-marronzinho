@@ -14,45 +14,50 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFB12623),
-        body: Column(
-          children: [
-            _buildAppBar(),
-            SizedBox(height: 30.h),
-            Expanded(
-              child: Obx(() {
-                if (controller.isLoading == true) {
-                  return Center(
-                      child: CircularProgressIndicator()); // Mostra um loading.
-                }
-                if (controller.getOficinas()) {
-                  return Center(
-                      child: Text(
-                    'Nenhum voucher disponível.',
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ));
-                }
-
-                return ListView.builder(
-                  itemCount: controller.vouchers.length,
-                  itemBuilder: (context, index) {
-                    final voucher = controller.vouchers[index];
-                    Uint8List qrCodeImage = voucher.getQRCodeImage();
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 28.w, vertical: 10.h),
-                      child: Box(
-                          voucher.nomeOficina, voucher.descricao, qrCodeImage),
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
+        backgroundColor: Colors.white,
+        body: Container(
+          child: Column(
+            children: [
+              _buildAppBar(),
+              Expanded(
+                child: Obx(() {
+                  if (controller.isLoading == true) {
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.yellow,
+                    )); // Mostra um loading.
+                  }
+                  if (controller.oficinas.isEmpty) {
+                    return Center(
+                        child: Text(
+                      'Nenhuma oficina cadastrada.',
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ));
+                  }
+          
+                  return ListView.builder(
+                    itemCount: controller.oficinas.length,
+                    itemBuilder: (context, index) {
+                      final oficina = controller.oficinas[index];
+          
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
+                        child: Box(oficina.nomeOficina),
+                      );
+                    },
+                  );
+                }),  
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+                child: ButtonBox(text: 'Adicionar Oficina', onPressed: controller.onAddOficinasPressed,),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -87,15 +92,9 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(width: 10.w),
-                        Icon(
-                          Icons.confirmation_num,
-                          color: Colors.black,
-                          size: 30.sp,
-                        ),
-                        SizedBox(width: 5.w),
                         Center(
                           child: Text(
-                            'Vouchers',
+                            'Oficinas ADM',
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
@@ -115,10 +114,13 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
     );
   }
 
-  Widget Box(String text, String descricao, Uint8List qrcode) {
+  Widget Box(String text) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black
+        ),
         color: Colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.r),
@@ -130,19 +132,15 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.memory(
-            qrcode,
-            height: 130.h,
-            width: 130.w,
-          ),
           Padding(
             padding: EdgeInsets.only(top: 8.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 180.w,
+                  color: Colors.white,
+                  width: 240.w,
                   child: Text(
                     text,
                     softWrap: true,
@@ -154,22 +152,54 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 6.h,
-                ),
-                Container(
-                  width: 180.w,
-                  child: Text(
-                    descricao,
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                    style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                  ),
-                )
+                IconButton(
+                  onPressed: (){}, 
+                  icon: Icon(Icons.edit),
+                  iconSize: 30.r,
+                  color: Colors.black,),
+                  IconButton(
+                  onPressed: (){}, 
+                  icon: Icon(Icons.delete),
+                  iconSize: 30.r,
+                  color: Colors.black,)
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ButtonBox extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+
+  ButtonBox({required this.text, required this.onPressed});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFF69302),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20.r),
+                bottomRight: Radius.circular(20.r),
+                topLeft: Radius.circular(20.r),
+              ),
+            ),
+            padding: EdgeInsets.all(14.h)),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold, // Deixar o texto em negrito
+            color: Colors.black, // Cor do texto (preto)
+          ),
+        ),
       ),
     );
   }

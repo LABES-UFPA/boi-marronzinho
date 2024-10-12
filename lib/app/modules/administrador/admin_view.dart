@@ -96,8 +96,7 @@ class AdminView extends GetView<AdminController> {
 
   Widget Box(String text, VoidCallback onPressed) {
     return InkWell(
-      onTap:(){},
-        //onPressed,
+      onTap: onPressed,
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 20.h),
