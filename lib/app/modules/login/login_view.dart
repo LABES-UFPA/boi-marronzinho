@@ -57,6 +57,7 @@ class LoginView extends GetView<LoginController> {
                                   text: 'Email',
                                   hint: 'email@exemplo.com',
                                   type: TextInputType.emailAddress,
+                                  controller: controller.emailController,
                                   validation: controller.validateEmail,
                                 ),
                                 SizedBox(height: 30.h),
@@ -65,6 +66,7 @@ class LoginView extends GetView<LoginController> {
                                   hint: '**********',
                                   type: TextInputType.visiblePassword,
                                   isPassword: true,
+                                  controller: controller.passwordController,
                                   validation: controller.validatePassword,
                                 ),
                                 SizedBox(
@@ -128,6 +130,7 @@ class InputBox extends StatelessWidget {
   final String hint;
   final bool isPassword;
   final TextInputType type;
+  final TextEditingController controller;
   final String? Function(String?) validation;
 
   InputBox({
@@ -136,6 +139,7 @@ class InputBox extends StatelessWidget {
     required this.hint,
     this.isPassword = false,
     required this.type,
+    required this.controller,
     required this.validation,
   });
 

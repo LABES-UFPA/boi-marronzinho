@@ -4,6 +4,7 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
@@ -23,15 +24,14 @@ class AddOficinaView extends GetView<AddOficinaController> {
               _buildAppBar(),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: Stack(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
                           alignment: AlignmentDirectional.bottomCenter,
                           children: [
-                            Obx( (){
+                            Obx(() {
                               return imageOficina();
                             }),
                             Padding(
@@ -40,18 +40,45 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                 text: 'Adicionar Imagem',
                                 function: controller.pickImage,
                               ),
-                            )
+                            ),
                           ],
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        child: ButtonBox(
-                          text: 'Adicionar Oficina',
-                          function: controller.onCadastroOficina,
+                        Form(
+                            key: controller.registerOficinaFormKey,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 22.h),
+                                inputBox('Nome', controller.nomeController),
+                                SizedBox(height: 22.h),
+                                inputBox('Descrição',
+                                    controller.descricaoController),
+                                SizedBox(height: 22.h),
+                                inputBox('Preço em Boicoins',
+                                    controller.precoBoicoinsController),
+                                SizedBox(height: 22.h),
+                                inputBox('Preço em Reais',
+                                    controller.precoReaisController),
+                                SizedBox(height: 22.h),
+                                inputBoxDate('Data da Oficina', context,
+                                    controller.dateController),
+                                SizedBox(height: 22.h),
+                                inputBox('Limite de Participantes',
+                                    controller.participantesController),
+                                SizedBox(height: 22.h),
+                                //inputBoxMap('Localização', context,
+                                 ///   controller.enderecoController),
+                                SizedBox(height: 24.h),
+                              ],
+                            )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: ButtonBox(
+                            text: 'Adicionar Oficina',
+                            function: controller.onCadastroOficina,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -95,62 +122,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
     );
   }
 
-  Widget Box(String text) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 8.h),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  color: Colors.amber,
-                  width: 240.w,
-                  child: Text(
-                    text,
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.edit),
-                  iconSize: 30.r,
-                  color: Colors.black,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.delete),
-                  iconSize: 30.r,
-                  color: Colors.black,
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget imageOficina() {
     return controller.image == null
         ? Container(
@@ -179,13 +150,12 @@ class AddOficinaView extends GetView<AddOficinaController> {
             ),
           );
   }
-  Widget inputBox(String text) {
+
+  Widget inputBox(String text, TextEditingController controller) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black
-        ),
+        border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.r),
@@ -200,13 +170,13 @@ class AddOficinaView extends GetView<AddOficinaController> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFFF69302),
+                  color: Colors.black,
                   height: 0.8.h),
             ),
             TextFormField(
-              
+              controller: controller,
               //keyboardType: type,
               decoration: InputDecoration(
                 //hintText: hint,
@@ -215,6 +185,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                 errorStyle:
                     TextStyle(fontSize: 14.sp, overflow: TextOverflow.ellipsis),
               ),
+
               //validator: (value) => validation(value),
             ),
           ],
@@ -222,6 +193,54 @@ class AddOficinaView extends GetView<AddOficinaController> {
       ),
     );
   }
+
+  Widget inputBoxDate(
+      String text, BuildContext context, TextEditingController controllerText) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20.r),
+          bottomRight: Radius.circular(20.r),
+          topLeft: Radius.circular(20.r),
+        ),
+      ),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  height: 0.8.h),
+            ),
+            Obx(() => TextFormField(
+                  controller: controllerText,
+                  //keyboardType: type,
+                  decoration: InputDecoration(
+                    hintText:
+                        "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
+                    border: InputBorder.none,
+                    errorStyle: TextStyle(
+                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                  ),
+                  onTap: () {
+                    controller.selectedDate(context);
+                  },
+                  //validator: (value) => validation(value),
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  
 }
 
 class ButtonBox extends StatelessWidget {
