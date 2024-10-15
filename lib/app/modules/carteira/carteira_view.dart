@@ -69,8 +69,49 @@ class CarteiraView extends GetView<CarteiraController> {
               ],
             ),
             // Conteúdo
-            CoinCounter(),
+            Padding(
+              padding: const EdgeInsets.all(16.0).h,
+              child: Column(
+                children: [
+                  CoinCounter(),
+                  20.verticalSpace,
+                  buildPaymentButton("Extrato", () {
+                    throw UnimplementedError();
+                  }),
+                ],
+              ),
+            )
           ],
+        ),
+      ),
+    );
+  }
+
+  // Retirado da página de doações
+  // TODO: Colocar em um lugar só
+  Widget buildPaymentButton(String text, VoidCallback onPressed) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20).r,
+            bottomRight: Radius.circular(20).r,
+            topLeft: Radius.circular(20).r,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold, // Deixar o texto em negrito
+              color: Colors.black, // Cor do texto (preto)
+            ),
+          ),
         ),
       ),
     );
@@ -108,57 +149,20 @@ class CoinCounterState extends State<CoinCounter> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0).h,
-      child: Column(children: [
-        20.verticalSpace,
-        Image.asset(
-          CoinCounter.boicoinImagePath,
-          width: 178.w,
-        ),
-        Text(
-          _qtdBoiCoins.toString(),
-          style: TextStyle(fontSize: 40.sp, color: Colors.white),
-        ),
-        20.verticalSpace,
-        buildPaymentButton("Extrato", () {
-          throw UnimplementedError();
-        }),
-      ]),
-    );
+    return Column(children: [
+      20.verticalSpace,
+      Image.asset(
+        CoinCounter.boicoinImagePath,
+        width: 178.w,
+      ),
+      Text(
+        _qtdBoiCoins.toString(),
+        style: TextStyle(fontSize: 40.sp, color: Colors.white),
+      ),
+    ]);
   }
 
   void updateBoiCoins() {
     throw UnimplementedError();
-  }
-
-// Retirado da página de doações
-// TODO: Colocar em um lugar só
-  Widget buildPaymentButton(String text, VoidCallback onPressed) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 20.h),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20).r,
-            bottomRight: Radius.circular(20).r,
-            topLeft: Radius.circular(20).r,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold, // Deixar o texto em negrito
-              color: Colors.black, // Cor do texto (preto)
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
