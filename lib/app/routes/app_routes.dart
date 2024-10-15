@@ -1,4 +1,3 @@
-
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
@@ -11,6 +10,7 @@ import 'package:boi_marronzinho/app/modules/sobre_nos/sobrenos_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:boi_marronzinho/app/modules/troca/troca_module.dart';
 import 'package:boi_marronzinho/app/modules/vouchers/vouchers_module.dart';
+import 'package:boi_marronzinho/app/modules/meus_dados/meus_dados_module.dart';
 
 class AppPages {
   AppPages._();
@@ -27,6 +27,7 @@ class AppPages {
     PerfilModule.page,
     TrocaModule.page,
     PixModule.page,
-    VouchersModule.page
+    VouchersModule.page,
+    MeusDadosModule.page,
   ];
 }
