@@ -4,8 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CarteiraView extends GetView<CarteiraController> {
-  const CarteiraView({super.key});
+  CarteiraView({super.key});
   static const Color bgColor = Color(0xFFBA400A);
+
+  final List<ItemExtrato> testeExtrato = [
+    ItemExtrato(value: 100, description: "Troca de Óleo"),
+    ItemExtrato(value: -300, description: "Camisa Boi Marronzinho"),
+    ItemExtrato(value: 100, description: "Troca de Óleo Usado"),
+    ItemExtrato(value: 100, description: "Troca de Óleo Usado"),
+    ItemExtrato(value: 100, description: "Troca de Óleo Usado"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +88,11 @@ class CarteiraView extends GetView<CarteiraController> {
                   }),
                 ],
               ),
-            )
+            ),
+            buildExtratoItem(
+                ItemExtrato(value: 100, description: "Troca de Óleo Usado")),
+            buildExtratoItem(
+                ItemExtrato(value: -300, description: "Blusa Boi Marronzinho")),
           ],
         ),
       ),
@@ -116,6 +128,68 @@ class CarteiraView extends GetView<CarteiraController> {
       ),
     );
   }
+
+  // Constrói o Widget para cada item do extrato
+  Widget buildExtratoItem(ItemExtrato item) {
+    String textValue;
+    TextStyle labelStyle;
+    if (item.value > 0) {
+      labelStyle = TextStyle(color: const Color(0xFF229C1F), fontSize: 20.sp);
+      textValue = "+${item.value}";
+    } else {
+      labelStyle = TextStyle(color: const Color(0xFFB12623), fontSize: 20.sp);
+      textValue = "${item.value}";
+    }
+
+    return Container(
+      width: 0.87.sw,
+      height: 84.h,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20).r,
+              bottomLeft: const Radius.circular(20).r,
+              bottomRight: const Radius.circular(20).r)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset(
+            CoinCounter.boicoinImagePath,
+            width: 50.w,
+            height: 50.h,
+          ),
+          15.horizontalSpace,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                textValue,
+                style: labelStyle,
+                overflow: TextOverflow.fade,
+              ),
+              Text(
+                item.description,
+                style: const TextStyle(
+                  color: Color(0xFF908F8F),
+                ),
+                overflow: TextOverflow.fade,
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+// Para usar com o Builder
+class ItemExtrato {
+  int value;
+  String description;
+  ItemExtrato({required this.value, required this.description});
 }
 
 class AppBarClipper extends CustomClipper<Path> {
@@ -150,7 +224,6 @@ class CoinCounterState extends State<CoinCounter> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      20.verticalSpace,
       Image.asset(
         CoinCounter.boicoinImagePath,
         width: 178.w,
