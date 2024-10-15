@@ -19,40 +19,40 @@ class SobreNosView extends GetView<SobreNosController> {
                 ClipPath(
                   clipper: AppBarClipper(),
                   child: Container(
-                    height: 100,
+                    height: 100.h,
                     decoration: BoxDecoration(
                       color: Color(0xFFFFFFFF),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10).h,
                       child: Row(
                         children: [
                           IconButton(
                             icon: Image.asset(
                               'assets/images/icons/mingcute_arrow-up-fill.png',
-                              height: 40,
-                              width: 40,
+                              height: 40.h,
+                              width: 40.w,
                             ),
                             onPressed: () {
                               Get.back();
                             },
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(width: 10),
+                                SizedBox(width: 10.w),
                                 Icon(
                                   Icons.info,
                                   color: Colors.black,
-                                  size: 30,
+                                  size: 30.sp,
                                 ),
-                                SizedBox(width: 5),
+                                SizedBox(width: 5.w),
                                 Center(
                                   child: Text(
                                     'Sobre Nós',
                                     style: TextStyle(
-                                      fontSize: 36,
+                                      fontSize: 36.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
@@ -70,15 +70,15 @@ class SobreNosView extends GetView<SobreNosController> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 2.0.h),
               child: Column(
                 children: [
                   Image.asset(
                     "assets/images/logo/logo_boi_marronzinho.png",
-                    width: 200.0,
-                    height: 275.0,
+                    width: 200.0.w,
+                    height: 275.0.h,
                   ),
-                  const Text(
+                  Text(
                     'O Boi Marronzinho é uma associação cultural vibrante '
                     'localizada na região amazônica, mais especificamente '
                     'no bairro da Terra Firme em Belém do Pará. Essa associação '
@@ -101,22 +101,23 @@ class SobreNosView extends GetView<SobreNosController> {
                     'e celebrações culturais no bairro da Terra Firme e em toda Belém.',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
-                      height: 1.5,
+                      fontSize: 16.sp,
+                      height: 1.5.sp,
                     ),
                   ),
-                  SizedBox(height: 24),
-                  const Align(
+                  SizedBox(height: 24.h),
+                  /*
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Apoio: ',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
+                  )*/
                 ],
               ),
             )),
@@ -124,7 +125,6 @@ class SobreNosView extends GetView<SobreNosController> {
         ),
       ),
     );
-    // TODO: implement build
     throw UnimplementedError();
   }
 }

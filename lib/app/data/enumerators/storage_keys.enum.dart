@@ -10,4 +10,6 @@ enum StorageKeys {
 
   /// Used to store logged user profile information
   PROFILE_INFO,
+
+  VOUCHERS,
 }

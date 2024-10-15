@@ -21,6 +21,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.3.9
+  
 
 dev_dependencies:
   flutter_test:
@@ -30,12 +31,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/logo/logo_boi_marronzinho.png
-    - assets/images/icons/ImgBoi.png
-    - assets/images/icons/user.png
-    - assets/images/icons/shopping-bag.png
-    - assets/images/icons/mingcute_arrow-up-fill.png
+    - assets/images/
     - assets/images/eventos/
+    - assets/images/icons/
+    - assets/images/logo/
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

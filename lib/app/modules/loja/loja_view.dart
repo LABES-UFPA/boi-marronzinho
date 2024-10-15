@@ -1,10 +1,10 @@
-import 'package:boi_marronzinho/app/modules/home_page/home_page_controller.dart';
+import 'package:boi_marronzinho/app/modules/loja/loja_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class HomePageView extends GetView<HomePageController> {
-  HomePageView({Key? key}) : super(key: key);
+class LojaView extends GetView<LojaController> {
+  LojaView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,21 +75,17 @@ class HomePageView extends GetView<HomePageController> {
               child: ListView(
                 //padding: EdgeInsets.zero,
                 children: [
-                  buildMenuItem('Eventos', Icons.event,
+                  buildMenuItem('Produtos', Icons.storefront_sharp,
                       Color(0xFFF69302), Color(0xFFBA400A), () {
-                    controller.onEventosPressed();
+                    controller.onProdutosPressed();
                   }),
-                  buildMenuItem('Mapa', Icons.location_on, Color(0xFFBA400A),
+                  buildMenuItem('Oficinas', Icons.co_present, Color(0xFFBA400A),
                       Color(0xFFB12623), () {
-                    controller.onMapaPressed();
+                    controller.onOficinasPressed();
                   }),
-                  buildMenuItem('Sobre nós', Icons.info, Color(0xFFB12623),
-                      Color(0XFF660D0D), () {
-                    controller.onSobreNosPressed();
-                  }),
-                  buildMenuItem('Doe Agora', Icons.volunteer_activism,
-                      Color(0XFF660D0D), Color(0xFF5C0B32), () {
-                    controller.onDoeAgoraPressed();
+                  buildMenuItem('Troca', Icons.cached, Color(0xFFB12623),
+                      Color(0xFF5C0B32), () {
+                    controller.onTrocaPressed();
                   }),
                 ],
               ),
@@ -112,7 +108,6 @@ class HomePageView extends GetView<HomePageController> {
         child: InkWell(
           onTap: onPressed,
           child: Container(
-           
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(40).h,
             decoration: BoxDecoration(
