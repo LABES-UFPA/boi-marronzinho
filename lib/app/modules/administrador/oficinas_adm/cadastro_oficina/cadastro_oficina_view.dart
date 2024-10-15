@@ -4,9 +4,10 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 
 class AddOficinaView extends GetView<AddOficinaController> {
   const AddOficinaView({Key? key}) : super(key: key);
@@ -64,9 +65,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                 SizedBox(height: 22.h),
                                 inputBox('Limite de Participantes',
                                     controller.participantesController),
-                                SizedBox(height: 22.h),
-                                //inputBoxMap('Localização', context,
-                                 ///   controller.enderecoController),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -240,7 +238,49 @@ class AddOficinaView extends GetView<AddOficinaController> {
     );
   }
 
-  
+  Widget inputBoxMap(
+      String text, BuildContext context, TextEditingController controllerText) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20.r),
+          bottomRight: Radius.circular(20.r),
+          topLeft: Radius.circular(20.r),
+        ),
+      ),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  height: 0.8.h),
+            ),
+            Obx(() => TextFormField(
+                  controller: controllerText,
+                  //keyboardType: type,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    errorStyle: TextStyle(
+                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                  ),
+                  onTap: () {
+                    //controller.locationCEP(controllerText);
+                  },
+                  //validator: (value) => validation(value),
+                )),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class ButtonBox extends StatelessWidget {

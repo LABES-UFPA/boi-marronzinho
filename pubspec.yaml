@@ -24,6 +24,10 @@ dependencies:
   skeletons: ^0.0.3
   image_picker: ^1.1.2
   flutter_map: ^7.0.2
+  geocode: ^1.0.3
+  latlong2: ^0.9.1
+  osm_nominatim: ^3.0.1
+  search_cep: ^4.0.2
   
 
 dev_dependencies:

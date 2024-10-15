@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,9 +17,8 @@ class AddOficinaController extends BaseController {
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longitudeController = TextEditingController();
   final GlobalKey<FormState> registerOficinaFormKey = GlobalKey<FormState>();
-  
   final ImagePicker _picker = ImagePicker();
-  var address = ''.obs;
+  //var address = ''.obs;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
   File? get image => _image.value;
@@ -44,20 +44,23 @@ class AddOficinaController extends BaseController {
     }
   }
 
-  //função pra pegar o endereço, latitude e longitude
-  Future<void> onCadastroOficina() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      //_image = File(pickedFile.path);
-    } else {
-      _image.value = null;
-    }
-  }
+  
 
-  void updatelocation(String newAdress, double latitude, double longitude){
-    address.value = newAdress;
-    enderecoController.text = newAdress;
-    latitudeController.text = latitude.toString();
-    longitudeController.text = longitude.toString();
+  Future<void> onCadastroOficina() async {
+    if (registerOficinaFormKey.currentState?.validate() ?? false) {
+      setLoading(true);
+      try {
+        final register = await RegisterRepository().register(
+          firstName: nomeController.text,
+          lastName: sobrenomeController.text,
+          password: passwordController.text,
+          email: emailController.text,
+        );
+
+        Get.offAllNamed(OficinasAdminModule.path);
+      } finally {
+        setLoading(false);
+      }
+    }
   }
 }
