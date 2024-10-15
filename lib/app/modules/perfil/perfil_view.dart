@@ -79,12 +79,12 @@ class PerfilView extends GetView<PerfilController> {
                       Color(0xFFF69302), Color(0xFFBA400A), () {
                     controller.onProdutosPressed();
                   }),
-                  buildMenuItem('Carteira', Icons.account_balance_wallet, Color(0xFFBA400A),
-                      Color(0xFFB12623), () {
-                    controller.onOficinasPressed();
+                  buildMenuItem('Carteira', Icons.account_balance_wallet,
+                      Color(0xFFBA400A), Color(0xFFB12623), () {
+                    controller.onCarteiraPressed();
                   }),
-                  buildMenuItem('Vouchers', Icons.confirmation_num, Color(0xFFB12623),
-                      Color(0xFF5C0B32), () {
+                  buildMenuItem('Vouchers', Icons.confirmation_num,
+                      Color(0xFFB12623), Color(0xFF5C0B32), () {
                     controller.onVouchersPressed();
                   }),
                 ],
@@ -158,14 +158,14 @@ class CircleButton extends StatelessWidget {
               border: Border.all(color: Colors.orangeAccent, width: 2.w),
               color: Colors.white,
             ),
-              
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0).h,
-                  child: Image.asset(icon,
-                  fit: BoxFit.scaleDown,),
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0).h,
+              child: Image.asset(
+                icon,
+                fit: BoxFit.scaleDown,
               ),
-            
+            ),
+          ),
           SizedBox(height: 5.h),
           Text(
             text,

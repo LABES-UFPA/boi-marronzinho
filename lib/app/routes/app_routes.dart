@@ -1,5 +1,5 @@
-
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
+import 'package:boi_marronzinho/app/modules/carteira/carteira_module.dart';
 import 'package:boi_marronzinho/app/modules/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/initial/flow_initial/flow_initial_module.dart';
@@ -27,6 +27,7 @@ class AppPages {
     PerfilModule.page,
     TrocaModule.page,
     PixModule.page,
-    VouchersModule.page
+    VouchersModule.page,
+    CarteiraModule.page,
   ];
 }
