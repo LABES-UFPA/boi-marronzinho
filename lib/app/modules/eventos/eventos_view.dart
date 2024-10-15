@@ -1,8 +1,7 @@
 import 'package:boi_marronzinho/app/modules/eventos/eventos_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EventosView extends GetView<EventosController> {
   const EventosView({super.key});
@@ -32,27 +31,27 @@ class EventosView extends GetView<EventosController> {
                         IconButton(
                           icon: Image.asset(
                             'assets/images/icons/mingcute_arrow-up-fill.png',
-                            height: 40,
-                            width: 40,
+                            height: 40.h,
+                            width: 40.w,
                           ),
                           onPressed: () => Get.back(),
                         ),
-                        const Expanded(
+                        Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 10),
-                              Icon(
+                              10.horizontalSpace,
+                              const Icon(
                                 Icons.event,
                                 color: Colors.black,
                                 size: 30,
                               ),
-                              SizedBox(width: 5),
+                              5.horizontalSpace,
                               Center(
                                 child: Text(
                                   'Eventos',
                                   style: TextStyle(
-                                    fontSize: 36,
+                                    fontSize: 36.sp,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
@@ -68,6 +67,7 @@ class EventosView extends GetView<EventosController> {
               )
             ],
           ),
+          // Body -- Onde estão os cards de eventos
           const Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -138,15 +138,12 @@ class EventoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Center(
         child: SizedBox(
-      width: screenWidth * 0.8, // 80% da tela
-      height: screenHeight * 0.3, // 30% da tela
+      width: 0.85.sw, // 80% da tela
+      height: 0.3.sh, // 30% da tela
       child: Card(
-        margin: const EdgeInsets.all(10.0),
+        margin: EdgeInsets.all(10.0.w),
         elevation: 5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -156,9 +153,9 @@ class EventoCard extends StatelessWidget {
               child: Text(
                 nome,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 23,
+                  fontSize: 23.0.sp,
                   overflow: TextOverflow.clip,
                 ),
               ),
@@ -166,7 +163,7 @@ class EventoCard extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Container(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  padding: EdgeInsets.only(left: 15.w, right: 15.w),
                   child: Text(
                     'Localização: $localizacao\nData: $data\nDescrição: $descricao',
                     overflow: TextOverflow.fade,
@@ -174,10 +171,11 @@ class EventoCard extends StatelessWidget {
             ),
             Expanded(
               child: InkWell(
+                  // TODO: Abrir Mapa e retirar o print
                   onTap: () => print("Abra o Google Maps"),
                   child: Container(
-                    decoration: const BoxDecoration(
-                        border: Border(top: BorderSide(width: 1))),
+                    decoration: BoxDecoration(
+                        border: Border(top: BorderSide(width: 1.w))),
                     child: const Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
