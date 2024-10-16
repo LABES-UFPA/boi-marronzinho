@@ -11,6 +11,7 @@ import 'package:boi_marronzinho/app/modules/eventos/eventos_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:boi_marronzinho/app/modules/troca/troca_module.dart';
 import 'package:boi_marronzinho/app/modules/vouchers/vouchers_module.dart';
+import 'package:boi_marronzinho/app/modules/meus_dados/meus_dados_module.dart';
 
 class AppPages {
   AppPages._();
@@ -28,6 +29,7 @@ class AppPages {
     PerfilModule.page,
     TrocaModule.page,
     PixModule.page,
-    VouchersModule.page
+    VouchersModule.page,
+    MeusDadosModule.page,
   ];
 }
