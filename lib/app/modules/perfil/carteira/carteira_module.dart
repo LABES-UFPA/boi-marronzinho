@@ -1,5 +1,5 @@
-import 'package:boi_marronzinho/app/modules/carteira/carteira_binding.dart';
-import 'package:boi_marronzinho/app/modules/carteira/carteira_view.dart';
+import 'package:boi_marronzinho/app/modules/perfil/carteira/carteira_binding.dart';
+import 'package:boi_marronzinho/app/modules/perfil/carteira/carteira_view.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 abstract class CarteiraModule {
