@@ -49,6 +49,7 @@ class CadastroView extends GetView<CadastroController> {
                                   text: 'Nome',
                                   hint: 'João',
                                   type: TextInputType.text,
+                                  controller: controller.nomeController,
                                   validation: controller.validateName,
                                 ),
                                 SizedBox(height: 22.h),
@@ -56,6 +57,7 @@ class CadastroView extends GetView<CadastroController> {
                                   text: 'Sobrenome',
                                   hint: 'Silva',
                                   type: TextInputType.text,
+                                  controller: controller.sobrenomeController,
                                   validation: controller.validateName,
                                 ),
                                 SizedBox(height: 22.h),
@@ -63,6 +65,7 @@ class CadastroView extends GetView<CadastroController> {
                                   text: 'Email',
                                   hint: 'email@exemplo.com',
                                   type: TextInputType.emailAddress,
+                                  controller: controller.emailController,
                                   validation: controller.validateEmail,
                                 ),
                                 SizedBox(height: 22.h),
@@ -71,6 +74,7 @@ class CadastroView extends GetView<CadastroController> {
                                   hint: '**********',
                                   type: TextInputType.visiblePassword,
                                   isPassword: true,
+                                  controller: controller.passwordController,
                                   validation: controller.validatePassword,
                                 ),
                                 SizedBox(height: 22.h),
@@ -79,6 +83,7 @@ class CadastroView extends GetView<CadastroController> {
                                   hint: '**********',
                                   type: TextInputType.visiblePassword,
                                   isPassword: true,
+                                  controller: controller.confirmpasswordController,
                                   validation: controller.validatePassword,
                                 ),
                                 SizedBox(
@@ -101,7 +106,7 @@ class CadastroView extends GetView<CadastroController> {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          controller.onCadastroPressed();
+                                          controller.onLoginPressed();
                                         },
                                         style: TextButton.styleFrom(
                                           padding: EdgeInsets.symmetric(horizontal: 6.w)
@@ -141,6 +146,7 @@ class InputBox extends StatelessWidget {
   final String hint;
   final bool isPassword;
   final TextInputType type;
+  final TextEditingController controller;
   final String? Function(String?) validation;
 
   InputBox({
@@ -149,6 +155,7 @@ class InputBox extends StatelessWidget {
     required this.hint,
     this.isPassword = false,
     required this.type,
+    required this.controller,
     required this.validation,
   });
 
@@ -178,6 +185,7 @@ class InputBox extends StatelessWidget {
                   height: 0.8.h),
             ),
             TextFormField(
+              controller: controller,
               obscureText: isPassword,
               keyboardType: type,
               decoration: InputDecoration(
@@ -218,11 +226,11 @@ class ButtonBox extends StatelessWidget {
                 topLeft: Radius.circular(20.r),
               ),
             ),
-            padding: EdgeInsets.all(10.h)),
+            padding: EdgeInsets.all(12.h)),
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 18.sp,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold, // Deixar o texto em negrito
             color: Colors.white, // Cor do texto (preto)
           ),
