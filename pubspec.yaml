@@ -21,6 +21,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.3.9
+  image_picker: ^1.1.2
+  qr_code_scanner: ^1.0.1
+  geocoding: ^3.0.0
+  
   
 
 dev_dependencies:
@@ -31,9 +35,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/logo/
-    - assets/images/icons/
     - assets/images/
+    - assets/images/eventos/
+    - assets/images/icons/
+    - assets/images/logo/
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
