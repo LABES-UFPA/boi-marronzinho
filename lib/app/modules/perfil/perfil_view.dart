@@ -59,15 +59,6 @@ class PerfilView extends GetView<PerfilController> {
                     ),
                   ),
                 ),
-                Positioned(
-                  right: 10.w,
-                  top: 16.h,
-                  child: Icon(
-                    Icons.notifications,
-                    color: Color(0xFFFFCC4D),
-                    size: 40.sp,
-                  ),
-                ),
               ],
             ),
             // Itens da lista
@@ -84,8 +75,12 @@ class PerfilView extends GetView<PerfilController> {
                     controller.onCarteiraPressed();
                   }),
                   buildMenuItem('Vouchers', Icons.confirmation_num,
-                      Color(0xFFB12623), Color(0xFF5C0B32), () {
+                      Color(0xFFB12623), Color(0XFF660D0D), () {
                     controller.onVouchersPressed();
+                  }),
+                  buildMenuItem('Administrador', Icons.manage_accounts_outlined,
+                      Color(0XFF660D0D), Color(0xFF5C0B32), () {
+                    controller.onAdminPressed();
                   }),
                 ],
               ),
@@ -116,7 +111,7 @@ class PerfilView extends GetView<PerfilController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 40.w),
+                SizedBox(width: 20.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 Text(
