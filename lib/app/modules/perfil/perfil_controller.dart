@@ -4,7 +4,7 @@ import 'package:boi_marronzinho/app/modules/administrador/admin_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
-import 'package:boi_marronzinho/app/modules/perfil/vouchers/vouchers_module.dart';
+import 'package:boi_marronzinho/app/modules/vouchers/vouchers_module.dart';
 import 'package:get/get.dart';
 
 class PerfilController extends BaseController {

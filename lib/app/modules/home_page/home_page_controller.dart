@@ -1,9 +1,9 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
-import 'package:boi_marronzinho/app/modules/home_page/doacoes/doacoes_module.dart';
+import 'package:boi_marronzinho/app/modules/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
-import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobrenos_module.dart';
+import 'package:boi_marronzinho/app/modules/sobre_nos/sobrenos_module.dart';
 import 'package:get/get.dart';
 
 class HomePageController extends BaseController {

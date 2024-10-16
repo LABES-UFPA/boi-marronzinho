@@ -1,5 +1,5 @@
-import 'package:boi_marronzinho/app/modules/loja/troca/item_troca.dart';
-import 'package:boi_marronzinho/app/modules/loja/troca/troca_controller.dart';
+import 'package:boi_marronzinho/app/modules/troca/item_troca.dart';
+import 'package:boi_marronzinho/app/modules/troca/troca_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
