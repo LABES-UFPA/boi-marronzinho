@@ -28,7 +28,7 @@ class CarteiraView extends GetView<CarteiraController> {
                   clipper: AppBarClipper(),
                   child: Container(
                     height: 100.h,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFFFFFFFF),
                     ),
                     child: Padding(
@@ -76,6 +76,7 @@ class CarteiraView extends GetView<CarteiraController> {
                 ),
               ],
             ),
+
             // Conteúdo
             Padding(
               padding: const EdgeInsets.all(16.0).h,
@@ -91,6 +92,7 @@ class CarteiraView extends GetView<CarteiraController> {
             ),
             buildExtratoItem(
                 ItemExtrato(value: 100, description: "Troca de Óleo Usado")),
+            10.verticalSpace,
             buildExtratoItem(
                 ItemExtrato(value: -300, description: "Blusa Boi Marronzinho")),
           ],
@@ -237,5 +239,26 @@ class CoinCounterState extends State<CoinCounter> {
 
   void updateBoiCoins() {
     throw UnimplementedError();
+  }
+}
+
+class Carteira extends StatefulWidget {
+  const Carteira({super.key});
+
+  @override
+  State<Carteira> createState() => _CarteiraState();
+}
+
+class _CarteiraState extends State<Carteira> {
+  bool _isExtratoPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isExtratoPressed) {
+      return Text("Trueeee");
+    }
+    return Text("FAAALSE");
+
+    return const Placeholder();
   }
 }
