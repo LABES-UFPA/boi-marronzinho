@@ -75,7 +75,7 @@ class ScannerView extends GetView<ScannerController> {
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),

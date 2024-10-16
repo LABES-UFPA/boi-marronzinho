@@ -24,8 +24,7 @@ dependencies:
   skeletons: ^0.0.3
   image_picker: ^1.1.2
   qr_code_scanner: ^1.0.1
-  flutter_map: ^7.0.2
-  search_cep: ^4.0.2
+  geocoding: ^3.0.0
   
   
 

@@ -4,10 +4,9 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_
 import 'package:boi_marronzinho/app/modules/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
+
 
 class AddOficinaView extends GetView<AddOficinaController> {
   const AddOficinaView({Key? key}) : super(key: key);

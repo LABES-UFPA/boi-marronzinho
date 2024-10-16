@@ -105,19 +105,56 @@ class SobreNosView extends GetView<SobreNosController> {
                       height: 1.5.sp,
                     ),
                   ),
-                  SizedBox(height: 24.h),
-                  /*
+                  SizedBox(height: 34.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Apoio: ',
+                      'Rede de Parceiros: ',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )*/
+                  ),
+                  SizedBox(height: 6.h),
+                  Text(
+                    'Coletivo MultiverCidades da Amazônia       \n'
+                    'Instituto Amazônia Cultural       \n'
+                    'Instituto Amazônia Cultural       \n'
+                    'Grupo de Capoeira Sou Angoleiro       \n'
+                    'Coletivo Lutar Sempre        \n',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      height: 1.5.sp,
+                    ),
+                  ),
+                  SizedBox(height: 18.h),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Apoiadores: ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  Text(
+                    'Laboratório Saber e Conviver/Faesa/UFPA\n'
+                    'Clínica de Direito à Cidade/PPGDDA/UFPA\n'
+                    'Movimento Bandeirantes São Domingos de Gusmão\n'
+                    'Rede de Supermercado Econômico\n',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      height: 1.5.sp,
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
                 ],
               ),
             )),
