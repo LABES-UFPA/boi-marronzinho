@@ -1,4 +1,3 @@
-
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
@@ -8,6 +7,7 @@ import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
 import 'package:boi_marronzinho/app/modules/pix/pix_module.dart';
 import 'package:boi_marronzinho/app/modules/sobre_nos/sobrenos_module.dart';
+import 'package:boi_marronzinho/app/modules/eventos/eventos_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:boi_marronzinho/app/modules/troca/troca_module.dart';
 import 'package:boi_marronzinho/app/modules/vouchers/vouchers_module.dart';
@@ -18,6 +18,7 @@ class AppPages {
   static final routes = [
     FlowInitialModule.page,
     HomeModule.page,
+    EventosModule.page,
     DoacoesModule.page,
     SobreNosModule.page,
     LoginModule.page,
