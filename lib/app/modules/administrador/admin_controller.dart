@@ -1,5 +1,6 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/scanner/scanner_module.dart';
 import 'package:get/get.dart';
 
 class AdminController extends BaseController{
@@ -25,7 +26,7 @@ class AdminController extends BaseController{
     //Get.toNamed(ProdutosModule.path);
   }
   void onScannerPressed() {
-    //Get.toNamed(ProdutosModule.path);
+    Get.toNamed(ScannerModule.path);
   }
 
   

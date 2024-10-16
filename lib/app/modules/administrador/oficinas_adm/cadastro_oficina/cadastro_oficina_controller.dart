@@ -50,12 +50,12 @@ class AddOficinaController extends BaseController {
     if (registerOficinaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        final register = await RegisterRepository().register(
-          firstName: nomeController.text,
-          lastName: sobrenomeController.text,
-          password: passwordController.text,
-          email: emailController.text,
-        );
+        //final register = await RegisterRepository().register(
+         // firstName: nomeController.text,
+         // lastName: sobrenomeController.text,
+         // password: passwordController.text,
+        //  email: emailController.text,
+       // );
 
         Get.offAllNamed(OficinasAdminModule.path);
       } finally {
