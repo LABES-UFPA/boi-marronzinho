@@ -68,7 +68,7 @@ class PerfilView extends GetView<PerfilController> {
                 children: [
                   buildMenuItem('Meus Dados', Icons.account_box,
                       Color(0xFFF69302), Color(0xFFBA400A), () {
-                    controller.onDadosPressed();
+                    controller.onMeusDadosPressed();
                   }),
                   buildMenuItem('Carteira', Icons.account_balance_wallet,
                       Color(0xFFBA400A), Color(0xFFB12623), () {
