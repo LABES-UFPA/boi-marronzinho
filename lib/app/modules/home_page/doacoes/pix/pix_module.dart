@@ -1,5 +1,5 @@
-import 'package:boi_marronzinho/app/modules/doacoes/pix/pix_binding.dart';
-import 'package:boi_marronzinho/app/modules/doacoes/pix/pix_view.dart';
+import 'package:boi_marronzinho/app/modules/home_page/doacoes/pix/pix_binding.dart';
+import 'package:boi_marronzinho/app/modules/home_page/doacoes/pix/pix_view.dart';
 import 'package:get/get.dart';
 
 abstract class PixModule {

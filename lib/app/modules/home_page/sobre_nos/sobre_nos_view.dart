@@ -1,4 +1,4 @@
-import 'package:boi_marronzinho/app/modules/sobre_nos/sobre_nos_controller.dart';
+import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
