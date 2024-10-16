@@ -1,17 +1,12 @@
-
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:typed_data';
-
 class Oficina {
   final String id;
   final String nomeOficina;
   final String descricao;
-  final Float precoBoicoin;
-  final Float precoReal;
+  final double precoBoicoin;
+  final double precoReal;
   final DateTime dataOficina;
-  final Int limiteParticipantes;
-  final String local;
+  final int limiteParticipantes;
+  final String pontoMapaId;
 
   Oficina({
     required this.id,
@@ -19,10 +14,9 @@ class Oficina {
     required this.descricao,
     required this.precoBoicoin,
     required this.precoReal,
-    required this.dataOficina, 
+    required this.dataOficina,
     required this.limiteParticipantes,
-    required this.local,
-    
+    required this.pontoMapaId,
   });
 
   factory Oficina.fromMap(Map<String, dynamic> map) {
@@ -30,11 +24,11 @@ class Oficina {
       id: map['id'],
       nomeOficina: map['nome'],
       descricao: map['descricao'],
-      precoBoicoin: map['precoBoicoins'],
-      precoReal: map['precoReal'],
+      precoBoicoin: (map['precoBoicoins'] as num).toDouble(),
+      precoReal: (map['precoReal'] as num).toDouble(),
       dataOficina: DateTime.parse(map['dataEvento']),
       limiteParticipantes: map['limiteParticipantes'],
-      local: map['local'],
+      pontoMapaId: map['pontoMapaId'],
     );
   }
 
@@ -45,11 +39,9 @@ class Oficina {
       'descricao': descricao,
       'precoBoicoin': precoBoicoin,
       'precoReal': precoReal,
-      'dataOficina': dataOficina.toIso8601String(),  // Convertendo DateTime para string
+      'dataOficina': dataOficina.toIso8601String(),
       'limiteParticipantes': limiteParticipantes,
-      'local': local,
+      'pontoMapaId': pontoMapaId,
     };
   }
-
-  
 }

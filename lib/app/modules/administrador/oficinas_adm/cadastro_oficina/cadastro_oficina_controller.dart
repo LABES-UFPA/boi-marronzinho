@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,18 +45,23 @@ class AddOficinaController extends BaseController {
     }
   }
 
-  
+
 
   Future<void> onCadastroOficina() async {
     if (registerOficinaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        //final register = await RegisterRepository().register(
-         // firstName: nomeController.text,
-         // lastName: sobrenomeController.text,
-         // password: passwordController.text,
-        //  email: emailController.text,
-       // );
+        double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
+        double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
+
+        final registerOficina = await OficinasRepository().cadastrarOficina(
+          nome: nomeController.text,
+          descricao: descricaoController.text,
+          precoBoicoin: precoBoicoins,
+          precoReal: precoReais,
+          dataOficina: dateController.text,
+          limiteOficina: int.tryParse(participantesController.text) ?? 20,
+        );
 
         Get.offAllNamed(OficinasAdminModule.path);
       } finally {
@@ -63,4 +69,5 @@ class AddOficinaController extends BaseController {
       }
     }
   }
+
 }

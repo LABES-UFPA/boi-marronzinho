@@ -13,11 +13,11 @@ class OficinasAdmController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    getOficinasTeste();
+    getOficinas();
   }
 
   Future<void> getOficinas() async {
-    setLoading(true); // Você pode ter uma função para mostrar um loader.
+    setLoading(true);
 
     final response = await oficinasRepo.fetchOficinas();
     final isValid = isValidResponse(response: response, title: 'Ovo Frito');
@@ -25,19 +25,8 @@ class OficinasAdmController extends BaseController {
       oficinas = response.data;
     }
 
-    setLoading(false); // Finaliza o loader aqui.
-    update(); // Atualiza a interface do GetX.
-  }
-
-  Future<void> getOficinasTeste() async {
-    setLoading(true); // Exibe o loading na tela
-    await Future.delayed(
-        Duration(seconds: 2)); // Simula um tempo de resposta da API
-
-    // Simulação de dados de vouchers
-
-    setLoading(false); // Finaliza o loader
-    update(); // Atualiza a interface com os dados fictícios
+    setLoading(false);
+    update();
   }
 
   void onAddOficinasPressed() {
