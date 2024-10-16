@@ -9,6 +9,7 @@ import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/initial/flow_initial/flow_initial_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
+import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/doacoes/pix/pix_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobrenos_module.dart';
@@ -35,6 +36,7 @@ class AppPages {
     TrocaModule.page,
     PixModule.page,
     VouchersModule.page,
+    OficinasModule.page,
     AdminModule.page,
     OficinasAdminModule.page,
     AddOficinaModule.page,
