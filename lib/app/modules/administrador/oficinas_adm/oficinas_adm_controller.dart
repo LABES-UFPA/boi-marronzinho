@@ -37,7 +37,7 @@ class OficinasAdmController extends BaseController {
     Get.dialog(
       AlertDialog(
         title: Text('Confirmação'),
-        content: Text('Deseja excluir Oficina?',style: TextStyle(
+        content: Text('Deseja excluir a oficina?',style: TextStyle(
           fontSize: 18.sp
         ),),
         actions: [
