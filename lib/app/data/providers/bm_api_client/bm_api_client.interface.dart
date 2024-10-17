@@ -19,4 +19,12 @@ abstract interface class IBmApiClient {
       });
 
   Future<Response> postParams(String url, Map<String, dynamic> queryParams, {Map<String, dynamic> headers});
+
+  Future<Response> postMultipart(
+    String url,
+    String filePath, {
+    String fieldName = 'file',
+    Map<String, dynamic> additionalData = const {},
+    Map<String, dynamic> headers = const {},
+  });
 }
