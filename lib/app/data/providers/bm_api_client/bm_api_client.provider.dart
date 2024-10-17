@@ -93,6 +93,45 @@ class BmApiClient extends GetxService implements IBmApiClient {
     return response; //_sendRequest(() => _dio.put(url, data: data, options: options));
   }
 
+  Future<Response> postMultipart(
+  String url,
+  File file, { // Aceita um objeto File diretamente
+  String fieldName = 'file',
+  Map<String, dynamic> additionalData = const {},
+  Map<String, dynamic> headers = const {},
+}) async {
+  final options = _apiHelpers.generateOptions();
+  options.headers?.addAll(headers);
+
+  // Criação do formulário multipart
+  final multipartFile = await MultipartFile.fromFile(file.path);
+  final formData = FormData.fromMap({
+    fieldName: multipartFile,
+    ...additionalData, // Adiciona dados adicionais ao formulário, se houver
+  });
+
+  // Envio da requisição
+  try {
+    final response = await _dio.post(
+      url,
+      data: formData,
+      options: options,
+    );
+    return response;
+  } catch (err) {
+    if (err is! DioException) {
+      rethrow;
+    }
+
+    // Handle exception and return error Response
+    return Response(
+      requestOptions: err.requestOptions,
+      statusCode: err.response?.statusCode ?? 400,
+      data: ApiExceptionHandler.fromDioError(err).message,
+    );
+  }
+}
+
   /// Private method that sends an HTTP request and handles exceptions.
   ///
   /// On exception, logs the error and returns an error Response.
