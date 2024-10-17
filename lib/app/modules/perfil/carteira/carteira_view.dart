@@ -145,7 +145,7 @@ class CarteiraView extends GetView<CarteiraController> {
 
     return Container(
       width: 0.87.sw,
-      height: 84.h,
+      height: 88.h,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
           color: Colors.white,

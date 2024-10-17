@@ -29,6 +29,35 @@ class AddOficinaController extends BaseController {
     // TODO: implement onInit
     super.onInit();
   }
+  
+  String? validateText(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Campo Obrigatório';
+    }
+    return null;
+  }
+
+   String? validateNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Campo Obrigatório';
+    }
+    final price = double.tryParse(value);
+    if (price == null || price <= 0) {
+      return 'Preço inválido';
+    }
+    return null;
+  }
+
+  String? validateParticipants(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Campo Obrigatório';
+    }
+    final participants = int.tryParse(value);
+    if (participants == null || participants <= 0) {
+      return 'Quantidade inválida';
+    }
+    return null;
+  }
 
   Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -45,8 +74,6 @@ class AddOficinaController extends BaseController {
     }
   }
 
-
-
   Future<void> onCadastroOficina() async {
     if (registerOficinaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
@@ -54,14 +81,14 @@ class AddOficinaController extends BaseController {
         double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
         double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
 
-        final registerOficina = await OficinasRepository().cadastrarOficina(
+        /*final registerOficina = await OficinasRepository().cadastrarOficina(
           nome: nomeController.text,
           descricao: descricaoController.text,
           precoBoicoin: precoBoicoins,
           precoReal: precoReais,
           dataOficina: dateController.text,
           limiteOficina: int.tryParse(participantesController.text) ?? 20,
-        );
+        );*/
 
         Get.offAllNamed(OficinasAdminModule.path);
       } finally {

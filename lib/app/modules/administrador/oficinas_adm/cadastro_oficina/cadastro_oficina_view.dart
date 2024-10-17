@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
-
 
 class AddOficinaView extends GetView<AddOficinaController> {
   const AddOficinaView({Key? key}) : super(key: key);
@@ -48,22 +48,40 @@ class AddOficinaView extends GetView<AddOficinaController> {
                             child: Column(
                               children: [
                                 SizedBox(height: 22.h),
-                                inputBox('Nome', controller.nomeController),
+                                inputBox(
+                                    'Nome',
+                                    controller.nomeController,
+                                    TextInputType.text,
+                                    controller.validateText),
                                 SizedBox(height: 22.h),
-                                inputBox('Descrição',
-                                    controller.descricaoController),
+                                inputBox(
+                                    'Descrição',
+                                    controller.descricaoController,
+                                    TextInputType.text, controller.validateText),
                                 SizedBox(height: 22.h),
-                                inputBox('Preço em Boicoins',
-                                    controller.precoBoicoinsController),
+                                inputBox(
+                                    'Preço em Boicoins',
+                                    controller.precoBoicoinsController,
+                                    TextInputType.number, controller.validateNumber,
+                                    formato: FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
-                                inputBox('Preço em Reais',
-                                    controller.precoReaisController),
+                                inputBox(
+                                    'Preço em Reais',
+                                    controller.precoReaisController,
+                                    TextInputType.numberWithOptions(
+                                        decimal: true),
+                                        controller.validateNumber,
+                                        formato: FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBoxDate('Data da Oficina', context,
                                     controller.dateController),
                                 SizedBox(height: 22.h),
-                                inputBox('Limite de Participantes',
-                                    controller.participantesController),
+                                inputBox(
+                                    'Limite de Participantes',
+                                    controller.participantesController,
+                                    TextInputType.number,
+                                    controller.validateNumber,
+                                    formato: FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -148,7 +166,8 @@ class AddOficinaView extends GetView<AddOficinaController> {
           );
   }
 
-  Widget inputBox(String text, TextEditingController controller) {
+  Widget inputBox(String text, TextEditingController controller,
+      TextInputType type, String? Function(String?) validation, {TextInputFormatter? formato}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -174,7 +193,10 @@ class AddOficinaView extends GetView<AddOficinaController> {
             ),
             TextFormField(
               controller: controller,
-              //keyboardType: type,
+              keyboardType: type,
+              inputFormatters: formato != null ? <TextInputFormatter>[formato] : 
+              <TextInputFormatter>[],
+              
               decoration: InputDecoration(
                 //hintText: hint,
                 hintStyle: TextStyle(color: Colors.grey),
@@ -182,8 +204,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                 errorStyle:
                     TextStyle(fontSize: 14.sp, overflow: TextOverflow.ellipsis),
               ),
-
-              //validator: (value) => validation(value),
+              validator: (value) => validation(value),
             ),
           ],
         ),
