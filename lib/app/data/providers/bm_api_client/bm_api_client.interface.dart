@@ -22,7 +22,7 @@ abstract interface class IBmApiClient {
 
   Future<Response> postMultipart(
     String url,
-    String filePath, {
+    File file, {
     String fieldName = 'file',
     Map<String, dynamic> additionalData = const {},
     Map<String, dynamic> headers = const {},
