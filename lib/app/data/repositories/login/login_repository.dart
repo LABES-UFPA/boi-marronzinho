@@ -41,9 +41,10 @@ final class LoginRepository extends RequestRepository implements ILoginRepositor
       final token = response.data['login']['token'];
       final userId = response.data['login']['id'];
       final userEmail = response.data['login']['email'];
+      final userName = response.data['login']['firstName'] + response.data['login']['lastName'];
 
       await _userTokenStore.write(token);
-      await _credentialsRepository.saveCredentials(UserCredentials(userId: userId, email: userEmail));
+      await _credentialsRepository.saveCredentials(UserCredentials(userId: userId, email: userEmail, name: userName));
 
       return (valid: true, reason: null, data: null);
     } catch (error, trace) {

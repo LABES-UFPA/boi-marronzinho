@@ -44,7 +44,7 @@ class LoginController extends BaseController {
       setLoading(true);
       try {
         final loginRepo = await LoginRepository().login(
-          email: "vld@example.com",
+          email: "vlad@example.com",
           password: "senhaSegura123",
         );
 
