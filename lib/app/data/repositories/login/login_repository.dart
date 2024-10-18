@@ -1,5 +1,7 @@
 import 'package:boi_marronzinho/app/data/enumerators/storage_keys.enum.dart';
+import 'package:boi_marronzinho/app/data/models/user_credentials/user_credentials.dart';
 import 'package:boi_marronzinho/app/data/repositories/register/register_repository.interface.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
 import 'package:boi_marronzinho/app/data/request_repository.dart';
 import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
@@ -10,11 +12,11 @@ final class LoginRepository extends RequestRepository implements ILoginRepositor
   static const String registerUser = '/usuarios/login';
 
   late final MemoryStore _userTokenStore;
-  late final Helpers _helpers;
+  late final UserCredentialsRepository _credentialsRepository;
 
-  LoginRepository({MemoryStore? store, Helpers? helpers}) {
+  LoginRepository({MemoryStore? store, Helpers? helpers, UserCredentialsRepository? credentialsRepository}) {
     _userTokenStore = store ?? MemoryStore(StorageKeys.USER_TOKEN);
-    _helpers = helpers = Helpers();
+    _credentialsRepository = credentialsRepository ?? UserCredentialsRepository();
   }
 
   @override
@@ -25,8 +27,8 @@ final class LoginRepository extends RequestRepository implements ILoginRepositor
     final url = apiHelpers.buildUrl(url: registerUser, endpoint: Endpoints.BOI_MARRONZINHO);
 
     final Map<String, dynamic> bodyRegister = {
-      'email': 'vlad@example.com',
-      'password': 'senhaSegura123',
+      'email': email,
+      'password': password,
     };
 
     try {
@@ -37,10 +39,12 @@ final class LoginRepository extends RequestRepository implements ILoginRepositor
       }
 
       final token = response.data['login']['token'];
+      final userId = response.data['login']['id'];
+      final userEmail = response.data['login']['email'];
 
       await _userTokenStore.write(token);
+      await _credentialsRepository.saveCredentials(UserCredentials(userId: userId, email: userEmail));
 
-      print(token);
       return (valid: true, reason: null, data: null);
     } catch (error, trace) {
       return errorResponse(error, trace: trace);

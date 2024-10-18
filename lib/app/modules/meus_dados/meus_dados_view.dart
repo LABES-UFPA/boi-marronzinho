@@ -22,7 +22,7 @@ class MeusDadosView extends GetView<MeusDadosController> {
               50.verticalSpace,
 
               Expanded(child: Obx(() {
-                if (controller.isLoading == true) {
+                if (controller.isLoading.isTrue) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
