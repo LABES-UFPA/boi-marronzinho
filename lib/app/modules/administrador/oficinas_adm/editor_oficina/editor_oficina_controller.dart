@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
-import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.dart';
+import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddOficinaController extends BaseController {
+class EditorOficinaController extends BaseController {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController descricaoController = TextEditingController();
   final TextEditingController precoBoicoinsController = TextEditingController();
@@ -18,9 +17,9 @@ class AddOficinaController extends BaseController {
   final TextEditingController enderecoController = TextEditingController();
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longitudeController = TextEditingController();
-  final GlobalKey<FormState> registerOficinaFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> editOficinaFormKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  //var address = ''.obs;
+  late Oficina oficina;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
   File? get image => _image.value;
@@ -29,7 +28,12 @@ class AddOficinaController extends BaseController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    //getCoordinatesFromAddress('Alameda Santa Fé Quadra 159, Número 14');
+    oficina = Get.arguments as Oficina;
+    nomeController.text = oficina.nomeOficina;
+    descricaoController.text = oficina.descricao;
+    precoBoicoinsController.text = oficina.precoBoicoin.toString();
+    precoReaisController.text = oficina.precoReal.toString();
+    participantesController.text = oficina.limiteParticipantes.toString();
   }
   
   String? validateText(String? value) {
@@ -76,8 +80,8 @@ class AddOficinaController extends BaseController {
     }
   }
 
-  Future<void> onCadastroOficina() async {
-    if (registerOficinaFormKey.currentState?.validate() ?? false) {
+  Future<void> onEditOficina() async {
+    if (editOficinaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
         double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
@@ -98,19 +102,6 @@ class AddOficinaController extends BaseController {
       }
     }
   }
-  Future<String> getCoordinatesFromAddress(String address) async {
-    try {
-      List<Location> locations = await locationFromAddress(address);
-      if (locations.isNotEmpty) {
-        Location location = locations.first;
-        print(location);
-        return 'Latitude: ${location.latitude}, Longitude: ${location.longitude}';
-      } else {
-        return 'Nenhum resultado encontrado para o endereço fornecido.';
-      }
-    } catch (e) {
-      return 'Erro ao buscar coordenadas: $e';
-    }
-  }
+
 
 }

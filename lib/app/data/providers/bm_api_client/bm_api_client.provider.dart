@@ -1,12 +1,14 @@
 import 'dart:io';
+
 import 'package:boi_marronzinho/app/data/providers/bm_api_client/bm_api_client.interface.dart';
 import 'package:boi_marronzinho/app/data/util/api/api_exception_handler.dart';
 import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
+import 'package:get/get_connect/http/src/multipart/multipart_file.dart'
+    as get_multipart;
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:get/get.dart' hide Response;
-
 
 typedef Header = Map<String, dynamic>;
 typedef Request = Future<Response> Function();
@@ -36,8 +38,10 @@ class BmApiClient extends GetxService implements IBmApiClient {
       ..interceptors.add(_apiHelpers.getInterceptor());
 
     if (!_helpers.isLocalMode()) {
-      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
-          () => HttpClient()..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () =>
+          HttpClient()
+            ..badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
     }
   }
 
@@ -63,7 +67,8 @@ class BmApiClient extends GetxService implements IBmApiClient {
   // }
 
   @override
-  Future<Response> post(String url, dynamic body, {Map<String, dynamic> headers = const {}}) {
+  Future<Response> post(String url, dynamic body,
+      {Map<String, dynamic> headers = const {}}) {
     final options = _apiHelpers.generateOptions();
     options.headers?.addAll(headers);
 
@@ -72,11 +77,13 @@ class BmApiClient extends GetxService implements IBmApiClient {
   }
 
   @override
-  Future<Response> postParams(String url, Map<String, dynamic> queryParams, {Map<String, dynamic> headers = const {}}) {
+  Future<Response> postParams(String url, Map<String, dynamic> queryParams,
+      {Map<String, dynamic> headers = const {}}) {
     final options = _apiHelpers.generateOptions();
     options.headers?.addAll(headers);
 
-    final response = _dio.post(url, options: options, queryParameters: queryParams);
+    final response =
+        _dio.post(url, options: options, queryParameters: queryParams);
     return response;
   }
 
@@ -92,45 +99,6 @@ class BmApiClient extends GetxService implements IBmApiClient {
 
     return response; //_sendRequest(() => _dio.put(url, data: data, options: options));
   }
-
-  Future<Response> postMultipart(
-  String url,
-  File file, { // Aceita um objeto File diretamente
-  String fieldName = 'file',
-  Map<String, dynamic> additionalData = const {},
-  Map<String, dynamic> headers = const {},
-}) async {
-  final options = _apiHelpers.generateOptions();
-  options.headers?.addAll(headers);
-
-  // Criação do formulário multipart
-  final multipartFile = await MultipartFile.fromFile(file.path);
-  final formData = FormData.fromMap({
-    fieldName: multipartFile,
-    ...additionalData, // Adiciona dados adicionais ao formulário, se houver
-  });
-
-  // Envio da requisição
-  try {
-    final response = await _dio.post(
-      url,
-      data: formData,
-      options: options,
-    );
-    return response;
-  } catch (err) {
-    if (err is! DioException) {
-      rethrow;
-    }
-
-    // Handle exception and return error Response
-    return Response(
-      requestOptions: err.requestOptions,
-      statusCode: err.response?.statusCode ?? 400,
-      data: ApiExceptionHandler.fromDioError(err).message,
-    );
-  }
-}
 
   /// Private method that sends an HTTP request and handles exceptions.
   ///
@@ -149,5 +117,15 @@ class BmApiClient extends GetxService implements IBmApiClient {
         data: ApiExceptionHandler.fromDioError(err).message,
       );
     }
+  }
+
+  @override
+  Future<Response> delete(String url, dynamic body,
+      {Map<String, dynamic> headers = const {}}) {
+    final options = _apiHelpers.generateOptions();
+    options.headers?.addAll(headers);
+
+    final response = _dio.delete(url, data: body, options: options);
+    return response;
   }
 }

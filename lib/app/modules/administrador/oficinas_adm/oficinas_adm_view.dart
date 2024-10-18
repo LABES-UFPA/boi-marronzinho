@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
@@ -38,23 +39,27 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                       ),
                     ));
                   }
-          
+
                   return ListView.builder(
                     itemCount: controller.oficinas.length,
                     itemBuilder: (context, index) {
                       final oficina = controller.oficinas[index];
-          
+
                       return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
-                        child: Box(oficina.nomeOficina),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.h, horizontal: 16.w),
+                        child: Box(context, oficina.nomeOficina, oficina),
                       );
                     },
                   );
-                }),  
+                }),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-                child: ButtonBox(text: 'Adicionar Oficina', onPressed: controller.onAddOficinasPressed,),
+                child: ButtonBox(
+                  text: 'Adicionar Oficina',
+                  onPressed: controller.onAddOficinasPressed,
+                ),
               ),
             ],
           ),
@@ -114,13 +119,11 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
     );
   }
 
-  Widget Box(String text) {
+  Widget Box(BuildContext context, text, Oficina oficina) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black
-        ),
+        border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.r),
@@ -153,15 +156,24 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                   ),
                 ),
                 IconButton(
-                  onPressed: (){}, 
+                  onPressed: () {
+                    controller.goToEditOficina(oficina);
+                  },
                   icon: Icon(Icons.edit),
                   iconSize: 30.r,
-                  color: Colors.black,),
-                  IconButton(
-                  onPressed: (){}, 
+                  color: Colors.black,
+                ),
+                IconButton(
+                  onPressed: () {
+                    controller.showDeleteConfirmationDialog(context, () async {
+                      await controller.onDeleteOficina(
+                          oficina); 
+                    });
+                  },
                   icon: Icon(Icons.delete),
                   iconSize: 30.r,
-                  color: Colors.black,)
+                  color: Colors.black,
+                ),
               ],
             ),
           ),

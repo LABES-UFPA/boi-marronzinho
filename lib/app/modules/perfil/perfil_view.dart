@@ -8,6 +8,8 @@ class PerfilView extends GetView<PerfilController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.checkUserType();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF5C0B32),
@@ -74,14 +76,25 @@ class PerfilView extends GetView<PerfilController> {
                       Color(0xFFBA400A), Color(0xFFB12623), () {
                     controller.onCarteiraPressed();
                   }),
-                  buildMenuItem('Vouchers', Icons.confirmation_num,
-                      Color(0xFFB12623), Color(0XFF660D0D), () {
-                    controller.onVouchersPressed();
+                  Obx(() {
+                    Color voucher = controller.userCheck.value ?
+                   Color(0XFF660D0D) : Color(0xFF5C0B32);
+                    return buildMenuItem('Vouchers', Icons.confirmation_num,
+                        Color(0xFFB12623), voucher, () {
+                      controller.onVouchersPressed();
+                    });
                   }),
-                  buildMenuItem('Administrador', Icons.manage_accounts_outlined,
-                      Color(0XFF660D0D), Color(0xFF5C0B32), () {
-                    controller.onAdminPressed();
-                  }),
+                  Obx(() {
+                    return controller.userCheck.value == true
+                        ? buildMenuItem(
+                            'Administrador',
+                            Icons.manage_accounts_outlined,
+                            Color(0XFF660D0D),
+                            Color(0xFF5C0B32), () {
+                            controller.onAdminPressed();
+                          })
+                        : SizedBox.shrink();
+                  })
                 ],
               ),
             ),

@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_controller.dart';
-import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
+import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
+import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class AddOficinaView extends GetView<AddOficinaController> {
-  const AddOficinaView({Key? key}) : super(key: key);
+class EditorOficinaView extends GetView<EditorOficinaController> {
+  const EditorOficinaView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +37,14 @@ class AddOficinaView extends GetView<AddOficinaController> {
                             Padding(
                               padding: EdgeInsets.all(6.0.r),
                               child: ButtonBox(
-                                text: 'Adicionar Imagem',
+                                text: 'Alterar Imagem',
                                 function: controller.pickImage,
                               ),
                             ),
                           ],
                         ),
                         Form(
-                            key: controller.registerOficinaFormKey,
+                            key: controller.editOficinaFormKey,
                             child: Column(
                               children: [
                                 SizedBox(height: 22.h),
@@ -52,20 +52,17 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                     'Nome',
                                     controller.nomeController,
                                     TextInputType.text,
-                                    controller.validateText,
-                                    'Ex: Oficina de Pintura',),
+                                    controller.validateText),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Descrição',
                                     controller.descricaoController,
-                                    TextInputType.text, controller.validateText,
-                                    'Ex: Aprenda técnicas de pintura...'),
+                                    TextInputType.text, controller.validateText),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Preço em Boicoins',
                                     controller.precoBoicoinsController,
                                     TextInputType.number, controller.validateNumber,
-                                    'Ex: 50',
                                     formato: FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBox(
@@ -74,7 +71,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                     TextInputType.numberWithOptions(
                                         decimal: true),
                                         controller.validateNumber,
-                                        'Ex: 25.40',
                                         formato: FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBoxDate('Data da Oficina', context,
@@ -85,7 +81,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                     controller.participantesController,
                                     TextInputType.number,
                                     controller.validateNumber,
-                                    'Ex: 25',
                                     formato: FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 24.h),
                               ],
@@ -93,8 +88,8 @@ class AddOficinaView extends GetView<AddOficinaController> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
-                            text: 'Adicionar Oficina',
-                            function: controller.onCadastroOficina,
+                            text: 'Salvar Alterações',
+                            function: controller.onEditOficina,
                           ),
                         ),
                       ],
@@ -171,12 +166,8 @@ class AddOficinaView extends GetView<AddOficinaController> {
           );
   }
 
-  Widget inputBox(String text, 
-  TextEditingController controller,
-  TextInputType type, 
-  String? Function(String?) validation,
-  String hint, 
-  {TextInputFormatter? formato}) {
+  Widget inputBox(String text, TextEditingController controller,
+      TextInputType type, String? Function(String?) validation, {TextInputFormatter? formato}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -207,7 +198,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
               <TextInputFormatter>[],
               
               decoration: InputDecoration(
-                hintText: hint,
+                hintText: controller.text,
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 errorStyle:
@@ -248,11 +239,9 @@ class AddOficinaView extends GetView<AddOficinaController> {
             ),
             Obx(() => TextFormField(
                   controller: controllerText,
-                  //keyboardType: type,
                   decoration: InputDecoration(
                     hintText:
                         "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
-                    hintStyle: TextStyle(color: const Color.fromARGB(255, 88, 88, 88)),
                     border: InputBorder.none,
                     errorStyle: TextStyle(
                         fontSize: 14.sp, overflow: TextOverflow.ellipsis),
@@ -260,51 +249,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
                   onTap: () {
                     controller.selectedDate(context);
                   },
-                  //validator: (value) => validation(value),
-                )),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget inputBoxMap(
-      String text, BuildContext context, TextEditingController controllerText) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
-        ),
-      ),
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  height: 0.8.h),
-            ),
-            Obx(() => TextFormField(
-                  controller: controllerText,
-                  //keyboardType: type,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    errorStyle: TextStyle(
-                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                  ),
-                  onTap: () {
-                    //controller.locationCEP(controllerText);
-                  },
-                  //validator: (value) => validation(value),
                 )),
           ],
         ),

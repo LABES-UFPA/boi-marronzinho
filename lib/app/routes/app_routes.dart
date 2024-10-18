@@ -1,3 +1,4 @@
+import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_module.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/admin_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_module.dart';
@@ -43,5 +44,6 @@ class AppPages {
     AddOficinaModule.page,
     ScannerModule.page,
     MeusDadosModule.page,
+    EditorOficinaModule.page
   ];
 }
