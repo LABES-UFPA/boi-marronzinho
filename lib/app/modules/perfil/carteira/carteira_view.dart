@@ -138,6 +138,7 @@ class CarteiraView extends GetView<CarteiraController> {
                   color: Color(0xFF908F8F),
                 ),
                 overflow: TextOverflow.fade,
+                softWrap: true,
               )
             ],
           )

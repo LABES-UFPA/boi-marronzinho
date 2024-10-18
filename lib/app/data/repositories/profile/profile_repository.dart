@@ -44,24 +44,24 @@ final class ProfileRepository extends RequestRepository implements IProfileRepos
   }
 
   @override
-  Future<ValidResponse<BoicoinsTransacoes>> getExtrato({required String id}) async {
+  Future<ValidResponse<List<BoicoinsTransacoes>>> getExtrato({required String id}) async {
     final url = apiHelpers.buildUrl(url: extratoUrl + id, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
-      final cachedInfo = await _cache.readDataFromCache();
-      if (cachedInfo != null) {
-        return (valid: true, reason: null, data: BoicoinsTransacoes.fromMap(cachedInfo));
-      }
-
       final response = await client.get(url);
 
-      final invalidResponse = isValidResponse<BoicoinsTransacoes>(response);
+      final invalidResponse = isValidResponse<List<BoicoinsTransacoes>>(response);
       if (!invalidResponse.valid) {
         return invalidResponse;
       }
 
       await _cache.cacheRequest(response.data);
-      return (valid: true, reason: null, data: BoicoinsTransacoes.fromMap(response.data));
+
+      final transactions = List.from(response.data)
+          .map((item) => BoicoinsTransacoes.fromMap(item))
+          .toList();
+
+      return (valid: true, reason: null, data: transactions);
     } catch (_) {
       return (valid: false, reason: 'Erro interno durante a requisição', data: null);
     }
