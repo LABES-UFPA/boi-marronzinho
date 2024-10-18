@@ -1,12 +1,14 @@
 import 'dart:io';
+
 import 'package:boi_marronzinho/app/data/providers/bm_api_client/bm_api_client.interface.dart';
 import 'package:boi_marronzinho/app/data/util/api/api_exception_handler.dart';
 import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
+import 'package:get/get_connect/http/src/multipart/multipart_file.dart'
+    as get_multipart;
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:get/get.dart' hide Response;
-
 
 typedef Header = Map<String, dynamic>;
 typedef Request = Future<Response> Function();
@@ -36,8 +38,10 @@ class BmApiClient extends GetxService implements IBmApiClient {
       ..interceptors.add(_apiHelpers.getInterceptor());
 
     if (!_helpers.isLocalMode()) {
-      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
-          () => HttpClient()..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () =>
+          HttpClient()
+            ..badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
     }
   }
 
@@ -63,7 +67,8 @@ class BmApiClient extends GetxService implements IBmApiClient {
   // }
 
   @override
-  Future<Response> post(String url, dynamic body, {Map<String, dynamic> headers = const {}}) {
+  Future<Response> post(String url, dynamic body,
+      {Map<String, dynamic> headers = const {}}) {
     final options = _apiHelpers.generateOptions();
     options.headers?.addAll(headers);
 
@@ -72,11 +77,13 @@ class BmApiClient extends GetxService implements IBmApiClient {
   }
 
   @override
-  Future<Response> postParams(String url, Map<String, dynamic> queryParams, {Map<String, dynamic> headers = const {}}) {
+  Future<Response> postParams(String url, Map<String, dynamic> queryParams,
+      {Map<String, dynamic> headers = const {}}) {
     final options = _apiHelpers.generateOptions();
     options.headers?.addAll(headers);
 
-    final response = _dio.post(url, options: options, queryParameters: queryParams);
+    final response =
+        _dio.post(url, options: options, queryParameters: queryParams);
     return response;
   }
 
@@ -110,5 +117,15 @@ class BmApiClient extends GetxService implements IBmApiClient {
         data: ApiExceptionHandler.fromDioError(err).message,
       );
     }
+  }
+
+  @override
+  Future<Response> delete(String url, dynamic body,
+      {Map<String, dynamic> headers = const {}}) {
+    final options = _apiHelpers.generateOptions();
+    options.headers?.addAll(headers);
+
+    final response = _dio.delete(url, data: body, options: options);
+    return response;
   }
 }

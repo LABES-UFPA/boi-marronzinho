@@ -1,22 +1,30 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 abstract interface class IBmApiClient {
   Future<Response> get(
-      String url, {
-        Map<String, dynamic> headers = const {},
-      });
+    String url, {
+    Map<String, dynamic> headers = const {},
+  });
 
   Future<Response> post(
-      String url,
-      String body, {
-        Map<String, dynamic> headers = const {},
-      });
+    String url,
+    String body, {
+    Map<String, dynamic> headers = const {},
+  });
 
   Future<Response> put(
-      String url,
-      String body, {
-        Map<String, dynamic> headers = const {},
-      });
+    String url,
+    String body, {
+    Map<String, dynamic> headers = const {},
+  });
+  Future<Response> delete(
+    String url,
+    String body, {
+    Map<String, dynamic> headers = const {},
+  });
 
-  Future<Response> postParams(String url, Map<String, dynamic> queryParams, {Map<String, dynamic> headers});
+  Future<Response> postParams(String url, Map<String, dynamic> queryParams,
+      {Map<String, dynamic> headers});
 }

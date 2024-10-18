@@ -8,6 +8,8 @@ class PerfilView extends GetView<PerfilController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.checkUserType();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF5C0B32),
@@ -59,15 +61,6 @@ class PerfilView extends GetView<PerfilController> {
                     ),
                   ),
                 ),
-                Positioned(
-                  right: 10.w,
-                  top: 16.h,
-                  child: Icon(
-                    Icons.notifications,
-                    color: Color(0xFFFFCC4D),
-                    size: 40.sp,
-                  ),
-                ),
               ],
             ),
             // Itens da lista
@@ -83,10 +76,25 @@ class PerfilView extends GetView<PerfilController> {
                       Color(0xFFBA400A), Color(0xFFB12623), () {
                     controller.onCarteiraPressed();
                   }),
-                  buildMenuItem('Vouchers', Icons.confirmation_num,
-                      Color(0xFFB12623), Color(0xFF5C0B32), () {
-                    controller.onVouchersPressed();
+                  Obx(() {
+                    Color voucher = controller.userCheck.value ?
+                   Color(0XFF660D0D) : Color(0xFF5C0B32);
+                    return buildMenuItem('Vouchers', Icons.confirmation_num,
+                        Color(0xFFB12623), voucher, () {
+                      controller.onVouchersPressed();
+                    });
                   }),
+                  Obx(() {
+                    return controller.userCheck.value == true
+                        ? buildMenuItem(
+                            'Administrador',
+                            Icons.manage_accounts_outlined,
+                            Color(0XFF660D0D),
+                            Color(0xFF5C0B32), () {
+                            controller.onAdminPressed();
+                          })
+                        : SizedBox.shrink();
+                  })
                 ],
               ),
             ),
@@ -116,7 +124,7 @@ class PerfilView extends GetView<PerfilController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 40.w),
+                SizedBox(width: 20.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 Text(

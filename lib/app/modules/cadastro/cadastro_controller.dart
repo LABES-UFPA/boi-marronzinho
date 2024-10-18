@@ -11,6 +11,7 @@ class CadastroController extends BaseController {
   final TextEditingController sobrenomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpasswordController = TextEditingController();
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   RxString email = ''.obs;
   RxString password = ''.obs;
@@ -73,7 +74,7 @@ class CadastroController extends BaseController {
     }
   }
 
-  void onCadastroPressed() {
+  void onLoginPressed() {
     Get.toNamed(LoginModule.path);
   }
 }
