@@ -4,6 +4,7 @@ import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -28,6 +29,7 @@ class AddOficinaController extends BaseController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    //getCoordinatesFromAddress('Alameda Santa Fé Quadra 159, Número 14');
   }
   
   String? validateText(String? value) {
@@ -94,6 +96,20 @@ class AddOficinaController extends BaseController {
       } finally {
         setLoading(false);
       }
+    }
+  }
+  Future<String> getCoordinatesFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        Location location = locations.first;
+        print(location);
+        return 'Latitude: ${location.latitude}, Longitude: ${location.longitude}';
+      } else {
+        return 'Nenhum resultado encontrado para o endereço fornecido.';
+      }
+    } catch (e) {
+      return 'Erro ao buscar coordenadas: $e';
     }
   }
 
