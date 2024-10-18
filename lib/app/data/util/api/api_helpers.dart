@@ -110,14 +110,14 @@ class ApiHelpers {
   // /// Takes a payload in form of a string and applies several replacements to clean up the payload
   // /// Params: [payload] - the payload to be cleaned up
   // /// Returns cleaned up payload
-  // String cleanupPayload(String payload) {
-  //   // payload.replaceMany
-  //   return payload.replaceMany([
-  //     (look: '\\', replacement: ''),
-  //     (look: '"[', replacement: '['),
-  //     (look: ']"', replacement: ']'),
-  //   ]);
-  // }
+  //String cleanupPayload(String payload) {
+    //  payload.replaceMany
+     //return payload.replaceMany([
+     //  (look: '\\', replacement: ''),
+      // (look: '"[', replacement: '['),
+     //  (look: ']"', replacement: ']'),
+    // ]);
+ //  }
 
   /// Builds up a full URL appending the [url] to the main API endpoint.
   /// Params:
