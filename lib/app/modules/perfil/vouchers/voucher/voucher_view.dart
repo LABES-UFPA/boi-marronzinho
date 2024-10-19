@@ -2,62 +2,75 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
-import 'package:boi_marronzinho/app/modules/perfil/vouchers/vouchers_controller.dart';
+import 'package:boi_marronzinho/app/modules/perfil/vouchers/voucher/voucher_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../data/models/voucher_response/voucher_response.dart';
+import '../../../../data/models/voucher_response/voucher_response.dart';
 
-class VouchersView extends GetView<VouchersController> {
-  const VouchersView({Key? key}) : super(key: key);
+class VoucherView extends GetView<VoucherController> {
+  const VoucherView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final voucher = Get.arguments as Voucher;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFB12623),
         body: Column(
           children: [
             _buildAppBar(),
-            SizedBox(height: 30.h),
             Expanded(
-              child: Obx(() {
-                if (controller.isLoading == true) {
-                  return Center(
-                      child: CircularProgressIndicator()); // Mostra um loading.
-                }
-                if (controller.vouchers.isEmpty) {
-                  return Center(
-                      child: Text(
-                    'Nenhum voucher disponível.',
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50.w),
+                  child: Center(
+                    // Centraliza todo o conteúdo da coluna
+                    child: Column(
+                      children: [
+                        Text(
+                          'QR Code de ${voucher.nomeOficina}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center, // Centraliza o texto
+                        ),
+                        SizedBox(
+                            height: 8.h), // Espaçamento entre os elementos
+                        Text(
+                          'Apresente ele na entrada da oficina',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: Colors.white70,
+                          ),
+                          textAlign: TextAlign.center, // Centraliza o texto
+                        ),
+                        SizedBox(height: 20.h), // Espaçamento antes do QR Code
+                        Center(
+                          child: Image.memory(
+                            voucher.getQRCodeImage(),
+                            height: 280.h,
+                            width: 280.w,
+                          ),
+                        ),
+                        SizedBox(
+                            height: 24.h), // Espaçamento antes da descrição
+                        Text(
+                          voucher.descricao,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center, // Centraliza o texto
+                        ),
+                      ],
                     ),
-                  ));
-                }
-
-                return ListView.builder(
-                  itemCount: controller.vouchers.length,
-                  itemBuilder: (context, index) {
-                    final voucher = controller.vouchers[index];
-                    Uint8List qrCodeImage = voucher.getQRCodeImage();
-                    return InkWell(
-                      onTap: () {   
-                        controller.onVoucherDetailPressed(voucher);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 28.w, vertical: 10.h),
-                        child: Box(voucher.nomeOficina, voucher.descricao,
-                            qrCodeImage, voucher),
-                      ),
-                    );
-                  },
-                );
-              }),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -73,7 +86,7 @@ class VouchersView extends GetView<VouchersController> {
           child: Container(
             height: 100.h,
             decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
+              color: Color(0xFFB12623),
             ),
             child: Padding(
               padding: const EdgeInsets.all(10).h,
@@ -81,37 +94,13 @@ class VouchersView extends GetView<VouchersController> {
                 children: [
                   IconButton(
                     icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
+                      'assets/images/icons/mingcute_arrow-up-fill-branco.png',
                       height: 40.h,
                       width: 40.w,
                     ),
                     onPressed: () {
                       Get.back();
                     },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10.w),
-                        Icon(
-                          Icons.confirmation_num,
-                          color: Colors.black,
-                          size: 30.sp,
-                        ),
-                        SizedBox(width: 5.w),
-                        Center(
-                          child: Text(
-                            'Vouchers',
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -122,7 +111,7 @@ class VouchersView extends GetView<VouchersController> {
     );
   }
 
-  Widget Box(String text, String descricao, Uint8List qrcode, Voucher voucher) {
+  Widget Box(String text, String descricao, Uint8List qrcode) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(

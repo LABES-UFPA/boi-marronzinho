@@ -5,7 +5,7 @@ import 'package:boi_marronzinho/app/modules/perfil/vouchers/voucher/voucher_modu
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-class VouchersController extends BaseController {
+class VoucherController extends BaseController {
   final voucherRepo = VoucherRepository();
   //RxBool get isLoading => super.isLoading;
   //var isLoading = true.obs;
@@ -29,9 +29,9 @@ class VouchersController extends BaseController {
     setLoading(false); // Finaliza o loader aqui.
     update(); // Atualiza a interface do GetX.
   }
-  
-  void onVoucherDetailPressed(Voucher voucher) {
-    Get.toNamed(VoucherModule.path, arguments: voucher);
+
+  void onCarteiraPressed() {
+    Get.toNamed(VoucherModule.path);
   }
   /////////////TESTE
   /*Future<void> getVouchersTeste() async {
