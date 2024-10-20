@@ -103,9 +103,10 @@ class CarteiraView extends GetView<CarteiraController> {
       textValue = "${item.value}";
     }
 
+    // TODO: Botar Expanded na altura do Coitainer
     return Container(
       width: 0.87.sw,
-      height: 88.h,
+      height: 99.h,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -123,24 +124,27 @@ class CarteiraView extends GetView<CarteiraController> {
             height: 50.h,
           ),
           15.horizontalSpace,
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                textValue,
-                style: labelStyle,
-                overflow: TextOverflow.fade,
-              ),
-              Text(
-                item.description,
-                style: const TextStyle(
-                  color: Color(0xFF908F8F),
-                ),
-                overflow: TextOverflow.fade,
-                softWrap: true,
+          Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    textValue,
+                    style: labelStyle,
+                    overflow: TextOverflow.fade,
+                  ),
+                  Text(
+                    item.description,
+                    style: const TextStyle(
+                      color: Color(0xFF908F8F),
+
+                    ),
+                    overflow: TextOverflow.fade,
+                    softWrap: true,
+                  )
+                ],
               )
-            ],
           )
         ],
       ),
@@ -244,26 +248,5 @@ class CoinCounter extends StatelessWidget {
         style: TextStyle(fontSize: 40.sp, color: Colors.white),
       ),
     ]);
-  }
-}
-
-class Carteira extends StatefulWidget {
-  const Carteira({super.key});
-
-  @override
-  State<Carteira> createState() => _CarteiraState();
-}
-
-class _CarteiraState extends State<Carteira> {
-  bool _isExtratoPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    if (_isExtratoPressed) {
-      return Text("Trueeee");
-    }
-    return Text("FAAALSE");
-
-    return const Placeholder();
   }
 }
