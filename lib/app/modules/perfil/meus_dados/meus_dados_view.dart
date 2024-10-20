@@ -1,4 +1,5 @@
 import 'package:boi_marronzinho/app/modules/perfil/meus_dados/meus_dados_controller.dart';
+import 'package:boi_marronzinho/app/modules/meus_dados/meus_dados_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,76 +17,101 @@ class MeusDadosView extends GetView<MeusDadosController> {
         child: Scaffold(
             backgroundColor: bgColor,
             body: Column(children: [
-              Stack(
+              _buildAppBar(),
+
+              50.verticalSpace,
+
+              Expanded(child: Obx(() {
+                if (controller.isLoading.isTrue) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return _buildMeusDados(dados: controller.dadosExemplo);
+              }))
+            ])));
+  }
+
+  Widget _buildAppBar() {
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: AppBarClipper(),
+          child: Container(
+            height: 100.h,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFFFFFF),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10).h,
+              child: Row(
                 children: [
-                  ClipPath(
-                    clipper: AppBarClipper(),
-                    child: Container(
-                      height: 100.h,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10).h,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: Image.asset(
-                                'assets/images/icons/mingcute_arrow-up-fill.png',
-                                height: 40.h,
-                                width: 40.w,
-                              ),
-                              onPressed: () {
-                                Get.back();
-                              },
-                            ),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(width: 10.w),
-                                  Icon(
-                                    Icons.account_box_rounded,
-                                    color: Colors.black,
-                                    size: 30.sp,
-                                  ),
-                                  SizedBox(width: 5.w),
-                                  Center(
-                                    child: Text(
-                                      'Meus Dados',
-                                      style: TextStyle(
-                                        fontSize: 36.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/images/icons/mingcute_arrow-up-fill.png',
+                      height: 40.h,
+                      width: 40.w,
+                    ),
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10.w),
+                        Icon(
+                          Icons.account_box_rounded,
+                          color: Colors.black,
+                          size: 30.sp,
                         ),
-                      ),
+                        SizedBox(width: 5.w),
+                        Center(
+                          child: Text(
+                            'Meus Dados',
+                            style: TextStyle(
+                              fontSize: 36.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              50.verticalSpace,
-              // Body -- Dados
-              const UserIcon("João da Silva"),
-              24.verticalSpace,
-              const UserInfoCard(
-                label: "Nome de Usuário",
-                iconImagePath: userImagePath,
-                text: "João da Silva",
-              ),
-              20.verticalSpace,
-              const UserInfoCard(
-                  label: "Email",
-                  iconImagePath: emailImagePath,
-                  text: "joaosilva123@exemplo.com")
-            ])));
+            ),
+          ),
+        ),
+      ],
+    );
   }
+
+  Widget _buildMeusDados({required MeusDados dados}) {
+    return Column(
+      children: [
+        50.verticalSpace,
+        UserIcon(dados.username),
+        15.verticalSpace,
+        UserInfoCard(
+          label: "Nome de Usuário",
+          iconImagePath: userImagePath,
+          text: dados.username,
+        ),
+        20.verticalSpace,
+        UserInfoCard(
+            label: "Email",
+            iconImagePath: emailImagePath,
+            text: dados.email
+        )
+      ]
+    );
+  }
+
+
 }
 
 class AppBarClipper extends CustomClipper<Path> {
