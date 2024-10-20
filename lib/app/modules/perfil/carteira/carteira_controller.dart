@@ -32,6 +32,8 @@ class CarteiraController extends BaseController {
       }).toList();
     }
 
+    boicoins.value = extrato.map((item) => item.value).reduce((val1, val2) => val1 + val2);
+
     setLoading(false);
     update();
   }
