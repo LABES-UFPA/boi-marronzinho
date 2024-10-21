@@ -23,9 +23,9 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await initProviders();
 
-  // TODO: Iniciar timer de expiração do Token
+  MemoryStore(StorageKeys.USER_TOKEN).remove();
 
-  // Checa se o Token expirou
+  // Checa se o Token em cache expirou
   if (MemoryStore(StorageKeys.USER_TOKEN).read<String>() != null) {
     DateTime tokenExpirationDate = DateTime.fromMillisecondsSinceEpoch(
         JWT.decode(MemoryStore(StorageKeys.USER_TOKEN).read()).payload["exp"] * 1000
@@ -35,6 +35,10 @@ void main() async {
       MemoryStore(StorageKeys.USER_TOKEN).remove();
     }
   }
+
+  // Inicia o timer de expiração do Token
+  final logoutTimer = LogoutTimerController();
+  logoutTimer.initLogoutTimer();
 
   final initialPage = getInitPage();
   FlutterNativeSplash.remove();
