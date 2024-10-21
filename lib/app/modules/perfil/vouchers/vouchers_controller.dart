@@ -1,5 +1,7 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/models/voucher_response/voucher_response.dart';
+import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/voucher/voucher_repository.dart';
 import 'package:boi_marronzinho/app/modules/perfil/vouchers/voucher/voucher_module.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ class VouchersController extends BaseController {
   final voucherRepo = VoucherRepository();
   //RxBool get isLoading => super.isLoading;
   //var isLoading = true.obs;
+  final credentialsRepo = UserCredentialsRepository();
   List<Voucher> vouchers = <Voucher>[];
 
   @override
@@ -20,7 +23,7 @@ class VouchersController extends BaseController {
   Future<void> getVouchers() async {
     setLoading(true); 
 
-    final response = await voucherRepo.fetchVouchers();
+    final response = await voucherRepo.fetchVouchers(id: credentialsRepo.getCredentials().userId);
     final isValid = isValidResponse(response: response, title: 'Ovo Frito');
     if (isValid && response.data != null) {
       vouchers = response.data;

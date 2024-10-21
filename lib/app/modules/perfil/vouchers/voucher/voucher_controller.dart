@@ -14,21 +14,10 @@ class VoucherController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    getVouchers();
+    //getVouchers();
   }
 
-  Future<void> getVouchers() async {
-    setLoading(true); // Você pode ter uma função para mostrar um loader.
-
-    final response = await voucherRepo.fetchVouchers();
-    final isValid = isValidResponse(response: response, title: 'Ovo Frito');
-    if (isValid && response.data != null) {
-      vouchers = response.data;
-    }
-
-    setLoading(false); // Finaliza o loader aqui.
-    update(); // Atualiza a interface do GetX.
-  }
+  
 
   void onCarteiraPressed() {
     Get.toNamed(VoucherModule.path);

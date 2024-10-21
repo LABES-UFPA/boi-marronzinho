@@ -9,6 +9,7 @@ import 'package:boi_marronzinho/app/data/storage/cached_request.dart';
 
 final class VoucherRepository extends RequestRepository implements IVoucherRepository {
   static const String vouchersUrl = '/oficinas/meus-tickets/';
+  static const String validaVouchersUrl = '/oficinas/scanner-voucher/';
   
   late final CachedRequest _cache;
 
@@ -21,10 +22,6 @@ final class VoucherRepository extends RequestRepository implements IVoucherRepos
     final url = apiHelpers.buildUrl(url: vouchersUrl + id, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
-      //final cachedVouchers = await _cache.readDataFromCache<List>();
-      //if (cachedVouchers != null) {
-       // return (valid: true, reason: null, data: cachedVouchers.map((x) => Voucher.fromMap(x)).toList());
-      //}
 
       final response = await client.get(url);
 
@@ -38,6 +35,27 @@ final class VoucherRepository extends RequestRepository implements IVoucherRepos
       final vouchers = List.from(response.data).map((item) => Voucher.fromMap(item)).toList();
 
       return (valid: true, reason: null, data: vouchers);
+    } catch (e, stackTrace) {
+      log('Error fetching vouchers', error: e, stackTrace: stackTrace);
+      return (valid: false, reason: 'Erro interno durante a requisição', data: null);
+    }
+  }
+
+  @override
+  Future<dynamic> validaVouchers({required String codigoQRCode}) async {
+    final url = apiHelpers.buildUrl(url: vouchersUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final Map<String,dynamic> bodyRequest = {'idVoucher' : codigoQRCode};
+
+    try {
+      final response = await client.post(url, bodyRequest);
+
+      final invalidResponse = isValidResponse<List<Voucher>>(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      await _cache.cacheRequest(response.data);
+      return (valid: true, reason: null, data: response.data);
     } catch (e, stackTrace) {
       log('Error fetching vouchers', error: e, stackTrace: stackTrace);
       return (valid: false, reason: 'Erro interno durante a requisição', data: null);
