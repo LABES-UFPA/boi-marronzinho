@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:boi_marronzinho/app/data/controllers/logout_timer_controller.dart';
 import 'package:boi_marronzinho/app/data/enumerators/storage_keys.enum.dart';
 import 'package:boi_marronzinho/app/data/providers/bm_api_client/bm_api_client.provider.dart';
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
@@ -51,7 +52,6 @@ void main() async {
       builder: (_, __) => MainGetXApp(initialPage),
     ),
   );
-
 }
 
 // TODO: Descobrir onde tá salvando e deletar no logout
