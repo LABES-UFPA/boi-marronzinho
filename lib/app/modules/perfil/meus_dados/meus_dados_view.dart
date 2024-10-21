@@ -107,7 +107,7 @@ class MeusDadosView extends GetView<MeusDadosController> {
       }),
       20.verticalSpace,
       _buildButton("Deletar Conta", Colors.redAccent, () {
-        print("Deletei a conta");
+        controller.onDeletarContaPressed();
       }),
     ]);
   }

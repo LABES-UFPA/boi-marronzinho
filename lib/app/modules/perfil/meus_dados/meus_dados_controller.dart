@@ -33,4 +33,9 @@ class MeusDadosController extends BaseController {
     cleanCacheEndStore();
     Get.toNamed(SplashModule.path);
   }
+
+  void onDeletarContaPressed() {
+    // TODO: chamar endpoint
+    throw UnimplementedError();
+  }
 }
