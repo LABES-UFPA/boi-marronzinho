@@ -68,4 +68,21 @@ final class ProfileRepository extends RequestRepository implements IProfileRepos
     }
   }
 
+  @override
+  Future deletarConta({required String id}) async {
+    final url = apiHelpers.buildUrl(url: profileUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final bodyRequest = { 'id': id };
+    try {
+      final response = await client.delete(url, bodyRequest);
+      final invalidResponse = isValidResponse(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+      return (valid: true, reason: null, data: null);
+    }
+    catch (error, trace) {
+      return errorResponse(error, trace: trace);
+    }
+  }
+
 }
