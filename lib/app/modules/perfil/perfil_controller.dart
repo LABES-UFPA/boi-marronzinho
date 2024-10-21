@@ -82,7 +82,6 @@ class PerfilController extends BaseController {
       }
     } on JWTException catch (e) {
       print('Erro ao decodificar o token: $e');
-      
     }
   }
 }

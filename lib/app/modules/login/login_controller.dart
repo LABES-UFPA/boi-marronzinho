@@ -20,7 +20,6 @@ class LoginController extends BaseController {
   }
 
   String? validateEmail(String? value) {
-    
     if (!GetUtils.isEmail(value!)) {
       return 'Formato inválido de email';
     }

@@ -15,12 +15,13 @@ class CarteiraController extends BaseController {
   void onInit() {
     super.onInit();
     setLoading(true);
-    getExtrato();
+    getDados();
     setLoading(false);
   }
 
-  void getExtrato() async {
-    final response = await ProfileRepository().getExtrato(id: credentialsRepo.getCredentials().userId);
+  void getDados() async {
+    final userId = credentialsRepo.getCredentials().userId;
+    final response = await ProfileRepository().getExtrato(id: userId);
 
     if (response.valid) {
       extrato = response.data!.map((t) {
@@ -29,6 +30,11 @@ class CarteiraController extends BaseController {
     }
 
     boicoins.value = extrato.map((item) => item.value).reduce((val1, val2) => val1 + val2);
+
+    final profileInfoResponse = await ProfileRepository().getProfileInfo(id: userId);
+    if (profileInfoResponse.valid) {
+      boicoins.value = profileInfoResponse.data!.saldoBoicoins.toInt();
+    }
 
     update();
   }

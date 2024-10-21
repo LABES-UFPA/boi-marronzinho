@@ -18,9 +18,7 @@ class MeusDadosView extends GetView<MeusDadosController> {
             backgroundColor: bgColor,
             body: Column(children: [
               _buildAppBar(),
-
               50.verticalSpace,
-
               Expanded(child: Obx(() {
                 if (controller.isLoading.isTrue) {
                   return const Center(
@@ -91,27 +89,54 @@ class MeusDadosView extends GetView<MeusDadosController> {
   }
 
   Widget _buildMeusDados({required MeusDados dados}) {
-    return Column(
-      children: [
-        50.verticalSpace,
-        UserIcon(dados.username),
-        15.verticalSpace,
-        UserInfoCard(
-          label: "Nome de Usuário",
-          iconImagePath: userImagePath,
-          text: dados.username,
-        ),
-        20.verticalSpace,
-        UserInfoCard(
-            label: "Email",
-            iconImagePath: emailImagePath,
-            text: dados.email
-        )
-      ]
-    );
+    return Column(children: [
+      50.verticalSpace,
+      UserIcon(dados.username),
+      15.verticalSpace,
+      UserInfoCard(
+        label: "Nome de Usuário",
+        iconImagePath: userImagePath,
+        text: dados.username,
+      ),
+      20.verticalSpace,
+      UserInfoCard(
+          label: "Email", iconImagePath: emailImagePath, text: dados.email),
+      20.verticalSpace,
+      _buildButton("Logout", Colors.deepOrangeAccent, () {
+        controller.onLogoutPressed();
+      }),
+      20.verticalSpace,
+      _buildButton("Deletar Conta", Colors.redAccent, () {
+        print("Deletei a conta");
+      }),
+    ]);
   }
 
-
+  // Para logout e deletar conta
+  Widget _buildButton(String buttonText, Color buttonColor, Function callback,) {
+    return InkWell(
+      onTap: () => callback(),
+      child: Container(
+        width: 0.87.sw,
+        height: 50.h,
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+            color: buttonColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(20).r,
+                bottomLeft: const Radius.circular(20).r,
+                bottomRight: const Radius.circular(20).r)),
+        child: Text(
+          buttonText,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class AppBarClipper extends CustomClipper<Path> {

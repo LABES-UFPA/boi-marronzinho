@@ -4,6 +4,8 @@ import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
 import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
 import 'package:boi_marronzinho/app/modules/meus_dados/meus_dados_model.dart';
+import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
+import 'package:get/get.dart';
 
 class MeusDadosController extends BaseController {
   late MeusDados dadosExemplo;
@@ -26,5 +28,9 @@ class MeusDadosController extends BaseController {
     setLoading(false);
     update();
   }
-  
+
+  void onLogoutPressed() {
+    cleanCacheEndStore();
+    Get.toNamed(SplashModule.path);
+  }
 }
