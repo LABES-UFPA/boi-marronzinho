@@ -45,7 +45,7 @@ class VouchersView extends GetView<VouchersController> {
                     final voucher = controller.vouchers[index];
                     Uint8List qrCodeImage = voucher.getQRCodeImage();
                     return InkWell(
-                      onTap: () {   
+                      onTap: () {
                         controller.onVoucherDetailPressed(voucher);
                       },
                       child: Padding(

@@ -39,7 +39,7 @@ class VoucherView extends GetView<VoucherController> {
                           textAlign: TextAlign.center, // Centraliza o texto
                         ),
                         SizedBox(
-                            height: 8.h), // Espaçamento entre os elementos
+                            height: 20.h), // Espaçamento entre os elementos
                         Text(
                           'Apresente ele na entrada da oficina',
                           style: TextStyle(
@@ -48,7 +48,7 @@ class VoucherView extends GetView<VoucherController> {
                           ),
                           textAlign: TextAlign.center, // Centraliza o texto
                         ),
-                        SizedBox(height: 20.h), // Espaçamento antes do QR Code
+                        SizedBox(height: 6.h), // Espaçamento antes do QR Code
                         Center(
                           child: Image.memory(
                             voucher.getQRCodeImage(),
@@ -57,7 +57,7 @@ class VoucherView extends GetView<VoucherController> {
                           ),
                         ),
                         SizedBox(
-                            height: 24.h), // Espaçamento antes da descrição
+                            height: 30.h), // Espaçamento antes da descrição
                         Text(
                           voucher.descricao,
                           style: TextStyle(

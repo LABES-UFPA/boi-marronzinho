@@ -1,3 +1,4 @@
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/enumerators/storage_keys.enum.dart';
 import 'package:boi_marronzinho/app/data/models/voucher_response/voucher_response.dart';
 import 'package:boi_marronzinho/app/data/repositories/voucher/voucher_repository.interface.dart';
@@ -7,7 +8,7 @@ import 'dart:developer';
 import 'package:boi_marronzinho/app/data/storage/cached_request.dart';
 
 final class VoucherRepository extends RequestRepository implements IVoucherRepository {
-  static const String vouchersUrl = '/oficinas/meus-tickets';
+  static const String vouchersUrl = '/oficinas/meus-tickets/';
   
   late final CachedRequest _cache;
 
@@ -16,8 +17,8 @@ final class VoucherRepository extends RequestRepository implements IVoucherRepos
   }
 
   @override
-  Future<dynamic> fetchVouchers() async {
-    final url = apiHelpers.buildUrl(url: vouchersUrl);
+  Future<dynamic> fetchVouchers({required String id}) async {
+    final url = apiHelpers.buildUrl(url: vouchersUrl + id, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
       //final cachedVouchers = await _cache.readDataFromCache<List>();

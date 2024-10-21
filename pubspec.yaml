@@ -23,8 +23,9 @@ dependencies:
   flutter_native_splash: ^2.3.9
   image_picker: ^1.1.2
   qr_code_scanner: ^1.0.1
-  geocoding: ^3.0.0
   dart_jsonwebtoken: ^2.14.1
+  search_cep: ^4.0.2
+  url_launcher: ^6.3.1
   
   
 

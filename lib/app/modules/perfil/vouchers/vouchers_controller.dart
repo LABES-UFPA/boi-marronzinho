@@ -18,7 +18,7 @@ class VouchersController extends BaseController {
   }
 
   Future<void> getVouchers() async {
-    setLoading(true); // Você pode ter uma função para mostrar um loader.
+    setLoading(true); 
 
     final response = await voucherRepo.fetchVouchers();
     final isValid = isValidResponse(response: response, title: 'Ovo Frito');
@@ -26,8 +26,8 @@ class VouchersController extends BaseController {
       vouchers = response.data;
     }
 
-    setLoading(false); // Finaliza o loader aqui.
-    update(); // Atualiza a interface do GetX.
+    setLoading(false); 
+    update(); 
   }
   
   void onVoucherDetailPressed(Voucher voucher) {

@@ -50,37 +50,27 @@ final class OficinasRepository extends RequestRepository
   }
 
   @override
-  Future cadastrarOficina(
+  Future <dynamic> cadastrarOficina(
       {required String nome,
       required String descricao,
-      required double precoBoicoin,
+      required double precoBoicoins,
       required double precoReal,
       required String dataOficina,
       required int limiteOficina,
-      required File imagem}) async {
-    final url = apiHelpers.buildUrl(url: criarOficinasUrl);
+      required File imagem,
+      required String urlEndereco
+      }) async {
+      final url = apiHelpers.buildUrl(url: criarOficinasUrl);
 
-    /*final Map<String, dynamic> bodyRegister = {
-      'nome': 'LABES',
-      'descricao': 'ENG SOFTWARE.',
-      'precoBoicoins': 150,
-      'precoReal': 200,
-      'dataEvento': '2024-12-15T10:00:00Z',
-      'limiteParticipantes': 30,
-      'participantesAtual': 0,
-      'pontoMapaId': '123e4567-e89b-12d3-a456-426614174001',
-    };*/
     final formData = FormData.fromMap({
-      'nome': 'LABES',
-      'descricao': 'ENG SOFTWARE.',
-      'precoBoicoins': 150,
-      'precoReal': 200,
-      'dataEvento': '2024-12-15T10:00:00Z',
-      'limiteParticipantes': 30,
-      'participantesAtual': 0,
-      'pontoMapaId': '123e4567-e89b-12d3-a456-426614174001',
-      'imagem': await MultipartFile.fromFile(imagem.path,
-          filename: imagem.path.split('/').last),
+      'nome': nome,
+      'descricao': descricao,
+      'precoBoicoins': precoBoicoins,
+      'precoReal': precoReal,
+      'dataEvento': dataOficina,
+      'limiteParticipantes': limiteOficina,
+      'linkEndereco': urlEndereco,
+      'file': await MultipartFile.fromFile(imagem.path, filename: imagem.path.split('/').last),
     });
 
     try {
@@ -94,7 +84,8 @@ final class OficinasRepository extends RequestRepository
     } catch (error, trace) {
       return errorResponse(error, trace: trace);
     }
-  }
+}
+
 
   @override
   Future deletarOficinas({required String id}) async {
