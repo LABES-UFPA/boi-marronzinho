@@ -8,13 +8,11 @@ class CarteiraController extends BaseController {
   List<ItemExtrato> extrato = <ItemExtrato>[];
   RxBool showExtrato = false.obs;
   RxInt boicoins = 0.obs;
-
   final credentialsRepo = UserCredentialsRepository();
 
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     setLoading(true);
     getExtrato();
@@ -22,8 +20,6 @@ class CarteiraController extends BaseController {
   }
 
   void getExtrato() async {
-    setLoading(true);
-
     final response = await ProfileRepository().getExtrato(id: credentialsRepo.getCredentials().userId);
 
     if (response.valid) {
@@ -34,13 +30,8 @@ class CarteiraController extends BaseController {
 
     boicoins.value = extrato.map((item) => item.value).reduce((val1, val2) => val1 + val2);
 
-    setLoading(false);
     update();
   }
-
-  void getBoicoins() {
-  }
-
 
   void onExtratoPressed() {
     showExtrato.toggle();
