@@ -1,6 +1,7 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/repositories/login/login_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/voucher/voucher_repository.dart';
+import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:flutter/material.dart';
@@ -39,20 +40,29 @@ class LoginController extends BaseController {
   }
 
   Future<void> onLogin() async {
-    // if (loginFormKey.currentState?.validate() ?? false) {
-      print('validate');
+    if (loginFormKey.currentState?.validate() ?? false) {
       setLoading(true);
+      try {
+        final loginRepo = await LoginRepository().login(
+          email: "vlad@example.com",
+          password: "senhaSegura123",
+        );
 
-      final loginRepo = await LoginRepository().login(
-        email: "john.doe@example.com",
-        password: "123123123",
-      );
+        if (!loginRepo.valid) {
+          setLoading(false);
+          return Toast.error(
+              'Não foi possível realizar o login',
+              loginRepo.reason!,
+              delayed: true
+          );
+        }
+        Get.offAllNamed(HomeModule.path);
+      }
+      finally {
+        setLoading(false);
+      }
+    }
 
-      print(loginRepo);
-      Get.offAllNamed(HomeModule.path);
-      setLoading(false);
-    // }
-    
   }
 
   void onCadastroPressed() {
