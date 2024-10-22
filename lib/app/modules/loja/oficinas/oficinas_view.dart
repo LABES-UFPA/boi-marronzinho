@@ -14,20 +14,25 @@ class OficinasView extends GetView<OficinasController> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: bgColor,
-        body: Column(
-          children: [
-            _buildAppBar(),
-            // Oficinas
-            Expanded(
-              child: ListView.builder(
-                itemCount: controller.oficinas.length,
-                itemBuilder: (context, index) {
-                  return _buildOficina(controller.oficinas[index]);
-                },
+        body: Obx(() {
+          if (controller.isLoading.isTrue) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Column(
+            children: [
+              _buildAppBar(),
+              // Oficinas
+              Expanded(
+                child: ListView.builder(
+                  itemCount: controller.oficinas.length,
+                  itemBuilder: (context, index) {
+                    return _buildOficina(controller.oficinas[index]);
+                  }
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          );
+        })
       ),
     );
   }

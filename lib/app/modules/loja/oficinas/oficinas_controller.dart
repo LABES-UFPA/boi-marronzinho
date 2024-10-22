@@ -9,20 +9,19 @@ class OficinasController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    setLoading(true);
     getOficinas();
-    setLoading(false);
   }
 
   // Mesmo da Scarlet
   Future<void> getOficinas() async {
+    setLoading(true);
 
     final response = await OficinasRepository().fetchOficinas();
     final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar lista de oficinas');
     if (isValid && response.data != null) {
       oficinas = response.data;
     }
-
+    setLoading(false);
     update();
   }
 
