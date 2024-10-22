@@ -80,8 +80,8 @@ class OficinasAdmController extends BaseController {
         final registerOficina = await OficinasRepository().deletarOficinas(
           id: oficina.id
         );
-
-        Get.offAllNamed(OficinasAdminModule.path);
+      update();
+      //Get.offAllNamed(ContasModule.path);
       } finally {
         setLoading(false);
       }

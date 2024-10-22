@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
+import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_controller.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +9,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class EditorOficinaView extends GetView<EditorOficinaController> {
-  const EditorOficinaView({Key? key}) : super(key: key);
+class EditorContaView extends GetView<EditorContaController> {
+  const EditorContaView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ImagePicker _picker = ImagePicker();
     File? _image;
-    final oficina = Get.arguments as Oficina;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -31,65 +29,27 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: [
-                            Obx(() {
-                              return imageOficina();
-                            }),
-                            Padding(
-                              padding: EdgeInsets.all(6.0.r),
-                              child: ButtonBox(
-                                text: 'Alterar Imagem',
-                                function: controller.pickImage,
-                              ),
-                            ),
-                          ],
-                        ),
                         Form(
-                            key: controller.editOficinaFormKey,
+                            key: controller.editContaFormKey,
                             child: Column(
                               children: [
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Nome',
-                                    controller.nomeController,
+                                    controller.firstNameController,
                                     TextInputType.text,
                                     controller.validateText),
                                 SizedBox(height: 22.h),
                                 inputBox(
-                                    'Descrição',
-                                    controller.descricaoController,
+                                    'Sobrenome',
+                                    controller.lastNameController,
                                     TextInputType.text,
                                     controller.validateText),
                                 SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Boicoins',
-                                    controller.precoBoicoinsController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Reais',
-                                    controller.precoReaisController,
-                                    TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    controller.validateNumber,
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBoxDate('Data da Oficina', context,
-                                    controller.dateController),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Limite de Participantes',
-                                    controller.participantesController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
+                                dropBox(
+                                    'Permissão de usuário',
+                                    controller.tipoUsuarioController,
+                                    controller.selectedOption),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -97,7 +57,7 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
                             text: 'Salvar Alterações',
-                            function: controller.onEditOficina,
+                            function: controller.onEditConta,
                           ),
                         ),
                       ],
@@ -143,57 +103,6 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
         ),
       ],
     );
-  }
-
-  Widget imageOficina() {
-    // Verifica se a imagem local (File) é nula
-    if (controller.image == null) {
-      // Se a imagem local for nula, verifica se a imagem Base64 está disponível
-      if (controller.oficina.imagem.isEmpty) {
-        // Se a imagem Base64 também estiver vazia, exibe o ícone
-        return Container(
-          width: 350.w,
-          height: 160.h,
-          child: Icon(
-            Icons.image,
-            size: 50,
-            color: Colors.white,
-          ),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 206, 206, 206),
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-        );
-      } else {
-        // Se a imagem Base64 estiver disponível, a exibe
-        return Container(
-          width: 350.w,
-          height: 200.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(16.0),
-            image: DecorationImage(
-              image: MemoryImage(base64Decode(controller.oficina.imagem)),
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      }
-    } else {
-      // Se a imagem local não for nula, a exibe
-      return Container(
-        width: 350.w,
-        height: 200.h,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(16.0),
-          image: DecorationImage(
-            image: FileImage(controller.image!),
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-    }
   }
 
   Widget inputBox(String text, TextEditingController controller,
@@ -243,17 +152,22 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
     );
   }
 
-  Widget inputBoxDate(
-      String text, BuildContext context, TextEditingController controllerText) {
+  Widget dropBox(
+      String text, TextEditingController controller, RxString selectedOption) {
+    final List<DropdownMenuItem<String>> items = [
+      DropdownMenuItem(value: 'Usuario', child: Text('Usuário')),
+      DropdownMenuItem(value: 'Administrador', child: Text('Administrador')),
+    ];
+
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
         ),
       ),
       child: Center(
@@ -263,29 +177,37 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 18.sp,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  height: 0.8.h),
+                  color: Colors.black),
             ),
-            Obx(() => TextFormField(
-                  controller: controllerText,
-                  decoration: InputDecoration(
-                    hintText:
-                        "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
-                    border: InputBorder.none,
-                    errorStyle: TextStyle(
-                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                  ),
-                  onTap: () {
-                    controller.selectedDate(context);
-                  },
-                )),
+            Obx(() {
+              return DropdownButtonFormField<String>(
+                value: selectedOption.value.isNotEmpty
+                    ? selectedOption.value
+                    : null, // Se o valor não estiver vazio, exibe o valor
+                items: items,
+                onChanged: (value) {
+                  selectedOption.value =
+                      value ?? ''; // Atualiza a variável observável
+                  controller.text =
+                      value ?? ''; // Atualiza o controller, se necessário
+                },
+                decoration: InputDecoration(
+                  hintText: 'Selecione permissão',
+                  border: InputBorder.none,
+                  errorStyle: TextStyle(fontSize: 14),
+                ),
+              );
+            }),
           ],
         ),
       ),
     );
   }
+
+
+  
 }
 
 class ButtonBox extends StatelessWidget {

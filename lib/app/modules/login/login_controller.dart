@@ -1,6 +1,5 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/repositories/login/login_repository.dart';
-import 'package:boi_marronzinho/app/data/repositories/voucher/voucher_repository.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';

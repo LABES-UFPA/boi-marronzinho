@@ -1,3 +1,5 @@
+import 'package:boi_marronzinho/app/modules/administrador/contas/contas_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_module.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/admin_module.dart';
@@ -14,6 +16,7 @@ import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/doacoes/pix/pix_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobrenos_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/eventos/eventos_module.dart';
+import 'package:boi_marronzinho/app/modules/perfil/vouchers/voucher/voucher_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/troca/troca_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/vouchers/vouchers_module.dart';
@@ -44,6 +47,9 @@ class AppPages {
     AddOficinaModule.page,
     ScannerModule.page,
     MeusDadosModule.page,
-    EditorOficinaModule.page
+    EditorOficinaModule.page,
+    VoucherModule.page,
+    ContasModule.page,
+    EditorContaModule.page
   ];
 }

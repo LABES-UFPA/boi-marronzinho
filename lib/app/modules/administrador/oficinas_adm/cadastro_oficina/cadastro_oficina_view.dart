@@ -4,6 +4,7 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
@@ -49,33 +50,38 @@ class AddOficinaView extends GetView<AddOficinaController> {
                               children: [
                                 SizedBox(height: 22.h),
                                 inputBox(
-                                    'Nome',
-                                    controller.nomeController,
-                                    TextInputType.text,
-                                    controller.validateText,
-                                    'Ex: Oficina de Pintura',),
+                                  'Nome',
+                                  controller.nomeController,
+                                  TextInputType.text,
+                                  controller.validateText,
+                                  'Ex: Oficina de Pintura',
+                                ),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Descrição',
                                     controller.descricaoController,
-                                    TextInputType.text, controller.validateText,
+                                    TextInputType.text,
+                                    controller.validateText,
                                     'Ex: Aprenda técnicas de pintura...'),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Preço em Boicoins',
                                     controller.precoBoicoinsController,
-                                    TextInputType.number, controller.validateNumber,
+                                    TextInputType.number,
+                                    controller.validateNumber,
                                     'Ex: 50',
-                                    formato: FilteringTextInputFormatter.digitsOnly),
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Preço em Reais',
                                     controller.precoReaisController,
                                     TextInputType.numberWithOptions(
                                         decimal: true),
-                                        controller.validateNumber,
-                                        'Ex: 25.40',
-                                        formato: FilteringTextInputFormatter.digitsOnly),
+                                    controller.validateNumber,
+                                    'Ex: 25.40',
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBoxDate('Data da Oficina', context,
                                     controller.dateController),
@@ -86,7 +92,12 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                     TextInputType.number,
                                     controller.validateNumber,
                                     'Ex: 25',
-                                    formato: FilteringTextInputFormatter.digitsOnly),
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                inputBoxMap('Localização', context),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -97,6 +108,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                             function: controller.onCadastroOficina,
                           ),
                         ),
+                        
                       ],
                     ),
                   ),
@@ -171,12 +183,9 @@ class AddOficinaView extends GetView<AddOficinaController> {
           );
   }
 
-  Widget inputBox(String text, 
-  TextEditingController controller,
-  TextInputType type, 
-  String? Function(String?) validation,
-  String hint, 
-  {TextInputFormatter? formato}) {
+  Widget inputBox(String text, TextEditingController controller,
+      TextInputType type, String? Function(String?) validation, String hint,
+      {TextInputFormatter? formato}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -203,9 +212,9 @@ class AddOficinaView extends GetView<AddOficinaController> {
             TextFormField(
               controller: controller,
               keyboardType: type,
-              inputFormatters: formato != null ? <TextInputFormatter>[formato] : 
-              <TextInputFormatter>[],
-              
+              inputFormatters: formato != null
+                  ? <TextInputFormatter>[formato]
+                  : <TextInputFormatter>[],
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: TextStyle(color: Colors.grey),
@@ -252,13 +261,15 @@ class AddOficinaView extends GetView<AddOficinaController> {
                   decoration: InputDecoration(
                     hintText:
                         "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
-                    hintStyle: TextStyle(color: const Color.fromARGB(255, 88, 88, 88)),
+                    hintStyle:
+                        TextStyle(color: const Color.fromARGB(255, 88, 88, 88)),
                     border: InputBorder.none,
                     errorStyle: TextStyle(
                         fontSize: 14.sp, overflow: TextOverflow.ellipsis),
                   ),
                   onTap: () {
                     controller.selectedDate(context);
+                    
                   },
                   //validator: (value) => validation(value),
                 )),
@@ -269,44 +280,156 @@ class AddOficinaView extends GetView<AddOficinaController> {
   }
 
   Widget inputBoxMap(
-      String text, BuildContext context, TextEditingController controllerText) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
+    String text,
+    BuildContext context,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return buildCard(context);
+            });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.r),
+            bottomRight: Radius.circular(20.r),
+            topLeft: Radius.circular(20.r),
+          ),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    height: 0.8.h),
+              ),
+              Obx(() {
+                return !controller.isLoading.value &&
+                        controller.address.value.isNotEmpty &&
+                        controller.ruaController.text.isNotEmpty &&
+                        controller.numberController.text.isNotEmpty
+                    ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8).h,
+                      child: Text(
+                          '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
+                    )
+                    : SizedBox.shrink();
+              })
+            ],
+          ),
         ),
       ),
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  height: 0.8.h),
-            ),
-            Obx(() => TextFormField(
-                  controller: controllerText,
-                  //keyboardType: type,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    errorStyle: TextStyle(
-                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                  ),
-                  onTap: () {
-                    //controller.locationCEP(controllerText);
-                  },
-                  //validator: (value) => validation(value),
-                )),
-          ],
+    );
+  }
+
+  Widget buildCard(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16).r,
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0).r,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Form(
+                key: controller.endOficinaFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                        controller: controller.cepController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Digite o CEP',
+                          errorStyle: TextStyle(
+                              fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters:
+                            FilteringTextInputFormatter.digitsOnly != null
+                                ? <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ]
+                                : <TextInputFormatter>[],
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Por favor, insira o CEP'
+                            : null),
+                    SizedBox(height: 16.h),
+                    TextFormField(
+                      controller: controller.ruaController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Digite o nome da rua',
+                        errorStyle: TextStyle(
+                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                      ),
+                      keyboardType: TextInputType.text,
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Por favor, insira o nome da rua'
+                          : null,
+                    ),
+                    SizedBox(height: 16.h),
+                    TextFormField(
+                      controller: controller.numberController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Digite o número do endereço',
+                        errorStyle: TextStyle(
+                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters:
+                          FilteringTextInputFormatter.digitsOnly != null
+                              ? <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ]
+                              : <TextInputFormatter>[],
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Por favor, insira o número do endereço'
+                          : null,
+                    ),
+                    SizedBox(height: 16.h),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFF69302),
+                        ),
+                        onPressed: () {
+                          if (controller.endOficinaFormKey.currentState
+                                  ?.validate() ??
+                              false) {
+                            String cep = controller.cepController.text;
+                            controller.fetchAddressFromCEP(cep);
+                            Get.back();
+                          }
+                        },
+                        child: Text(
+                          'Adicionar Endereço',
+                          style:
+                              TextStyle(fontSize: 16.sp, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16.h),
+            ],
+          ),
         ),
       ),
     );
