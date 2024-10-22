@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 
 class PerfilController extends BaseController {
   late final MemoryStore _userTokenStore;
-  var userCheck = false.obs; //false default!!!!!!!!!!!!!!!!!!!
+  var userCheck = false.obs;
   //final MemoryStore _userTokenStore;
   //PerfilController(this._userTokenStore);
   
@@ -60,10 +60,18 @@ class PerfilController extends BaseController {
   Future<void> checkUserType() async {
     try {
       // Token de teste
-      //const String teste = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4NGI2NGUxLTI1MGMtNDRkZi1hODA5LTRjYWEzMmIwZTBmZCIsInVzZXJuYW1lIjoidmxhZCIsInJvbGUiOiJBZG1pbmlzdHJhZG9yIiwiaXNzIjoiYm9pLW1hcnJvbnppbmhvLWFwaSIsImF1ZCI6WyJhcGktY2xpZW50Il0sImV4cCI6MTcyOTEyMjM0NH0.JwQcCkEG8d6Q84npmdy6WFvxbMO_QLOgGi1pCbUgUCU';
+      // TODO: Tirar token de teste
+      const String teste = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4NGI2NGUxLTI1MGMtNDRkZi1hODA5LTRjYWEzMmIwZTBmZCIsInVzZXJuYW1lIjoidmxhZCIsInJvbGUiOiJBZG1pbmlzdHJhZG9yIiwiaXNzIjoiYm9pLW1hcnJvbnppbmhvLWFwaSIsImF1ZCI6WyJhcGktY2xpZW50Il0sImV4cCI6MTcyOTEyMjM0NH0.JwQcCkEG8d6Q84npmdy6WFvxbMO_QLOgGi1pCbUgUCU';
 
       final token = await _userTokenStore.read();
       //final token = teste;
+
+      // TODO: Acho que era melhor ver se é nulo. Tá dando erro aqui
+
+      if (token == null) {
+        print("Token é Nulo!");
+        throw UnimplementedError();
+      }
 
       if (token.isEmpty) {
         print('Token não encontrado');
@@ -82,7 +90,6 @@ class PerfilController extends BaseController {
       }
     } on JWTException catch (e) {
       print('Erro ao decodificar o token: $e');
-      
     }
   }
 }

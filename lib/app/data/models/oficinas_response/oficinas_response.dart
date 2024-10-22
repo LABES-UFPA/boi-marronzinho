@@ -6,8 +6,8 @@ class Oficina {
   final double precoReal;
   final DateTime dataOficina;
   final int limiteParticipantes;
-  final int participantesAtual; // Adicionado para armazenar o número atual de participantes
-  final String imagem; // Adicionado para armazenar a imagem da oficina
+  final int participantesAtual;
+  final String linkEndereco;
 
   Oficina({
     required this.id,
@@ -18,34 +18,33 @@ class Oficina {
     required this.dataOficina,
     required this.limiteParticipantes,
     required this.participantesAtual,
-    required this.imagem,
+    required this.linkEndereco,
   });
 
   factory Oficina.fromMap(Map<String, dynamic> map) {
     return Oficina(
       id: map['id'],
-      nomeOficina: map['nome'] ?? '', // Prevenir null
-      descricao: map['descricao'] ?? '', // Prevenir null
+      nomeOficina: map['nome'],
+      descricao: map['descricao'],
       precoBoicoin: (map['precoBoicoins'] as num).toDouble(),
       precoReal: (map['precoReal'] as num).toDouble(),
       dataOficina: DateTime.parse(map['dataEvento']),
-      limiteParticipantes: map['limiteParticipantes'] ?? 0, // Prevenir null
-      participantesAtual: map['participantesAtual'] ?? 0, // Prevenir null
-      imagem: map['imagem'] ?? '', // Prevenir null
+      limiteParticipantes: map['limiteParticipantes'],
+      participantesAtual: map['participantesAtual'],
+      linkEndereco: map['linkEndereco'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'nome': nomeOficina,
+      'nomeOficina': nomeOficina,
       'descricao': descricao,
-      'precoBoicoins': precoBoicoin,
+      'precoBoicoin': precoBoicoin,
       'precoReal': precoReal,
-      'dataEvento': dataOficina.toIso8601String(),
+      'dataOficina': dataOficina.toIso8601String(),
       'limiteParticipantes': limiteParticipantes,
-      'participantesAtual': participantesAtual,
-      'imagem': imagem,
+      'linkEndereco': linkEndereco,
     };
   }
 }
