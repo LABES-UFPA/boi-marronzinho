@@ -6,7 +6,9 @@ class Oficina {
   final double precoReal;
   final DateTime dataOficina;
   final int limiteParticipantes;
-  final String pontoMapaId;
+  // final String pontoMapaId;
+
+  // TODO: colocar pontoMapaID devolta
 
   Oficina({
     required this.id,
@@ -16,7 +18,7 @@ class Oficina {
     required this.precoReal,
     required this.dataOficina,
     required this.limiteParticipantes,
-    required this.pontoMapaId,
+    // required this.pontoMapaId,
   });
 
   factory Oficina.fromMap(Map<String, dynamic> map) {
@@ -28,7 +30,7 @@ class Oficina {
       precoReal: (map['precoReal'] as num).toDouble(),
       dataOficina: DateTime.parse(map['dataEvento']),
       limiteParticipantes: map['limiteParticipantes'],
-      pontoMapaId: map['pontoMapaId'],
+      // pontoMapaId: map['pontoMapaId'],
     );
   }
 
@@ -41,7 +43,7 @@ class Oficina {
       'precoReal': precoReal,
       'dataOficina': dataOficina.toIso8601String(),
       'limiteParticipantes': limiteParticipantes,
-      'pontoMapaId': pontoMapaId,
+      // 'pontoMapaId': pontoMapaId,
     };
   }
 }

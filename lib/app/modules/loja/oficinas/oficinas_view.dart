@@ -1,3 +1,4 @@
+import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,79 +16,86 @@ class OficinasView extends GetView<OficinasController> {
         backgroundColor: bgColor,
         body: Column(
           children: [
-            Stack(
-              children: [
-                ClipPath(
-                  clipper: AppBarClipper(),
-                  child: Container(
-                    height: 100.h,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10).h,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: Image.asset(
-                              'assets/images/icons/mingcute_arrow-up-fill.png',
-                              height: 40.h,
-                              width: 40.w,
-                            ),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(width: 10.w),
-                                Icon(
-                                  Icons.co_present,
-                                  color: Colors.black,
-                                  size: 30.sp,
-                                ),
-                                SizedBox(width: 5.w),
-                                Center(
-                                  child: Text(
-                                    'Oficinas',
-                                    style: TextStyle(
-                                      fontSize: 36.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            _buildAppBar(),
             // Oficinas
-            EventoCard(
-                nome: "Oficina de Violão",
-                localizacao:
-                    "Curral Cultural Seu Cici Pass. Brasilia 170, Terra Firme",
-                data: "Sabado 16 de março de 15 às 17 horas",
-                descricao:
-                    "Você que sempre quis aprender a tocar um instrumento se liga nessa oportunidade. O IAC instituto Amazônia..."),
-            EventoCard(
-                nome: "Aulas de Dança",
-                localizacao:
-                    "Curral Cultural Seu Cici Pass. Brasilia 170, Terra Firme",
-                data: "Segunda 25 de março de 15 às 17 horas",
-                descricao:
-                    "Venha dançar com o Boi! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec augue purus, faucibus at sapien ut, molestie posuere libero. Proin imperdiet suscipit commodo. Cras porttitor, neque ac molestie ultricies, ligula est mollis libero, nec finibus metus nisi vitae elit. Vestibulum mattis efficitur laoreet. In aliquam, neque "),
+            Expanded(
+              child: ListView.builder(
+                itemCount: controller.oficinas.length,
+                itemBuilder: (context, index) {
+                  return _buildOficina(controller.oficinas[index]);
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildAppBar() {
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: AppBarClipper(),
+          child: Container(
+            height: 100.h,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFFFFFF),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10).h,
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/images/icons/mingcute_arrow-up-fill.png',
+                      height: 40.h,
+                      width: 40.w,
+                    ),
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10.w),
+                        Icon(
+                          Icons.co_present,
+                          color: Colors.black,
+                          size: 30.sp,
+                        ),
+                        SizedBox(width: 5.w),
+                        Center(
+                          child: Text(
+                            'Oficinas',
+                            style: TextStyle(
+                              fontSize: 36.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget _buildOficina(Oficina oficina) {
+    return EventoCard(
+        nome: oficina.nomeOficina,
+        localizacao: oficina.descricao,
+        data: oficina.dataOficina.toString(),
+        descricao: oficina.descricao);
   }
 }
 
@@ -101,7 +109,6 @@ class AppBarClipper extends CustomClipper<Path> {
         size.width, size.height, size.width, size.height - 60);
     path.lineTo(size.width, 0);
     path.close();
-
     return path;
   }
 
@@ -119,7 +126,6 @@ class EventoCard extends StatelessWidget {
   final String data;
   final String descricao;
   // TODO: Callback para a rota do evento
-
   static const _boldStyle = TextStyle(fontWeight: FontWeight.bold);
 
   const EventoCard(
