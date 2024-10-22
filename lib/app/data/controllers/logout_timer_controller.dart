@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/enumerators/storage_keys.enum.dart';
 import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
+import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
@@ -17,8 +18,9 @@ class LogoutTimerController extends BaseController {
   // Só não chama se tiver no login ou splash
   void initLogoutTimer() {
     _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      if (Get.currentRoute == LoginModule.path || Get.currentRoute == SplashModule.path) {
-        return;
+      log('LogoutTimer: Verificação periódica em andamento');
+      if (Get.currentRoute == LoginModule.path || Get.currentRoute == SplashModule.path || Get.currentRoute == CadastroModule.path) {
+        log('LogoutTimer: verificado, mas está numa área que não precisa de Logout');
       }
       // 'short-circuited or' aqui! Pra não chamar isTokenExpired com Token nulo!
       if (MemoryStore(StorageKeys.USER_TOKEN).read() == null || isTokenExpired()) {
