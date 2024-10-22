@@ -45,7 +45,7 @@ class VouchersView extends GetView<VouchersController> {
                     final voucher = controller.vouchers[index];
                     Uint8List qrCodeImage = voucher.getQRCodeImage();
                     return InkWell(
-                      onTap: () {
+                      onTap: voucher.validado ? null : () {
                         controller.onVoucherDetailPressed(voucher);
                       },
                       child: Padding(
@@ -123,10 +123,11 @@ class VouchersView extends GetView<VouchersController> {
   }
 
   Widget Box(String text, String descricao, Uint8List qrcode, Voucher voucher) {
+    bool validado = voucher.validado;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: validado ?Colors.grey[350] : Colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.r),
           bottomRight: Radius.circular(20.r),
@@ -139,8 +140,8 @@ class VouchersView extends GetView<VouchersController> {
         children: [
           Image.memory(
             qrcode,
-            height: 130.h,
-            width: 130.w,
+            height: 110.h,
+            width: 110.w,
           ),
           Padding(
             padding: EdgeInsets.only(top: 8.h),
@@ -157,7 +158,7 @@ class VouchersView extends GetView<VouchersController> {
                     style: TextStyle(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: validado ? Colors.grey[400] : Colors.black,
                     ),
                   ),
                 ),

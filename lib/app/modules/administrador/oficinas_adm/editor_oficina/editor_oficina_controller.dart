@@ -96,7 +96,7 @@ class EditorOficinaController extends BaseController {
           limiteOficina: int.tryParse(participantesController.text) ?? 20,
         );*/
 
-        Get.offAllNamed(OficinasAdminModule.path);
+        Get.back();
       } finally {
         setLoading(false);
       }

@@ -268,6 +268,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                   ),
                   onTap: () {
                     controller.selectedDate(context);
+                    
                   },
                   //validator: (value) => validation(value),
                 )),

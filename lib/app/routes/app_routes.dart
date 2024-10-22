@@ -1,3 +1,5 @@
+import 'package:boi_marronzinho/app/modules/administrador/contas/contas_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_module.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/admin_module.dart';
@@ -46,6 +48,8 @@ class AppPages {
     ScannerModule.page,
     MeusDadosModule.page,
     EditorOficinaModule.page,
-    VoucherModule.page
+    VoucherModule.page,
+    ContasModule.page,
+    EditorContaModule.page
   ];
 }

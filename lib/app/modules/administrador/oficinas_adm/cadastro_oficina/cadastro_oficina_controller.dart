@@ -80,6 +80,7 @@ class AddOficinaController extends BaseController {
         context: context, firstDate: DateTime(2000), lastDate: DateTime(2200));
     if (date != null && date != selectDate.value) {
       selectDate.value = date;
+      dateController.text = "${date.day}/${date.month}/${date.year}";
     }
   }
 
@@ -87,45 +88,38 @@ class AddOficinaController extends BaseController {
     if (registerOficinaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        double precoBoicoins =
-            double.tryParse(precoBoicoinsController.text) ?? 0.0;
+        double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
         double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
-        print('Variável obx data->>>>>>>>>>${selectDate}');
-        // Converter a data para DateTime e, em seguida, para ISO 8601
         DateTime? parsedDate;
         try {
-          
           parsedDate = DateFormat("dd/MM/yyyy").parse(dateController.text);
         } catch (e) {
-          print("Formato de data inválido: ${dateController.text}");
           setLoading(false);
           return;
         }
 
-        // Converter para ISO 8601
-        String isoDate = parsedDate.toIso8601String();
+        
+        String isoDate = parsedDate.toUtc().toIso8601String();
+        String base64Image = await convertImagePathToBase64(_image.string);
 
         print('-------------------------------');
-        print('Nome Oficina --->>>>>${nomeController.text}');
-        print('Boicoin --->>>>>${precoBoicoins}');
-        print('Data (ISO 8601) --->>>>>${isoDate}');
-        print('Endereço --->>>>>${enderecoController.text}');
         print('Imagem --->>>>>${_image.value!.path}');
+        print(base64Image);
 
-        // Enviar os dados para a API
-        final registerOficina = await OficinasRepository().cadastrarOficina(
-          nome: nomeController.text,
-          descricao: descricaoController.text,
-          precoBoicoins: precoBoicoins,
-          precoReal: precoReais,
-          dataOficina: isoDate, // Usar data no formato ISO 8601
-          limiteOficina: int.tryParse(participantesController.text) ?? 20,
-          imagem: _image.value!,
-          urlEndereco: enderecoController.text,
-        );
+        
+         final registerOficina = await OficinasRepository().cadastrarOficina(
+           nome: nomeController.text,
+           descricao: descricaoController.text,
+           precoBoicoins: precoBoicoins,
+           precoReal: precoReais,
+           dataOficina: isoDate, // Usar data no formato ISO 8601
+           limiteOficina: int.tryParse(participantesController.text) ?? 20,
+           imagem: _image.value!,
+           urlEndereco: enderecoController.text,
+         );
 
         // Redirecionar para a página de administração após o sucesso
-        Get.offAllNamed(OficinasAdminModule.path);
+        Get.back();
       } catch (e) {
         print("Erro ao cadastrar oficina: $e");
       } finally {
@@ -177,4 +171,17 @@ class AddOficinaController extends BaseController {
       throw 'Endereço ou número inválido';
     }
   }
+
+  Future<String> convertImagePathToBase64(String imagePath) async {
+  try {
+    File imageFile = File(imagePath);
+    List<int> imageBytes = await imageFile.readAsBytes();
+    String base64Image = base64Encode(imageBytes);
+    return base64Image;
+  } catch (e) {
+    print("Erro ao converter imagem para Base64: $e");
+    return "";
+  }
+}
+
 }
