@@ -4,6 +4,7 @@ import 'package:boi_marronzinho/app/data/repositories/voucher/voucher_repository
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
+import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +21,6 @@ class LoginController extends BaseController {
   }
 
   String? validateEmail(String? value) {
-    
     if (!GetUtils.isEmail(value!)) {
       return 'Formato inválido de email';
     }
@@ -39,30 +39,37 @@ class LoginController extends BaseController {
     return null;
   }
 
+  // TODO: Descomentar o if na produção, é só pra passar direto
   Future<void> onLogin() async {
-    if (loginFormKey.currentState?.validate() ?? false) {
+    // if (loginFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        final loginRepo = await LoginRepository().login(
-          email: "vlad@example.com",
-          password: "senhaSegura123",
-        );
+
+        final loginRepo = await LoginRepository().login(password: "senhaSegura123", email: "vlad@example.com");
+
+        // final loginRepo = await LoginRepository().login(
+        //   email: emailController.text,
+        //   password: passwordController.text,
+        // );
 
         if (!loginRepo.valid) {
           setLoading(false);
+
+          Get.offAllNamed(LoginModule.path);
+
           return Toast.error(
               'Não foi possível realizar o login',
               loginRepo.reason!,
               delayed: true
           );
         }
+
         Get.offAllNamed(HomeModule.path);
       }
       finally {
         setLoading(false);
       }
-    }
-
+    // } // if
   }
 
   void onCadastroPressed() {

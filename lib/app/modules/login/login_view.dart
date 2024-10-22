@@ -171,12 +171,16 @@ class InputBox extends StatelessWidget {
             TextFormField(
               obscureText: isPassword,
               keyboardType: type,
+              controller: controller, // Certifique-se de que o controlador está sendo utilizado
+              onChanged: (value) {
+                controller.text = value;
+              },
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 errorStyle:
-                    TextStyle(fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                TextStyle(fontSize: 14.sp, overflow: TextOverflow.ellipsis),
               ),
               validator: (value) => validation(value),
             ),

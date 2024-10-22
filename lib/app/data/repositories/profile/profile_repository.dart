@@ -15,6 +15,8 @@ final class ProfileRepository extends RequestRepository implements IProfileRepos
 
   late final CachedRequest _cache;
 
+  // TODO: erro no cache
+
   ProfileRepository({CachedRequest? cachedRequest}) {
     _cache = cachedRequest ?? CachedRequest(key: profileTag);
   }
@@ -37,6 +39,7 @@ final class ProfileRepository extends RequestRepository implements IProfileRepos
       }
 
       await _cache.cacheRequest(response.data);
+
       return (valid: true, reason: null, data: Profile.fromMap(response.data));
     } catch (_) {
       return (valid: false, reason: 'Erro interno durante a requisição', data: null);
@@ -55,8 +58,6 @@ final class ProfileRepository extends RequestRepository implements IProfileRepos
         return invalidResponse;
       }
 
-      await _cache.cacheRequest(response.data);
-
       final transactions = List.from(response.data)
           .map((item) => BoicoinsTransacoes.fromMap(item))
           .toList();
@@ -64,6 +65,22 @@ final class ProfileRepository extends RequestRepository implements IProfileRepos
       return (valid: true, reason: null, data: transactions);
     } catch (_) {
       return (valid: false, reason: 'Erro interno durante a requisição', data: null);
+    }
+  }
+
+  @override
+  Future deletarConta({required String id}) async {
+    final url = apiHelpers.buildUrl(url: profileUrl + id, endpoint: Endpoints.BOI_MARRONZINHO);
+    try {
+      final response = await client.delete(url, {});
+      final invalidResponse = isValidResponse(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+      return (valid: true, reason: null, data: null);
+    }
+    catch (error, trace) {
+      return errorResponse(error, trace: trace);
     }
   }
 

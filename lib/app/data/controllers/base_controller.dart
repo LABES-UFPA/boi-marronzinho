@@ -1,6 +1,8 @@
 
 
+import 'package:boi_marronzinho/app/data/enumerators/storage_keys.enum.dart';
 import 'package:boi_marronzinho/app/data/request_repository.dart';
+import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -36,5 +38,11 @@ class BaseController extends GetxController {
 
     setLoading(false);
     return false;
+  }
+
+  // Para chamar no logout
+  void cleanCacheEndStore() {
+    MemoryStore(StorageKeys.USER_TOKEN).remove();
+    MemoryStore(StorageKeys.USER_CREDENTIALS).remove();
   }
 }
