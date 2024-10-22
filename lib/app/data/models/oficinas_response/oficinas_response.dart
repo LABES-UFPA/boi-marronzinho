@@ -6,6 +6,7 @@ class Oficina {
   final double precoReal;
   final DateTime dataOficina;
   final int limiteParticipantes;
+  final int participantesAtual;
   // final String pontoMapaId;
 
   // TODO: colocar pontoMapaID devolta
@@ -18,6 +19,7 @@ class Oficina {
     required this.precoReal,
     required this.dataOficina,
     required this.limiteParticipantes,
+    required this.participantesAtual,
     // required this.pontoMapaId,
   });
 
@@ -30,6 +32,7 @@ class Oficina {
       precoReal: (map['precoReal'] as num).toDouble(),
       dataOficina: DateTime.parse(map['dataEvento']),
       limiteParticipantes: map['limiteParticipantes'],
+      participantesAtual: map['participantesAtual'],
       // pontoMapaId: map['pontoMapaId'],
     );
   }
@@ -43,6 +46,7 @@ class Oficina {
       'precoReal': precoReal,
       'dataOficina': dataOficina.toIso8601String(),
       'limiteParticipantes': limiteParticipantes,
+      'participantesAtual': participantesAtual,
       // 'pontoMapaId': pontoMapaId,
     };
   }

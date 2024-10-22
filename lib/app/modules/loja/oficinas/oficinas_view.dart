@@ -321,10 +321,9 @@ class EventoCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // TODO: Colocar vagas restantes
                         Expanded(
                           child: Text(
-                              '${oficina.limiteParticipantes} vagas restantes',
+                              '${oficina.limiteParticipantes - oficina.participantesAtual} vagas restantes',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 15.sp
@@ -354,9 +353,12 @@ class EventoCard extends StatelessWidget {
                                   )
                                 )
                               ),
-                              child: const Text('Inscrever-se', style: TextStyle(
-                                color: Colors.white
-                              ),)
+                              child: const Text(
+                                'Inscrever-se',
+                                style: TextStyle(
+                                  color: Colors.white
+                                ),
+                              )
                           ),
                         )
                       ],
@@ -365,9 +367,6 @@ class EventoCard extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Preço
-            // Inscrever-se
           ],
         )
       ),
