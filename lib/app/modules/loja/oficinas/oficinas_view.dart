@@ -141,6 +141,7 @@ class OficinasView extends GetView<OficinasController> {
                                     const TextSpan(text: "Localização: ", style: _boldStyle),
                                     TextSpan(text: "PLACEHOLDER\n"),
 
+                                    // TODO: Máscara na Data
                                     const TextSpan(text: "Data: ", style: _boldStyle),
                                     TextSpan(text: "${oficina.dataOficina.toString()}\n"),
 
@@ -425,7 +426,7 @@ class OficinasView extends GetView<OficinasController> {
 
                           10.verticalSpace,
 
-                          PagamentoButton(text: 'Boicoins', callback: () { controller.pagarComBoicoins(); }),
+                          PagamentoButton(text: 'Boicoins', callback: () { controller.pagarComBoicoins(oficina); }),
                         ],
                       ),
                     ),
