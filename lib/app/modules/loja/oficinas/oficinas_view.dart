@@ -3,6 +3,7 @@ import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_controller.da
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class OficinasView extends GetView<OficinasController> {
   const OficinasView({super.key});
@@ -96,11 +97,7 @@ class OficinasView extends GetView<OficinasController> {
 
 
   Widget _buildOficina(Oficina oficina) {
-    return EventoCard(
-        nome: oficina.nomeOficina,
-        localizacao: oficina.descricao,
-        data: oficina.dataOficina.toString(),
-        descricao: oficina.descricao);
+    return EventoCard(oficina: oficina);
   }
 }
 
@@ -126,19 +123,12 @@ class AppBarClipper extends CustomClipper<Path> {
 // atualizado
 // TODO: Colocar todos os Widgets numa pasta só
 class EventoCard extends StatelessWidget {
-  final String nome;
-  final String localizacao;
-  final String data;
-  final String descricao;
+  final Oficina oficina;
+
   // TODO: Callback para a rota do evento
   static const _boldStyle = TextStyle(fontWeight: FontWeight.bold);
 
-  const EventoCard(
-      {super.key,
-      required this.nome,
-      required this.localizacao,
-      required this.data,
-      required this.descricao});
+  const EventoCard({super.key, required this.oficina});
 
   @override
   Widget build(BuildContext context) {
@@ -146,65 +136,244 @@ class EventoCard extends StatelessWidget {
         child: SizedBox(
       width: 0.85.sw, // 80% da tela
       height: 0.3.sh, // 30% da tela
-      child: Card(
-        margin: EdgeInsets.all(10.0.w),
-        elevation: 5,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Título -- Nome da Oficina
-            Expanded(
-              flex: 0,
-              child: Text(
-                nome,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23.0.sp,
-                  overflow: TextOverflow.clip,
+      child: InkWell(
+        onTap: () => Get.to(() {
+          return _buildDescriptionPage(
+            oficina.nomeOficina,
+            oficina.descricao,
+            oficina.precoReal,
+            oficina.precoBoicoin.toInt(),
+            'assets/images/eventos/evento-1.jpg'
+          );
+        }),
+        child: Card(
+          margin: EdgeInsets.all(10.0.w),
+          elevation: 5,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              // Título -- Nome da Oficina
+              Expanded(
+                flex: 0,
+                child: Text(
+                  oficina.nomeOficina,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23.0.sp,
+                    overflow: TextOverflow.clip,
+                  ),
                 ),
+              ),
+
+              // Detalhes -- Localização, Data e Descrição
+              Expanded(
+                flex: 2,
+                child: Container(
+                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                    child: RichText(
+                        text: TextSpan(
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              // TODO: receber localizaçao da API
+                              const TextSpan(text: "Localização: ", style: _boldStyle),
+                              TextSpan(text: "PLACEHOLDER\n"),
+
+                              const TextSpan(text: "Data: ", style: _boldStyle),
+                              TextSpan(text: "${oficina.dataOficina.toString()}\n"),
+                              
+                              const TextSpan(text: "Descrição: ", style: _boldStyle),
+                              TextSpan(text: "${oficina.descricao}\n"),
+                            ]))),
+              ),
+
+              // Botão para Ver Localização
+              Expanded(
+                child: InkWell(
+                  // TODO: Abrir Mapa e retirar o print
+                    onTap: () => print("Abra o Google Maps"),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border(top: BorderSide(width: 1.w))),
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.location_on),
+                          Text("Ver Localização")
+                        ],
+                      ),
+                    )),
+              )
+            ],
+          ),
+        ),
+      )
+    ));
+  }
+
+  // Coloca a página de descrição mais detalhada
+  Widget _buildDescriptionPage(
+      String nomeOficina,
+      String longDescription,
+      double precoReais,
+      int precoBoicoins,
+      String imagePath
+      ) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xFFBA400A),
+        appBar: AppBar(title: Text(nomeOficina)),
+        // Column, Padding, Column
+        body: Column(
+          children: [
+
+            // Imagem
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(imagePath),
+              )
+            ),
+
+            // Descrição - Scrollable
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    longDescription,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
               ),
             ),
 
-            // Detalhes -- Localização, Data e Descrição
-            Expanded(
-              flex: 2,
-              child: Container(
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                  child: RichText(
-                      text: TextSpan(
-                          style: DefaultTextStyle.of(context).style,
-                          children: <TextSpan>[
-                        const TextSpan(text: "Localização:", style: _boldStyle),
-                        TextSpan(text: "$localizacao\n"),
-                        const TextSpan(text: "Data:", style: _boldStyle),
-                        TextSpan(text: "$data\n"),
-                        const TextSpan(text: "Descrição:", style: _boldStyle),
-                        TextSpan(text: "$descricao\n"),
-                      ]))),
-            ),
+            // Footer
+            Container(
+              width: 1.sw,
+              height: 0.2.sh,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadiusDirectional.only(
+                  topStart: Radius.circular(20),
+                  topEnd: Radius.circular(20),
+                )
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Valor em reais e bois
+                  Expanded(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'R\$ ${precoReais.toStringAsFixed(2)}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                              ),
+                            )
+                          ),
+                          Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Transform.scale(
+                                      scale: 1,
+                                      child: Image.asset('assets/images/icons/boicoin.png')
+                                  ),
+                                  10.horizontalSpace,
+                                  Text(
+                                    precoBoicoins.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20.sp)
+                                  )
+                                ],
+                              )
+                          )
+                        ]
+                    ),
+                  ),
 
-            // Botão para Ver Localização
-            Expanded(
-              child: InkWell(
-                  // TODO: Abrir Mapa e retirar o print
-                  onTap: () => print("Abra o Google Maps"),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border(top: BorderSide(width: 1.w))),
-                    child: const Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  Expanded(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.location_on),
-                        Text("Ver Localização")
+                        Expanded(
+                          child: Text(
+                            '${DateFormat('dd/MM/yyyy - HH:mm').format(oficina.dataOficina)}hrs',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.sp
+                            ),
+                          ),
+                        ),
+                        // TODO: Colocar vagas restantes
+                        Expanded(
+                          child: Text(
+                              '${oficina.limiteParticipantes} vagas restantes',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 15.sp
+                              ),
+                          ),
+                        )
                       ],
                     ),
-                  )),
-            )
+                  ),
+
+                  5.verticalSpace,
+
+                  // Botão de Inscrever-se
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                              onPressed: () => print('Se inscreveu'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  )
+                                )
+                              ),
+                              child: const Text('Inscrever-se', style: TextStyle(
+                                color: Colors.white
+                              ),)
+                          ),
+                        )
+                      ],
+                    )
+                  )
+                ],
+              ),
+            ),
+
+            // Preço
+            // Inscrever-se
           ],
-        ),
+        )
       ),
-    ));
+    );
+
+
   }
+
 }

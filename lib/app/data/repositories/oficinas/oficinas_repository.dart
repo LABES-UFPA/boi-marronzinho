@@ -9,8 +9,7 @@ import 'dart:developer';
 import 'package:boi_marronzinho/app/data/storage/cached_request.dart';
 import 'package:dio/dio.dart';
 
-final class OficinasRepository extends RequestRepository
-    implements IOficinasRepository {
+final class OficinasRepository extends RequestRepository implements IOficinasRepository {
   static const String oficinasUrl = '/oficinas/lista-oficinas';
   static const String criarOficinasUrl = '/oficinas/cria-oficinas';
   static const String deletarOficinasUrl = '/oficinas/deleta-oficinas';
