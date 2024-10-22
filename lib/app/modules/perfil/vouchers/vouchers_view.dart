@@ -127,7 +127,7 @@ class VouchersView extends GetView<VouchersController> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
-        color: validado ?Colors.grey[350] : Colors.white,
+        color: validado ? Colors.black26 : Colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.r),
           bottomRight: Radius.circular(20.r),
@@ -138,19 +138,14 @@ class VouchersView extends GetView<VouchersController> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.memory(
-            qrcode,
-            height: 110.h,
-            width: 110.w,
-          ),
           Padding(
-            padding: EdgeInsets.only(top: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 40.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                  width: 180.w,
+                  width: 220.w,
                   child: Text(
                     text,
                     softWrap: true,
@@ -158,7 +153,7 @@ class VouchersView extends GetView<VouchersController> {
                     style: TextStyle(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
-                      color: validado ? Colors.grey[400] : Colors.black,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -166,7 +161,8 @@ class VouchersView extends GetView<VouchersController> {
                   height: 6.h,
                 ),
                 Container(
-                  width: 180.w,
+                  
+                  width: 220.w,
                   child: Text(
                     descricao,
                     softWrap: true,
