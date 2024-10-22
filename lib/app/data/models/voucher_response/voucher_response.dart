@@ -8,6 +8,7 @@ class Voucher {
   final String nomeOficina;
   final String descricao;
   final String qrcode;
+  final bool validado;
 
   Voucher({
     required this.id,
@@ -15,6 +16,7 @@ class Voucher {
     required this.nomeOficina,
     required this.descricao,
     required this.qrcode,
+    required this.validado
   });
 
   factory Voucher.fromMap(Map<String, dynamic> map) {
@@ -24,6 +26,7 @@ class Voucher {
       nomeOficina: map['nomeOficina'],
       descricao: map['descricao'],
       qrcode: map['qrcode'],
+      validado: map['validado']
     );
   }
 
@@ -34,6 +37,7 @@ class Voucher {
       'nomeOficina': nomeOficina,
       'descricao': descricao,
       'qrcode': qrcode,
+      'validado': validado,
     };
   }
 

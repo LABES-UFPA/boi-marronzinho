@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/pontos_mapa/pontos_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class OficinasAdmView extends GetView<OficinasAdmController> {
-  const OficinasAdmView({Key? key}) : super(key: key);
+class PontosAdmView extends GetView<PontosAdmController> { // Altere a classe para PontosAdmView
+  const PontosAdmView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +27,10 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                       color: Colors.yellow,
                     )); // Mostra um loading.
                   }
-                  if (controller.oficinas.isEmpty) {
+                  if (controller.pontos.isEmpty) { // Atualize para usar a lista de pontos
                     return Center(
                         child: Text(
-                      'Nenhuma oficina cadastrada.',
+                      'Nenhum ponto cadastrado.', // Altere a mensagem
                       style: TextStyle(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
@@ -41,14 +40,14 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                   }
 
                   return ListView.builder(
-                    itemCount: controller.oficinas.length,
+                    itemCount: controller.pontos.length, // Altere para controller.pontos
                     itemBuilder: (context, index) {
-                      final oficina = controller.oficinas[index];
-                      
+                      final ponto = controller.pontos[index]; // Altere para ponto
+
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 10.h, horizontal: 16.w),
-                        child: Box(context, oficina.nomeOficina, oficina),
+                        child: Box(context, ponto.nomePonto, ponto), // Altere para nomePonto
                       );
                     },
                   );
@@ -57,11 +56,10 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                 child: ButtonBox(
-                  text: 'Adicionar Oficina',
-                  onPressed: controller.onAddOficinasPressed,
+                  text: 'Adicionar Ponto', // Altere o texto do botão
+                  onPressed: controller.onAddPontosPressed, // Altere para o novo método
                 ),
               ),
-              
             ],
           ),
         ),
@@ -100,7 +98,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                         SizedBox(width: 10.w),
                         Center(
                           child: Text(
-                            'Oficinas ADM',
+                            'Pontos ADM', // Altere o título
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
@@ -120,7 +118,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
     );
   }
 
-  Widget Box(BuildContext context, text, Oficina oficina) {
+  Widget Box(BuildContext context, text, Ponto ponto) { // Altere para Ponto
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -158,7 +156,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.goToEditOficina(oficina);
+                    controller.goToEditPonto(ponto); // Altere para o novo método
                   },
                   icon: Icon(Icons.edit),
                   iconSize: 30.r,
@@ -167,8 +165,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                 IconButton(
                   onPressed: () {
                     controller.showDeleteConfirmationDialog(context, () async {
-                      await controller.onDeleteOficina(
-                          oficina); 
+                      await controller.onDeletePonto(ponto); // Altere para o novo método
                     });
                   },
                   icon: Icon(Icons.delete),
@@ -189,6 +186,7 @@ class ButtonBox extends StatelessWidget {
   final VoidCallback onPressed;
 
   ButtonBox({required this.text, required this.onPressed});
+  
   @override
   Widget build(BuildContext context) {
     return Container(

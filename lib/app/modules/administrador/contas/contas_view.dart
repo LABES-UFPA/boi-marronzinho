@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_controller.dart';
+import 'package:boi_marronzinho/app/data/models/profile/profile.dart';
+import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
+import 'package:boi_marronzinho/app/modules/administrador/contas/contas_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class OficinasAdmView extends GetView<OficinasAdmController> {
-  const OficinasAdmView({Key? key}) : super(key: key);
+class ContasView extends GetView<ContasController> {
+  const ContasView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,10 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
           child: Column(
             children: [
               _buildAppBar(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                child: searchMenu(controller.searchController),
+              ),
               Expanded(
                 child: Obx(() {
                   if (controller.isLoading == true) {
@@ -28,10 +33,10 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                       color: Colors.yellow,
                     )); // Mostra um loading.
                   }
-                  if (controller.oficinas.isEmpty) {
+                  if (controller.contas.isEmpty) {
                     return Center(
                         child: Text(
-                      'Nenhuma oficina cadastrada.',
+                      'Nenhuma conta cadastrada.',
                       style: TextStyle(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
@@ -41,27 +46,19 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                   }
 
                   return ListView.builder(
-                    itemCount: controller.oficinas.length,
+                    itemCount: controller.contas.length,
                     itemBuilder: (context, index) {
-                      final oficina = controller.oficinas[index];
-                      
+                      final conta = controller.contas[index];
+
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 10.h, horizontal: 16.w),
-                        child: Box(context, oficina.nomeOficina, oficina),
+                        child: Box(context, '${conta.firstName} ${conta.lastName}', conta),
                       );
                     },
                   );
                 }),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-                child: ButtonBox(
-                  text: 'Adicionar Oficina',
-                  onPressed: controller.onAddOficinasPressed,
-                ),
-              ),
-              
             ],
           ),
         ),
@@ -100,7 +97,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                         SizedBox(width: 10.w),
                         Center(
                           child: Text(
-                            'Oficinas ADM',
+                            'Contas ADM',
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
@@ -120,7 +117,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
     );
   }
 
-  Widget Box(BuildContext context, text, Oficina oficina) {
+  Widget Box(BuildContext context, text, UserPermission conta) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -158,7 +155,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.goToEditOficina(oficina);
+                    controller.goToEditConta(conta);
                   },
                   icon: Icon(Icons.edit),
                   iconSize: 30.r,
@@ -167,8 +164,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                 IconButton(
                   onPressed: () {
                     controller.showDeleteConfirmationDialog(context, () async {
-                      await controller.onDeleteOficina(
-                          oficina); 
+                      await controller.onDeleteConta(conta);
                     });
                   },
                   icon: Icon(Icons.delete),
@@ -176,6 +172,34 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                   color: Colors.black,
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget searchMenu(TextEditingController searchController) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.search, color: Colors.black),
+          SizedBox(width: 8), // Espaçamento entre o ícone e o campo de texto
+          Expanded(
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Buscar...',
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+                // Lógica para filtrar resultados, se necessário
+              },
             ),
           ),
         ],

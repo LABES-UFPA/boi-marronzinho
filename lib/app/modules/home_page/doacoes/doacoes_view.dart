@@ -88,13 +88,7 @@ class DoacoesView extends GetView<DoacoesController> {
               child: Column(
                 children: [
                   buildPaymentButton('PIX', (){controller.onPixPressed();}),
-                  SizedBox(height: 16.h),
-                  buildPaymentButton('Cartão',(){controller.onCartaoPressed();}),
-                  SizedBox(height: 16.h),
-                  buildPaymentButton('Boleto', (){controller.onBoletoPressed();}),
-                  SizedBox(height: 16.h),
-                  buildPaymentButton('Outro', (){controller.onOutroPressed();}),
-                ],
+                  ],
               ),
             ),
           ],

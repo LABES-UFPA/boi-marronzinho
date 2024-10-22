@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
@@ -22,6 +24,7 @@ class EditorOficinaController extends BaseController {
   late Oficina oficina;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
+  var _imageCarregda = Rxn<File>();
   File? get image => _image.value;
 
   @override
@@ -72,6 +75,15 @@ class EditorOficinaController extends BaseController {
     }
   }
 
+  Uint8List? base64ToImage(String base64String) {
+    try {
+      return Base64Decoder().convert(base64String);
+    } catch (e) {
+      print('Erro ao decodificar a imagem: $e');
+      return null; // Retorna null em caso de erro
+    }
+  }
+
   Future<void> selectedDate(BuildContext context) async {
     DateTime? date = await showDatePicker(
         context: context, firstDate: DateTime(2000), lastDate: DateTime(2200));
@@ -96,7 +108,7 @@ class EditorOficinaController extends BaseController {
           limiteOficina: int.tryParse(participantesController.text) ?? 20,
         );*/
 
-        Get.offAllNamed(OficinasAdminModule.path);
+        Get.back();
       } finally {
         setLoading(false);
       }
