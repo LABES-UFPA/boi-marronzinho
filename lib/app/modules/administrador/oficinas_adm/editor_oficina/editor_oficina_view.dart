@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
   Widget build(BuildContext context) {
     final ImagePicker _picker = ImagePicker();
     File? _image;
+    final oficina = Get.arguments as Oficina;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -57,21 +60,25 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                                 inputBox(
                                     'Descrição',
                                     controller.descricaoController,
-                                    TextInputType.text, controller.validateText),
+                                    TextInputType.text,
+                                    controller.validateText),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Preço em Boicoins',
                                     controller.precoBoicoinsController,
-                                    TextInputType.number, controller.validateNumber,
-                                    formato: FilteringTextInputFormatter.digitsOnly),
+                                    TextInputType.number,
+                                    controller.validateNumber,
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Preço em Reais',
                                     controller.precoReaisController,
                                     TextInputType.numberWithOptions(
                                         decimal: true),
-                                        controller.validateNumber,
-                                        formato: FilteringTextInputFormatter.digitsOnly),
+                                    controller.validateNumber,
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 22.h),
                                 inputBoxDate('Data da Oficina', context,
                                     controller.dateController),
@@ -81,7 +88,8 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                                     controller.participantesController,
                                     TextInputType.number,
                                     controller.validateNumber,
-                                    formato: FilteringTextInputFormatter.digitsOnly),
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -138,36 +146,59 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
   }
 
   Widget imageOficina() {
-    return controller.image == null
-        ? Container(
-            width: 350.w,
-            height: 160.h,
-            child: Icon(
-              Icons.image,
-              size: 50,
-              color: Colors.white,
+    // Verifica se a imagem local (File) é nula
+    if (controller.image == null) {
+      // Se a imagem local for nula, verifica se a imagem Base64 está disponível
+      if (controller.oficina.imagem.isEmpty) {
+        // Se a imagem Base64 também estiver vazia, exibe o ícone
+        return Container(
+          width: 350.w,
+          height: 160.h,
+          child: Icon(
+            Icons.image,
+            size: 50,
+            color: Colors.white,
+          ),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 206, 206, 206),
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+        );
+      } else {
+        // Se a imagem Base64 estiver disponível, a exibe
+        return Container(
+          width: 350.w,
+          height: 200.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(16.0),
+            image: DecorationImage(
+              image: MemoryImage(base64Decode(controller.oficina.imagem)),
+              fit: BoxFit.cover,
             ),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 206, 206, 206),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-          )
-        : Container(
-            width: 350.w,
-            height: 200.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(16.0),
-              image: DecorationImage(
-                image: FileImage(controller.image!),
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
+          ),
+        );
+      }
+    } else {
+      // Se a imagem local não for nula, a exibe
+      return Container(
+        width: 350.w,
+        height: 200.h,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(16.0),
+          image: DecorationImage(
+            image: FileImage(controller.image!),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
   }
 
   Widget inputBox(String text, TextEditingController controller,
-      TextInputType type, String? Function(String?) validation, {TextInputFormatter? formato}) {
+      TextInputType type, String? Function(String?) validation,
+      {TextInputFormatter? formato}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -194,9 +225,9 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
             TextFormField(
               controller: controller,
               keyboardType: type,
-              inputFormatters: formato != null ? <TextInputFormatter>[formato] : 
-              <TextInputFormatter>[],
-              
+              inputFormatters: formato != null
+                  ? <TextInputFormatter>[formato]
+                  : <TextInputFormatter>[],
               decoration: InputDecoration(
                 hintText: controller.text,
                 hintStyle: TextStyle(color: Colors.grey),

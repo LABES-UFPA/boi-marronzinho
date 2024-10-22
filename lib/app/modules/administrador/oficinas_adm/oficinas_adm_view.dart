@@ -44,7 +44,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                     itemCount: controller.oficinas.length,
                     itemBuilder: (context, index) {
                       final oficina = controller.oficinas[index];
-
+                      
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 10.h, horizontal: 16.w),
@@ -61,6 +61,7 @@ class OficinasAdmView extends GetView<OficinasAdmController> {
                   onPressed: controller.onAddOficinasPressed,
                 ),
               ),
+              
             ],
           ),
         ),

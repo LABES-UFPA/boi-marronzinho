@@ -108,6 +108,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                             function: controller.onCadastroOficina,
                           ),
                         ),
+                        
                       ],
                     ),
                   ),

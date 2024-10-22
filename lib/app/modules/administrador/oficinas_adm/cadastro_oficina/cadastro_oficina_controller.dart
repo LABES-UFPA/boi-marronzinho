@@ -7,6 +7,7 @@ import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_reposito
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,6 +32,7 @@ class AddOficinaController extends BaseController {
   var isLoading = false.obs;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
+  File? imagem;
   File? get image => _image.value;
 
   @override
@@ -72,6 +74,7 @@ class AddOficinaController extends BaseController {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       _image.value = File(pickedFile.path);
+      imagem = File(pickedFile.path);
     }
   }
 
@@ -88,37 +91,37 @@ class AddOficinaController extends BaseController {
     if (registerOficinaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
+        double precoBoicoins =
+            double.tryParse(precoBoicoinsController.text) ?? 0.0;
         double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
+        print(dateController.text);
         DateTime? parsedDate;
         try {
           parsedDate = DateFormat("dd/MM/yyyy").parse(dateController.text);
         } catch (e) {
+          print("Formato de data inválido: ${dateController.text}");
           setLoading(false);
           return;
         }
 
-        
         String isoDate = parsedDate.toUtc().toIso8601String();
-        String base64Image = await convertImagePathToBase64(_image.string);
-
+        //String imageJson = await ImageData(_image, dadosRequest);
         print('-------------------------------');
         print('Imagem --->>>>>${_image.value!.path}');
-        print(base64Image);
+        print(imagem);
+
+        final registerOficina = await OficinasRepository().cadastrarOficina(
+          nome: nomeController.text,
+          descricao: descricaoController.text,
+          precoBoicoins: precoBoicoins,
+          precoReal: precoReais,
+          dataOficina: isoDate, // Usar data no formato ISO 8601
+          limiteOficina: int.tryParse(participantesController.text) ?? 20,
+          imagem: imagem!,
+          urlEndereco: enderecoController.text,
+        );
 
         
-         final registerOficina = await OficinasRepository().cadastrarOficina(
-           nome: nomeController.text,
-           descricao: descricaoController.text,
-           precoBoicoins: precoBoicoins,
-           precoReal: precoReais,
-           dataOficina: isoDate, // Usar data no formato ISO 8601
-           limiteOficina: int.tryParse(participantesController.text) ?? 20,
-           imagem: _image.value!,
-           urlEndereco: enderecoController.text,
-         );
-
-        // Redirecionar para a página de administração após o sucesso
         Get.back();
       } catch (e) {
         print("Erro ao cadastrar oficina: $e");
@@ -171,17 +174,4 @@ class AddOficinaController extends BaseController {
       throw 'Endereço ou número inválido';
     }
   }
-
-  Future<String> convertImagePathToBase64(String imagePath) async {
-  try {
-    File imageFile = File(imagePath);
-    List<int> imageBytes = await imageFile.readAsBytes();
-    String base64Image = base64Encode(imageBytes);
-    return base64Image;
-  } catch (e) {
-    print("Erro ao converter imagem para Base64: $e");
-    return "";
-  }
-}
-
 }
