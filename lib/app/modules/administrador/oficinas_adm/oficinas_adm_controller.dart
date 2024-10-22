@@ -24,7 +24,7 @@ class OficinasAdmController extends BaseController {
     setLoading(true);
 
     final response = await oficinasRepo.fetchOficinas();
-    final isValid = isValidResponse(response: response, title: 'Ovo Frito');
+    final isValid = isValidResponse(response: response, title: response.reason);
     if (isValid && response.data != null) {
       oficinas = response.data;
     }

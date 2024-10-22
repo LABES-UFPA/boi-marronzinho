@@ -1,3 +1,5 @@
+import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
 import 'package:boi_marronzinho/app/modules/perfil/meus_dados/meus_dados_controller.dart';
 import 'package:boi_marronzinho/app/modules/meus_dados/meus_dados_model.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +27,37 @@ class MeusDadosView extends GetView<MeusDadosController> {
                     child: CircularProgressIndicator(),
                   );
                 }
-
-                return _buildMeusDados(dados: controller.dadosExemplo);
+                return _buildMeusDados(dados: controller.meusDados, context: context);
               }))
             ])));
+  }
+
+  Widget _buildConfirmDeletion() {
+      return AlertDialog(
+        title: const Text("Você está prestes a deletar sua conta do Boi!"),
+        content: const Text("Você perderá todas as suas Boicoins :(\nEsta ação é irreversível.\nSegure o botão vermelho para continuar."),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text("VOLTAR")
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            onPressed: () {
+              return;
+            },
+            onLongPress: () {
+              print("Conta deletada");
+              ProfileRepository().deletarConta(id: UserCredentialsRepository().getCredentials().userId);
+            },
+            child: const Text("DELETAR CONTA", style: TextStyle(color: Colors.white),),
+          ),
+        ],
+      );
   }
 
   Widget _buildAppBar() {
@@ -88,7 +117,7 @@ class MeusDadosView extends GetView<MeusDadosController> {
     );
   }
 
-  Widget _buildMeusDados({required MeusDados dados}) {
+  Widget _buildMeusDados({required MeusDados dados, required BuildContext context}) {
     return Column(children: [
       50.verticalSpace,
       UserIcon(dados.username),
@@ -107,13 +136,13 @@ class MeusDadosView extends GetView<MeusDadosController> {
       }),
       20.verticalSpace,
       _buildButton("Deletar Conta", Colors.redAccent, () {
-        controller.onDeletarContaPressed();
+        Get.dialog(_buildConfirmDeletion());
       }),
     ]);
   }
 
   // Para logout e deletar conta
-  Widget _buildButton(String buttonText, Color buttonColor, Function callback,) {
+  Widget _buildButton(String buttonText, Color buttonColor, Function callback) {
     return InkWell(
       onTap: () => callback(),
       child: Container(

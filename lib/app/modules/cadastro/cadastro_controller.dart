@@ -1,4 +1,5 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/data/repositories/login/login_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/register/register_repository.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
@@ -58,16 +59,45 @@ class CadastroController extends BaseController {
           email: emailController.text,
         );
 
+        // if (!register.valid) {
+        //   setLoading(false);
+        //   return Toast.error(
+        //       'Não foi possível realizar o login',
+        //       register.reason!,
+        //       delayed: true
+        //   );
+        // }
+
         if (!register.valid) {
           setLoading(false);
-          return Toast.error(
-              'Não foi possível realizar o login',
+          return Toast.success(
+              'Sua conta foi criada com sucesso! Bem vindo ao boi!',
               register.reason!,
               delayed: true
           );
         }
 
-        Get.offAllNamed(HomeModule.path);
+        try {
+          final loginRepo = await LoginRepository().login(
+            email: email.value,
+            password: password.value,
+          );
+
+          if (!loginRepo.valid) {
+            setLoading(false);
+            return Toast.error(
+                'Não foi possível realizar o login',
+                loginRepo.reason!,
+                delayed: true
+            );
+          }
+
+          Get.offAllNamed(HomeModule.path);
+        }
+        finally {
+          setLoading(false);
+        }
+
       } finally {
         setLoading(false);
       }
