@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/enumerators/storage_keys.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.interface.dart';
@@ -13,6 +14,7 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
   static const String oficinasUrl = '/oficinas/lista-oficinas';
   static const String criarOficinasUrl = '/oficinas/cria-oficinas';
   static const String deletarOficinasUrl = '/oficinas/deleta-oficinas';
+  static const String inscreverEmOficina = '/oficinas/inscricao';
   late final CachedRequest _cache;
 
   OficinasRepository({CachedRequest? cachedRequest}) {
@@ -21,7 +23,7 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
 
   @override
   Future<dynamic> fetchOficinas() async {
-    final url = apiHelpers.buildUrl(url: oficinasUrl);
+    final url = apiHelpers.buildUrl(url: oficinasUrl, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
       final response = await client.get(url);
@@ -51,15 +53,15 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
   @override
   Future <dynamic> cadastrarOficina(
       {required String nome,
-      required String descricao,
-      required double precoBoicoins,
-      required double precoReal,
-      required String dataOficina,
-      required int limiteOficina,
-      required File imagem,
-      required String urlEndereco
+        required String descricao,
+        required double precoBoicoins,
+        required double precoReal,
+        required String dataOficina,
+        required int limiteOficina,
+        required File imagem,
+        required String urlEndereco
       }) async {
-      final url = apiHelpers.buildUrl(url: criarOficinasUrl);
+    final url = apiHelpers.buildUrl(url: criarOficinasUrl);
 
     final formData = FormData.fromMap({
       'nome': nome,
@@ -83,12 +85,12 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
     } catch (error, trace) {
       return errorResponse(error, trace: trace);
     }
-}
+  }
 
 
   @override
   Future deletarOficinas({required String id}) async {
-    final url = apiHelpers.buildUrl(url: deletarOficinasUrl);
+    final url = apiHelpers.buildUrl(url: deletarOficinasUrl, endpoint: Endpoints.BOI_MARRONZINHO);
     final bodyRequest = {'id':id};
     try {
       final response = await client.delete(url, bodyRequest);
@@ -98,6 +100,26 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
       }
 
       return (valid: true, reason: null, data: null);
+    } catch (error, trace) {
+      return errorResponse(error, trace: trace);
+    }
+  }
+
+  @override
+  Future inscricaoOficina({required String usuarioId, required String oficinaId}) async {
+    final url = apiHelpers.buildUrl(url: inscreverEmOficina, endpoint: Endpoints.BOI_MARRONZINHO);
+    final bodyRequest = {
+      'usuarioId': usuarioId,
+      'oficinaId': oficinaId,
+    };
+    try {
+      final response = await client.post(url, bodyRequest);
+      final invalidResponse = isValidResponse(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      return (valid: true, reason: 'Inscrição confirmada com sucesso!', data: response.data);
     } catch (error, trace) {
       return errorResponse(error, trace: trace);
     }

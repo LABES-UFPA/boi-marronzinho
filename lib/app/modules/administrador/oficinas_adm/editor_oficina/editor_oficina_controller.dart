@@ -19,7 +19,7 @@ class EditorOficinaController extends BaseController {
   final TextEditingController enderecoController = TextEditingController();
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longitudeController = TextEditingController();
-  final GlobalKey<FormState> editOficinaFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> editOficinaFormKey2 = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   late Oficina oficina;
   var selectDate = DateTime.now().obs;
@@ -93,7 +93,7 @@ class EditorOficinaController extends BaseController {
   }
 
   Future<void> onEditOficina() async {
-    if (editOficinaFormKey.currentState?.validate() ?? false) {
+    if (editOficinaFormKey2.currentState?.validate() ?? false) {
       setLoading(true);
       try {
         double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;

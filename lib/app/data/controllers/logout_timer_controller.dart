@@ -21,9 +21,11 @@ class LogoutTimerController extends BaseController {
       log('LogoutTimer: Verificação periódica em andamento');
       if (Get.currentRoute == LoginModule.path || Get.currentRoute == SplashModule.path || Get.currentRoute == CadastroModule.path) {
         log('LogoutTimer: verificado, mas está numa área que não precisa de Logout');
+        return;
       }
       // 'short-circuited or' aqui! Pra não chamar isTokenExpired com Token nulo!
       if (MemoryStore(StorageKeys.USER_TOKEN).read() == null || isTokenExpired()) {
+        log('LogoutTimer: Token de usuário expirado! Dando logout!');
         logoutByLogoutTimer();
       }
     });

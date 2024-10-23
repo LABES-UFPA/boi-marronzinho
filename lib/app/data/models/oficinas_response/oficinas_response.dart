@@ -7,6 +7,7 @@ class Oficina {
   final DateTime dataOficina;
   final int limiteParticipantes;
   final int participantesAtual;
+  final String imagem;
   final String linkEndereco;
 
   Oficina({
@@ -18,6 +19,7 @@ class Oficina {
     required this.dataOficina,
     required this.limiteParticipantes,
     required this.participantesAtual,
+    required this.imagem,
     required this.linkEndereco,
   });
 
@@ -31,6 +33,7 @@ class Oficina {
       dataOficina: DateTime.parse(map['dataEvento']),
       limiteParticipantes: map['limiteParticipantes'],
       participantesAtual: map['participantesAtual'],
+      imagem: map['imagem'] ?? '', // Prevenir null
       linkEndereco: map['linkEndereco'],
     );
   }
@@ -44,6 +47,7 @@ class Oficina {
       'precoReal': precoReal,
       'dataOficina': dataOficina.toIso8601String(),
       'limiteParticipantes': limiteParticipantes,
+      'imagem': imagem,
       'linkEndereco': linkEndereco,
     };
   }

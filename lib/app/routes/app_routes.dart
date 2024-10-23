@@ -8,7 +8,6 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_
 import 'package:boi_marronzinho/app/modules/administrador/scanner/scanner_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
-import 'package:boi_marronzinho/app/modules/initial/flow_initial/flow_initial_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
@@ -27,7 +26,6 @@ class AppPages {
   AppPages._();
 
   static final routes = [
-    FlowInitialModule.page,
     HomeModule.page,
     EventosModule.page,
     DoacoesModule.page,
