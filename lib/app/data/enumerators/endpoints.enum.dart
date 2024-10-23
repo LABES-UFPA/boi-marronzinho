@@ -2,4 +2,6 @@
 enum Endpoints {
   /// Represents the Projeto endpoint
   BOI_MARRONZINHO,
+
+  MINIO
 }
