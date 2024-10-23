@@ -275,8 +275,7 @@ class OficinasView extends GetView<OficinasController> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
-                                  onPressed: () =>
-                                      Get.to( () => _buildInscreverSePage(oficina)),
+                                  onPressed: () => Get.to(_buildInscreverSePage(oficina)),
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green,
                                       shape: const RoundedRectangleBorder(
@@ -308,7 +307,6 @@ class OficinasView extends GetView<OficinasController> {
   }
 
   Widget _buildInscreverSePage(Oficina oficina) {
-    controller.getSaldo();
     // Carrega saldo
     return SafeArea(
       child: Scaffold(
