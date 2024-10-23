@@ -1,14 +1,13 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
-import 'package:boi_marronzinho/app/data/models/profile/profile.dart';
 import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
-import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_permission/user_permisson_repository.dart';
 import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ContasController extends BaseController {
-  final contasRepo = ProfileRepository();
+  final contasRepo = UserPermissionRepository();
   TextEditingController searchController = TextEditingController();
   //RxBool get isLoading => super.isLoading;
   //var isLoading = true.obs;
@@ -17,21 +16,21 @@ class ContasController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    getContasTeste();
+    getContas();
   }
 
   Future<void> getContas() async {
     setLoading(true);
 
-    //final response = await contasRepo.fetchContas();
-    /*
 
-    final isValid = isValidResponse(response: response, title: 'Ovo Frito');
+
+    final response = await contasRepo.fetchAllUsers();
+
+    final isValid = isValidResponse(response: response, title: response.reason);
     if (isValid && response.data != null) {
       contas = response.data;
     }
 
-    */
 
     setLoading(false);
     update();

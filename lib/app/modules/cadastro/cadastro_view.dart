@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class CadastroView extends GetView<CadastroController> {
   CadastroView({Key? key}) : super(key: key);
-  final controller = Get.put(CadastroController());
+  // final controller = Get.put(CadastroController());
 
   // TODO: Adicionar tela de Ok quando cadastrar
 

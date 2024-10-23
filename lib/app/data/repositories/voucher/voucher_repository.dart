@@ -43,7 +43,7 @@ final class VoucherRepository extends RequestRepository implements IVoucherRepos
 
   @override
   Future<dynamic> validaVouchers({required String codigoQRCode}) async {
-    final url = apiHelpers.buildUrl(url: vouchersUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final url = apiHelpers.buildUrl(url: validaVouchersUrl, endpoint: Endpoints.BOI_MARRONZINHO);
     final Map<String,dynamic> bodyRequest = {'idVoucher' : codigoQRCode};
 
     try {

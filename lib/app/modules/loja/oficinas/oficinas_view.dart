@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_controller.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class OficinasView extends GetView<OficinasController> {
           }
           return Column(
             children: [
-              _buildAppBar(),
+              _buildAppBar(texto: 'Oficinas'),
               // Oficinas
               Expanded(
                 child: ListView.builder(
@@ -40,7 +41,7 @@ class OficinasView extends GetView<OficinasController> {
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar({required String texto}) {
     return Stack(
       children: [
         ClipPath(
@@ -68,16 +69,12 @@ class OficinasView extends GetView<OficinasController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 10.w),
-                        Icon(
-                          Icons.co_present,
-                          color: Colors.black,
-                          size: 30.sp,
-                        ),
                         SizedBox(width: 5.w),
-                        Center(
-                          child: Text(
-                            'Oficinas',
+                        Expanded(
+                          child: AutoSizeText(
+                            texto,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
@@ -180,11 +177,10 @@ class OficinasView extends GetView<OficinasController> {
     return SafeArea(
       child: Scaffold(
           backgroundColor: const Color(0xFFBA400A),
-          appBar: AppBar(title: Text(oficina.nomeOficina)),
           // Column, Padding, Column
           body: Column(
             children: [
-
+              _buildAppBar(texto: oficina.nomeOficina),
               // Imagem
               Padding(
                   padding: const EdgeInsets.all(10),
@@ -280,7 +276,7 @@ class OficinasView extends GetView<OficinasController> {
                             Expanded(
                               child: ElevatedButton(
                                   onPressed: () =>
-                                      Get.to(_buildInscreverSePage(oficina)),
+                                      Get.to( () => _buildInscreverSePage(oficina)),
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green,
                                       shape: const RoundedRectangleBorder(

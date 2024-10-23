@@ -20,7 +20,6 @@ class MeusDadosView extends GetView<MeusDadosController> {
             backgroundColor: bgColor,
             body: Column(children: [
               _buildAppBar(),
-              50.verticalSpace,
               Expanded(child: Obx(() {
                 if (controller.isLoading.isTrue) {
                   return const Center(

@@ -8,8 +8,6 @@ import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
 import 'package:boi_marronzinho/app/data/util/helpers/index.dart';
 import 'package:boi_marronzinho/app/main_getx_app.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
-import 'package:boi_marronzinho/app/modules/initial/flow_initial/flow_initial_module.dart';
-import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/splash/splash_module.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';

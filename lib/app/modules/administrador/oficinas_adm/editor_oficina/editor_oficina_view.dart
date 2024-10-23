@@ -47,7 +47,7 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                           ],
                         ),
                         Form(
-                            key: controller.editOficinaFormKey,
+                            key: controller.editOficinaFormKey2,
                             child: Column(
                               children: [
                                 SizedBox(height: 22.h),

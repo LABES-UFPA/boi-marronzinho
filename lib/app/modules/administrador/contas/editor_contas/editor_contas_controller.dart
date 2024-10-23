@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_permission/user_permisson_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,12 +37,8 @@ class EditorContaController extends GetxController {
       setLoading(true);
       try {
         // Aqui você pode fazer a requisição para atualizar a conta
-        // final updatedConta = await UserRepository().updateUser(
-        //   firstName: firstNameController.text,
-        //   lastName: lastNameController.text,
-        //   email: emailController.text,
-        //   tipoUsuario: tipoUsuarioController.text,
-        //   image: image, // se necessário
+        // final updatedConta = await UserPermissionRepository().atualizarPermissaoUsuario(
+        //   id:
         // );
 
         Get.back(); // Redirecionar após edição

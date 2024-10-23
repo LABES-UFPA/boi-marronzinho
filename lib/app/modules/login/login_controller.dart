@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 class LoginController extends BaseController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>(debugLabel: '_loginFormKey');
   RxString email = ''.obs;
   RxString password = ''.obs;
 
@@ -38,18 +38,17 @@ class LoginController extends BaseController {
     return null;
   }
 
-  // TODO: Descomentar o if na produção, é só pra passar direto
   Future<void> onLogin() async {
-    // if (loginFormKey.currentState?.validate() ?? false) {
+    if (loginFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
 
-        final loginRepo = await LoginRepository().login(password: "senhaSegura123", email: "vlad@example.com");
+        // final loginRepo = await LoginRepository().login(password: "senhaSegura123", email: "vlad@example.com");
 
-        // final loginRepo = await LoginRepository().login(
-        //   email: emailController.text,
-        //   password: passwordController.text,
-        // );
+        final loginRepo = await LoginRepository().login(
+          email: emailController.text,
+          password: passwordController.text,
+        );
 
         if (!loginRepo.valid) {
           setLoading(false);
@@ -64,11 +63,16 @@ class LoginController extends BaseController {
         }
 
         Get.offAllNamed(HomeModule.path);
+        return Toast.success(
+            'Login realizado com sucesso!',
+            'Bem vindo ao boi!',
+            delayed: true
+        );
       }
       finally {
         setLoading(false);
       }
-    // } // if
+    } // if
   }
 
   void onCadastroPressed() {

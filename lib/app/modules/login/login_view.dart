@@ -4,30 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginView extends GetView<LoginController> {
-  LoginView({Key? key}) : super(key: key);
-  final controller = Get.put(LoginController());
+  LoginView({super.key});
+  // final controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Color(0xFFF69302),
+        backgroundColor: const Color(0xFFF69302),
         body: Column(
           children: [
-            Container(
-              child: Image.asset(
-                "assets/images/logo/ImgBoi.png",
-                width: 200.0.w,
-                height: 275.0.h,
-              ),
+            Image.asset(
+              "assets/images/logo/ImgBoi.png",
+              width: 200.0.w,
+              height: 275.0.h,
             ),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFBA400A),
+                  color: const Color(0xFFBA400A),
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(80).r,
+                    topRight: const Radius.circular(80).r,
                   ),
                 ),
                 child: Column(
@@ -48,12 +46,13 @@ class LoginView extends GetView<LoginController> {
                                     style: TextStyle(
                                       fontSize: 32.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFFF69302),
+                                      color: const Color(0xFFF69302),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 20.h),
                                 InputBox(
+                                  key: UniqueKey(),
                                   text: 'Email',
                                   hint: 'email@exemplo.com',
                                   type: TextInputType.emailAddress,
@@ -62,6 +61,7 @@ class LoginView extends GetView<LoginController> {
                                 ),
                                 SizedBox(height: 30.h),
                                 InputBox(
+                                  key: UniqueKey(),
                                   text: 'Senha',
                                   hint: '**********',
                                   type: TextInputType.visiblePassword,
@@ -95,7 +95,6 @@ class LoginView extends GetView<LoginController> {
                                           padding: EdgeInsets.symmetric(horizontal: 6.w)
                                         ),
                                         child: Text(
-                                          
                                           'Cadastre-se',
                                           style: TextStyle(
                                               color: Colors.white,
@@ -195,17 +194,18 @@ class ButtonBox extends StatelessWidget {
   final String text;
   final Future<void> Function() validation;
 
-  ButtonBox({required this.text, required this.validation});
+  const ButtonBox({super.key, required this.text, required this.validation});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
           await validation();
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFF69302),
+            backgroundColor: const Color(0xFFF69302),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20.r),

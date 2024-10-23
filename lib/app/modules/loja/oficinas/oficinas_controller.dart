@@ -13,34 +13,31 @@ class OficinasController extends BaseController {
   int saldo = 0;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    getOficinas();
+    setLoading(true);
+    await getOficinas();
+    await getSaldo();
+    setLoading(false);
+    update();
   }
 
   // Mesmo da Scarlet
   Future<void> getOficinas() async {
-    setLoading(true);
-
     final response = await OficinasRepository().fetchOficinas();
     final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar lista de oficinas');
     if (isValid && response.data != null) {
       oficinas = response.data;
     }
-    setLoading(false);
-    update();
   }
 
   Future<void> getSaldo() async {
-    setLoading(true);
     // TODO: Ver se tem em cache
     final response = await ProfileRepository().getProfileInfo(id: UserCredentialsRepository().getCredentials().userId);
     final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar saldo de boicoins');
     if (isValid && response.data != null) {
       saldo = response.data!.saldoBoicoins.toInt();
     }
-    setLoading(false);
-    update();
   }
 
   // TODO: Pagar com Pix aqui
@@ -49,6 +46,15 @@ class OficinasController extends BaseController {
   }
 
   Future<void> pagarComBoicoins(Oficina oficina) async {
+    if (oficina.precoBoicoin.toInt() > saldo) {
+      Get.offAndToNamed(OficinasModule.path);
+      return Toast.error(
+          'Erro na Inscrição',
+          'Você não tem boicoins suficientes',
+          delayed: true
+      );
+    }
+
     final response = await OficinasRepository().inscricaoOficina(
         usuarioId: UserCredentialsRepository().getCredentials().userId,
         oficinaId: oficina.id
