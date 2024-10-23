@@ -1,8 +1,9 @@
+import 'package:boi_marronzinho/app/data/models/evento/evento.dart';
 import 'package:boi_marronzinho/app/modules/home_page/eventos/eventos_controller.dart';
-import 'package:boi_marronzinho/app/modules/home_page/eventos/eventos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class EventosView extends GetView<EventosController> {
   static const Color bgColor = Color(0xFFF69302);
@@ -15,12 +16,14 @@ class EventosView extends GetView<EventosController> {
         child: Scaffold(
           backgroundColor: bgColor,
           body: Obx(() {
-            if (controller.isDescriptionOpen.isTrue) {
-              return _buildDetalhesEvento(controller.selectedEvent, context);
+            if (controller.isLoading.isTrue) {
+              return const Center(
+                child: CircularProgressIndicator()
+              );
             }
             return Column(
               children: [
-                _buildAppBar(),
+                _buildAppBar(texto: 'Eventos'),
                 Expanded(
                   child: ListView.builder(
                     itemCount: controller.eventos.length,
@@ -38,42 +41,6 @@ class EventosView extends GetView<EventosController> {
     ));
   }
 
-  Widget _buildDetalhesEvento(Evento evento, BuildContext context) {
-    return Expanded(
-        child: SingleChildScrollView(
-            child: Padding(
-      padding: EdgeInsets.all(0.05.sw),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  controller.toggleDescription();
-                },
-                child: Image.asset('assets/images/icons/mingcute_arrow-up-fill.png', scale: 1.3,),
-              ),
-              10.verticalSpace,
-            ],
-          ),
-          Image.asset(evento.imagePath),
-          10.verticalSpace,
-          Text(
-            evento.longDescription,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.sp,
-                    height: 1.sp,
-                  ),
-                ),
-              ],
-            ),
-          )
-      ),
-    );
-  }
-
   Widget _buildEventoCard(Evento evento, BuildContext context) {
     return Center(
         child: SizedBox(
@@ -89,7 +56,7 @@ class EventosView extends GetView<EventosController> {
             Expanded(
               flex: 0,
               child: Text(
-                evento.name,
+                evento.nome,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -104,8 +71,7 @@ class EventosView extends GetView<EventosController> {
                 flex: 2,
                 child: InkWell(
                   onTap: () {
-                    controller.selectedEvent = evento;
-                    controller.toggleDescription();
+                    Get.to(() => _buildDetalhesEvento(evento));
                   },
                   child: Container(
                       padding: EdgeInsets.only(left: 15.w, right: 15.w),
@@ -116,15 +82,15 @@ class EventosView extends GetView<EventosController> {
                             const TextSpan(
                                 text: "Localização: ",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: "${evento.location}\n"),
+                            TextSpan(text: "${evento.linkEndereco}\n"),
                             const TextSpan(
                                 text: "Data: ",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: "${evento.data}\n"),
-                            const TextSpan(
-                                text: "Descrição: ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: "${evento.description}\n"),
+                            TextSpan(text: " ${ DateFormat('dd/MM/yyyy - HH:mm').format(evento.dataEvento)}hrs\n"),
+                            // const TextSpan(
+                            //     text: "Descrição: ",
+                            //     style: TextStyle(fontWeight: FontWeight.bold)),
+                            // TextSpan(text: "${evento.descricao}\n"),
                           ]))),
                 )),
 
@@ -152,7 +118,47 @@ class EventosView extends GetView<EventosController> {
     ));
   }
 
-  Widget _buildAppBar() {
+  // Coloca a página de descrição mais detalhada
+  Widget _buildDetalhesEvento(Evento evento) {
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: const Color(0xFFBA400A),
+          // Column, Padding, Column
+          body: Column(
+            children: [
+              _buildAppBar(texto: evento.nome),
+              // Imagem
+              Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    // TODO: substituir com imagem aqui
+                    child: Image.asset('assets/images/eventos/evento-1.jpg'),
+                  )
+              ),
+
+              // Descrição - Scrollable
+              Expanded(
+                child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        evento.descricao,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                ),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+
+  Widget _buildAppBar({required String texto}) {
     return Stack(
       children: [
         ClipPath(
@@ -189,7 +195,7 @@ class EventosView extends GetView<EventosController> {
                         SizedBox(width: 5.w),
                         Center(
                           child: Text(
-                            'Eventos',
+                            texto,
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
