@@ -129,6 +129,8 @@ class ApiHelpers {
     switch (endpoint) {
       case Endpoints.BOI_MARRONZINHO:
         return '${endpointEnv.projeto}$url';
+      case Endpoints.MINIO:
+        return '${endpointEnv.minio}$url';
     }
   }
 
