@@ -1,17 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_controller.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/item_troca/editor_item/editor_item_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
-import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class EditorContaView extends GetView<EditorContaController> {
-  const EditorContaView({Key? key}) : super(key: key);
+class EditorItemView extends GetView<EditorItemController> {
+  const EditorItemView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,35 +29,57 @@ class EditorContaView extends GetView<EditorContaController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Stack(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          children: [
+                            
+                            Padding(
+                              padding: EdgeInsets.all(6.0.r),
+                              child: ButtonBox(
+                                text: 'Alterar Imagem',
+                                function: controller.pickImage,
+                              ),
+                            ),
+                          ],
+                        ),
                         Form(
-                            key: controller.editContaFormKey,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Nome',
-                                    controller.firstNameController,
-                                    TextInputType.text,
-                                    controller.validateText),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Sobrenome',
-                                    controller.lastNameController,
-                                    TextInputType.text,
-                                    controller.validateText),
-                                SizedBox(height: 22.h),
-                                dropBox(
-                                    'Permissão de usuário',
-                                    controller.tipoUsuarioController,
-                                    controller.selectedOption),
-                                SizedBox(height: 24.h),
-                              ],
-                            )),
+                          key: controller.editItemFormKey, // Atualize a chave do formulário
+                          child: Column(
+                            children: [
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Nome do Item', // Atualize o texto
+                                controller.nomeController,
+                                TextInputType.text,
+                                controller.validateText,
+                              ),
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Descrição do Item', // Atualize o texto
+                                controller.descricaoController,
+                                TextInputType.text,
+                                controller.validateText,
+                              ),
+                              
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Preço em Reais',
+                                controller.precoReaisController,
+                                TextInputType.numberWithOptions(decimal: true),
+                                controller.validateNumber,
+                                formato: FilteringTextInputFormatter.digitsOnly,
+                              ),
+                              SizedBox(height: 22.h),
+                              inputBoxDate('Data do Item', context, controller.dateController), // Atualize o texto
+                              SizedBox(height: 24.h),
+                            ],
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
                             text: 'Salvar Alterações',
-                            function: controller.onEditConta,
+                            function: controller.onEditItem, // Atualize para o método correto
                           ),
                         ),
                       ],
@@ -105,6 +126,8 @@ class EditorContaView extends GetView<EditorContaController> {
       ],
     );
   }
+
+  
 
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation,
@@ -153,22 +176,17 @@ class EditorContaView extends GetView<EditorContaController> {
     );
   }
 
-  Widget dropBox(
-      String text, TextEditingController controller, RxString selectedOption) {
-    final List<DropdownMenuItem<String>> items = [
-      DropdownMenuItem(value: 'Usuario', child: Text('Usuário')),
-      DropdownMenuItem(value: 'Administrador', child: Text('Administrador')),
-    ];
-
+  Widget inputBoxDate(
+      String text, BuildContext context, TextEditingController controllerText) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20.r),
+          bottomRight: Radius.circular(20.r),
+          topLeft: Radius.circular(20.r),
         ),
       ),
       child: Center(
@@ -178,37 +196,29 @@ class EditorContaView extends GetView<EditorContaController> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                  color: Colors.black,
+                  height: 0.8.h),
             ),
-            Obx(() {
-              return DropdownButtonFormField<String>(
-                value: selectedOption.value.isNotEmpty
-                    ? selectedOption.value
-                    : null, // Se o valor não estiver vazio, exibe o valor
-                items: items,
-                onChanged: (value) {
-                  selectedOption.value =
-                      value ?? ''; // Atualiza a variável observável
-                  controller.text =
-                      value ?? ''; // Atualiza o controller, se necessário
-                },
-                decoration: InputDecoration(
-                  hintText: 'Selecione permissão',
-                  border: InputBorder.none,
-                  errorStyle: TextStyle(fontSize: 14),
-                ),
-              );
-            }),
+            Obx(() => TextFormField(
+                  controller: controllerText,
+                  decoration: InputDecoration(
+                    hintText:
+                        "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
+                    border: InputBorder.none,
+                    errorStyle: TextStyle(
+                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                  ),
+                  onTap: () {
+                    controller.selectedDate(context);
+                  },
+                )),
           ],
         ),
       ),
     );
   }
-
-
-  
 }
 
 class ButtonBox extends StatelessWidget {
@@ -216,6 +226,7 @@ class ButtonBox extends StatelessWidget {
   final Future<void> Function() function;
 
   ButtonBox({required this.text, required this.function});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -230,15 +241,10 @@ class ButtonBox extends StatelessWidget {
                 bottomRight: Radius.circular(20.r),
                 topLeft: Radius.circular(20.r),
               ),
-            ),
-            padding: EdgeInsets.all(14.h)),
+            )),
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+          style: TextStyle(fontSize: 18.sp),
         ),
       ),
     );

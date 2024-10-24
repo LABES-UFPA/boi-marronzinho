@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:boi_marronzinho/app/data/models/profile/profile.dart';
-import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
-import 'package:boi_marronzinho/app/modules/administrador/contas/contas_controller.dart';
+import 'package:boi_marronzinho/app/data/models/evento/evento.dart';
+import 'package:boi_marronzinho/app/modules/administrador/eventos/eventos_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
-import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
+import 'package:boi_marronzinho/app/modules/perfil/perfil_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ContasView extends GetView<ContasController> {
-  const ContasView({Key? key}) : super(key: key);
+class EventosAdmView extends GetView<EventosAdmController> {
+  const EventosAdmView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +21,6 @@ class ContasView extends GetView<ContasController> {
           child: Column(
             children: [
               _buildAppBar(),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: searchMenu(controller.searchController),
-              ),
               Expanded(
                 child: Obx(() {
                   if (controller.isLoading == true) {
@@ -34,10 +29,10 @@ class ContasView extends GetView<ContasController> {
                       color: Colors.yellow,
                     )); // Mostra um loading.
                   }
-                  if (controller.contas.isEmpty) {
+                  if (controller.eventos.isEmpty) {
                     return Center(
                         child: Text(
-                      'Nenhuma conta cadastrada.',
+                      'Nenhum evento cadastrado.',
                       style: TextStyle(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
@@ -47,18 +42,25 @@ class ContasView extends GetView<ContasController> {
                   }
 
                   return ListView.builder(
-                    itemCount: controller.contas.length,
+                    itemCount: controller.eventos.length,
                     itemBuilder: (context, index) {
-                      final conta = controller.contas[index];
-
+                      final evento = controller.eventos[index];
+                      
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 10.h, horizontal: 16.w),
-                        child: Box(context, '${conta.firstName} ${conta.lastName}', conta),
+                        child: _buildBox(context, evento.nome, evento),
                       );
                     },
                   );
                 }),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+                child: ButtonBox(
+                  text: 'Adicionar Evento',
+                  onPressed: controller.onAddEventosPressed,
+                ),
               ),
             ],
           ),
@@ -98,7 +100,7 @@ class ContasView extends GetView<ContasController> {
                         SizedBox(width: 10.w),
                         Center(
                           child: Text(
-                            'Contas ADM',
+                            'Eventos ADM',
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
@@ -118,7 +120,7 @@ class ContasView extends GetView<ContasController> {
     );
   }
 
-  Widget Box(BuildContext context, text, UserPermission conta) {
+  Widget _buildBox(BuildContext context, String text, Evento evento) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
       decoration: BoxDecoration(
@@ -156,7 +158,7 @@ class ContasView extends GetView<ContasController> {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.goToEditConta(conta);
+                    controller.goToEditEvento(evento);
                   },
                   icon: Icon(Icons.edit),
                   iconSize: 30.r,
@@ -165,7 +167,7 @@ class ContasView extends GetView<ContasController> {
                 IconButton(
                   onPressed: () {
                     controller.showDeleteConfirmationDialog(context, () async {
-                      await controller.onDeleteConta(conta);
+                      await controller.onDeleteEvento(evento); 
                     });
                   },
                   icon: Icon(Icons.delete),
@@ -179,34 +181,6 @@ class ContasView extends GetView<ContasController> {
       ),
     );
   }
-
-  Widget searchMenu(TextEditingController searchController) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.search, color: Colors.black),
-          SizedBox(width: 8), // Espaçamento entre o ícone e o campo de texto
-          Expanded(
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Buscar...',
-                border: InputBorder.none,
-              ),
-              onChanged: (value) {
-                // Lógica para filtrar resultados, se necessário
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class ButtonBox extends StatelessWidget {
@@ -214,6 +188,7 @@ class ButtonBox extends StatelessWidget {
   final VoidCallback onPressed;
 
   ButtonBox({required this.text, required this.onPressed});
+  
   @override
   Widget build(BuildContext context) {
     return Container(

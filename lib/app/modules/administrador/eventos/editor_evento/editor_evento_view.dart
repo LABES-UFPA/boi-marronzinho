@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_controller.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/eventos/editor_evento/editor_evento_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class EditorContaView extends GetView<EditorContaController> {
-  const EditorContaView({Key? key}) : super(key: key);
+class EditorEventoView extends GetView<EditorEventoController> {
+  const EditorEventoView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +30,65 @@ class EditorContaView extends GetView<EditorContaController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Stack(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          children: [
+                            // Obx(() {
+                            //   return imageEvento();
+                            // }),
+                            Padding(
+                              padding: EdgeInsets.all(6.0.r),
+                              child: ButtonBox(
+                                text: 'Alterar Imagem',
+                                function: controller.pickImage,
+                              ),
+                            ),
+                          ],
+                        ),
                         Form(
-                            key: controller.editContaFormKey,
+                            key: controller.editEventoFormKey, // Atualize a chave do formulário
                             child: Column(
                               children: [
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Nome',
-                                    controller.firstNameController,
+                                    controller.nomeController,
                                     TextInputType.text,
                                     controller.validateText),
                                 SizedBox(height: 22.h),
                                 inputBox(
-                                    'Sobrenome',
-                                    controller.lastNameController,
+                                    'Descrição',
+                                    controller.descricaoController,
                                     TextInputType.text,
                                     controller.validateText),
                                 SizedBox(height: 22.h),
-                                dropBox(
-                                    'Permissão de usuário',
-                                    controller.tipoUsuarioController,
-                                    controller.selectedOption),
+                                inputBox(
+                                    'Preço em Boicoins',
+                                    controller.precoBoicoinsController,
+                                    TextInputType.number,
+                                    controller.validateNumber,
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
+                                SizedBox(height: 22.h),
+                                inputBox(
+                                    'Preço em Reais',
+                                    controller.precoReaisController,
+                                    TextInputType.numberWithOptions(
+                                        decimal: true),
+                                    controller.validateNumber,
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
+                                SizedBox(height: 22.h),
+                                inputBoxDate('Data do Evento', context,
+                                    controller.dateController),
+                                SizedBox(height: 22.h),
+                                inputBox(
+                                    'Limite de Participantes',
+                                    controller.participantesController,
+                                    TextInputType.number,
+                                    controller.validateParticipants, // Atualize a validação para participantes
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -58,7 +96,7 @@ class EditorContaView extends GetView<EditorContaController> {
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
                             text: 'Salvar Alterações',
-                            function: controller.onEditConta,
+                            function: controller.onEditEvento, // Atualize a função de edição
                           ),
                         ),
                       ],
@@ -105,6 +143,52 @@ class EditorContaView extends GetView<EditorContaController> {
       ],
     );
   }
+
+  // Widget imageEvento() {
+  //   if (controller.image == null) {
+  //     if (controller.evento.imagem.isEmpty) {
+  //       return Container(
+  //         width: 350.w,
+  //         height: 160.h,
+  //         child: Icon(
+  //           Icons.image,
+  //           size: 50,
+  //           color: Colors.white,
+  //         ),
+  //         decoration: BoxDecoration(
+  //           color: const Color.fromARGB(255, 206, 206, 206),
+  //           borderRadius: BorderRadius.circular(16.0),
+  //         ),
+  //       );
+  //     } else {
+  //       return Container(
+  //         width: 350.w,
+  //         height: 200.h,
+  //         decoration: BoxDecoration(
+  //           shape: BoxShape.rectangle,
+  //           borderRadius: BorderRadius.circular(16.0),
+  //           image: DecorationImage(
+  //             image: MemoryImage(base64Decode(controller.evento.imagem)), // Atualize para evento
+  //             fit: BoxFit.cover,
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   } else {
+  //     return Container(
+  //       width: 350.w,
+  //       height: 200.h,
+  //       decoration: BoxDecoration(
+  //         shape: BoxShape.rectangle,
+  //         borderRadius: BorderRadius.circular(16.0),
+  //         image: DecorationImage(
+  //           image: FileImage(controller.image!),
+  //           fit: BoxFit.cover,
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation,
@@ -153,22 +237,17 @@ class EditorContaView extends GetView<EditorContaController> {
     );
   }
 
-  Widget dropBox(
-      String text, TextEditingController controller, RxString selectedOption) {
-    final List<DropdownMenuItem<String>> items = [
-      DropdownMenuItem(value: 'Usuario', child: Text('Usuário')),
-      DropdownMenuItem(value: 'Administrador', child: Text('Administrador')),
-    ];
-
+  Widget inputBoxDate(
+      String text, BuildContext context, TextEditingController controllerText) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20.r),
+          bottomRight: Radius.circular(20.r),
+          topLeft: Radius.circular(20.r),
         ),
       ),
       child: Center(
@@ -178,37 +257,29 @@ class EditorContaView extends GetView<EditorContaController> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                  color: Colors.black,
+                  height: 0.8.h),
             ),
-            Obx(() {
-              return DropdownButtonFormField<String>(
-                value: selectedOption.value.isNotEmpty
-                    ? selectedOption.value
-                    : null, // Se o valor não estiver vazio, exibe o valor
-                items: items,
-                onChanged: (value) {
-                  selectedOption.value =
-                      value ?? ''; // Atualiza a variável observável
-                  controller.text =
-                      value ?? ''; // Atualiza o controller, se necessário
-                },
-                decoration: InputDecoration(
-                  hintText: 'Selecione permissão',
-                  border: InputBorder.none,
-                  errorStyle: TextStyle(fontSize: 14),
-                ),
-              );
-            }),
+            Obx(() => TextFormField(
+                  controller: controllerText,
+                  decoration: InputDecoration(
+                    hintText:
+                        "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
+                    border: InputBorder.none,
+                    errorStyle: TextStyle(
+                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                  ),
+                  onTap: () {
+                    controller.selectedDate(context);
+                  },
+                )),
           ],
         ),
       ),
     );
   }
-
-
-  
 }
 
 class ButtonBox extends StatelessWidget {

@@ -1,17 +1,16 @@
 import 'dart:io';
 
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/item_troca/cadastro_item/cadastro_item_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_view.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
-import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class AddOficinaView extends GetView<AddOficinaController> {
-  const AddOficinaView({Key? key}) : super(key: key);
+class AddItemView extends GetView<AddItemController> {
+  const AddItemView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                           alignment: AlignmentDirectional.bottomCenter,
                           children: [
                             Obx(() {
-                              return imageOficina();
+                              return imageItem();
                             }),
                             Padding(
                               padding: EdgeInsets.all(6.0.r),
@@ -46,70 +45,70 @@ class AddOficinaView extends GetView<AddOficinaController> {
                           ],
                         ),
                         Form(
-                            key: controller.registerOficinaFormKey,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                  'Nome',
-                                  controller.nomeController,
-                                  TextInputType.text,
-                                  controller.validateText,
-                                  'Ex: Oficina de Pintura',
-                                ),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Descrição',
-                                    controller.descricaoController,
-                                    TextInputType.text,
-                                    controller.validateText,
-                                    'Ex: Aprenda técnicas de pintura...'),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Boicoins',
-                                    controller.precoBoicoinsController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    'Ex: 50',
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Reais',
-                                    controller.precoReaisController,
-                                    TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    controller.validateNumber,
-                                    'Ex: 25.40',
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBoxDate('Data da Oficina', context,
-                                    controller.dateController),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Limite de Participantes',
-                                    controller.participantesController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    'Ex: 25',
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                inputBoxMap('Localização', context),
-                                SizedBox(height: 24.h),
-                              ],
-                            )),
+                          key: controller.registerItemFormKey,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Nome',
+                                controller.nomeController,
+                                TextInputType.text,
+                                controller.validateText,
+                                'Ex: Item de Pintura',
+                              ),
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Descrição',
+                                controller.descricaoController,
+                                TextInputType.text,
+                                controller.validateText,
+                                'Ex: Aprenda técnicas de pintura...',
+                              ),
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Preço em Boicoins',
+                                controller.precoBoicoinsController,
+                                TextInputType.number,
+                                controller.validateNumber,
+                                'Ex: 50',
+                                formato:
+                                    FilteringTextInputFormatter.digitsOnly,
+                              ),
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Preço em Reais',
+                                controller.precoReaisController,
+                                TextInputType.numberWithOptions(decimal: true),
+                                controller.validateNumber,
+                                'Ex: 25.40',
+                                formato:
+                                    FilteringTextInputFormatter.digitsOnly,
+                              ),
+                              SizedBox(height: 22.h),
+                              inputBoxDate('Data do Item', context, controller.dateController),
+                              SizedBox(height: 22.h),
+                              inputBox(
+                                'Limite de Participantes',
+                                controller.participantesController,
+                                TextInputType.number,
+                                controller.validateNumber,
+                                'Ex: 25',
+                                formato:
+                                    FilteringTextInputFormatter.digitsOnly,
+                              ),
+                              SizedBox(height: 20.h),
+                              inputBoxMap('Localização', context),
+                              SizedBox(height: 24.h),
+                            ],
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
-                            text: 'Adicionar Oficina',
-                            function: controller.onCadastroOficina,
+                            text: 'Adicionar Item',
+                            function: controller.onCadastroItem,
                           ),
                         ),
-                        
                       ],
                     ),
                   ),
@@ -155,7 +154,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
     );
   }
 
-  Widget imageOficina() {
+  Widget imageItem() {
     return controller.image == null
         ? Container(
             width: 350.w,
@@ -258,7 +257,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
             ),
             Obx(() => TextFormField(
                   controller: controllerText,
-                  //keyboardType: type,
                   decoration: InputDecoration(
                     hintText:
                         "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
@@ -270,9 +268,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                   ),
                   onTap: () {
                     controller.selectedDate(context);
-                    
                   },
-                  //validator: (value) => validation(value),
                 )),
           ],
         ),
@@ -321,10 +317,10 @@ class AddOficinaView extends GetView<AddOficinaController> {
                         controller.ruaController.text.isNotEmpty &&
                         controller.numberController.text.isNotEmpty
                     ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8).h,
-                      child: Text(
-                          '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
-                    )
+                        padding: const EdgeInsets.symmetric(vertical: 8).h,
+                        child: Text(
+                            '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
+                      )
                     : SizedBox.shrink();
               })
             ],
@@ -348,7 +344,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Form(
-                key: controller.endOficinaFormKey,
+                key: controller.endItemFormKey,
                 child: Column(
                   children: [
                     TextFormField(
@@ -410,7 +406,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                           backgroundColor: Color(0xFFF69302),
                         ),
                         onPressed: () {
-                          if (controller.endOficinaFormKey.currentState
+                          if (controller.endItemFormKey.currentState
                                   ?.validate() ??
                               false) {
                             String cep = controller.cepController.text;
@@ -430,40 +426,6 @@ class AddOficinaView extends GetView<AddOficinaController> {
               ),
               SizedBox(height: 16.h),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ButtonBox extends StatelessWidget {
-  final String text;
-  final Future<void> Function() function;
-
-  ButtonBox({required this.text, required this.function});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: function,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFF69302),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20.r),
-                bottomRight: Radius.circular(20.r),
-                topLeft: Radius.circular(20.r),
-              ),
-            ),
-            padding: EdgeInsets.all(14.h)),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         ),
       ),

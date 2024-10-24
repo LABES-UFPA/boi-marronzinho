@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
+import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,6 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
   Widget build(BuildContext context) {
     final ImagePicker _picker = ImagePicker();
     File? _image;
-    final oficina = Get.arguments as Oficina;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,

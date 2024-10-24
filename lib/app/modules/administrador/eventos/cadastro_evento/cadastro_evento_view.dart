@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_controller.dart';
+import 'package:boi_marronzinho/app/modules/administrador/eventos/cadastro_evento/cadastro_evento_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class AddOficinaView extends GetView<AddOficinaController> {
-  const AddOficinaView({Key? key}) : super(key: key);
+class AddEventoView extends GetView<AddEventoController> {
+  const AddEventoView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                           ],
                         ),
                         Form(
-                            key: controller.registerOficinaFormKey,
+                            key: controller.registerEventoFormKey,
                             child: Column(
                               children: [
                                 SizedBox(height: 22.h),
@@ -106,7 +106,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
                             text: 'Adicionar Oficina',
-                            function: controller.onCadastroOficina,
+                            function: controller.onCadastroEvento,
                           ),
                         ),
                         
@@ -348,7 +348,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Form(
-                key: controller.endOficinaFormKey,
+                key: controller.endEventoFormKey,
                 child: Column(
                   children: [
                     TextFormField(
@@ -410,7 +410,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                           backgroundColor: Color(0xFFF69302),
                         ),
                         onPressed: () {
-                          if (controller.endOficinaFormKey.currentState
+                          if (controller.endEventoFormKey.currentState
                                   ?.validate() ??
                               false) {
                             String cep = controller.cepController.text;
