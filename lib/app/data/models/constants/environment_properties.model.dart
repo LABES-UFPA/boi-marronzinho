@@ -10,10 +10,12 @@ class EnvironmentProperties {
 
 class EndpointProperties {
   final String projeto;
+  final String minio;
   final int timeout;
 
   const EndpointProperties({
     required this.projeto,
+    required this.minio,
     required this.timeout,
   });
 }
