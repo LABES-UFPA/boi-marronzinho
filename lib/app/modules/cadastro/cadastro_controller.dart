@@ -83,6 +83,6 @@ class CadastroController extends BaseController {
   }
 
   void onLoginPressed() {
-    Get.toNamed(LoginModule.path);
+    Get.back();
   }
 }

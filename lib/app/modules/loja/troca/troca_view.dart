@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/models/troca/item_troca.dart';
-import 'package:boi_marronzinho/app/modules/loja/troca/item_troca.dart';
 import 'package:boi_marronzinho/app/modules/loja/troca/troca_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -95,7 +94,13 @@ class TrocaView extends GetView<TrocaController> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                _buildAppBar(texto: '', showIcon: false),
+                _buildAppBar(
+                    texto: '',
+                    showIcon: false,
+                    customCallbackOnExit: () {
+                      controller.quantidadeController.clear();
+                      controller.boicoins.value = 0;
+                    }),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Center(
@@ -131,13 +136,16 @@ class TrocaView extends GetView<TrocaController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.arrow_circle_right_outlined),
-                                    5.horizontalSpace,
-                                    Text(
-                                      item.nomeItem,
-                                      style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.bold,
+                                    const Expanded(child: Icon(Icons.arrow_circle_right_outlined)),
+                                    Expanded(
+                                      flex: 2,
+                                      child: AutoSizeText(
+                                        item.nomeItem,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -252,7 +260,7 @@ class TrocaView extends GetView<TrocaController> {
       );
     }
 
-  Widget _buildAppBar({required String texto, bool showIcon = true}) {
+  Widget _buildAppBar({required String texto, bool showIcon = true, Function? customCallbackOnExit}) {
     if (showIcon) {
       return Stack(
         children: [
@@ -274,6 +282,9 @@ class TrocaView extends GetView<TrocaController> {
                         width: 40.w,
                       ),
                       onPressed: () {
+                        if (customCallbackOnExit != null) {
+                          customCallbackOnExit();
+                        }
                         Get.back();
                       },
                     ),
@@ -309,6 +320,7 @@ class TrocaView extends GetView<TrocaController> {
         ],
       );
     }
+
     return Stack(
       children: [
         ClipPath(
@@ -329,6 +341,9 @@ class TrocaView extends GetView<TrocaController> {
                       width: 40.w,
                     ),
                     onPressed: () {
+                      if (customCallbackOnExit != null) {
+                        customCallbackOnExit();
+                      }
                       Get.back();
                     },
                   ),

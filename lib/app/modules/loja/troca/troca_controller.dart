@@ -15,6 +15,13 @@ class TrocaController extends BaseController{
     getItensTroca();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    quantidadeController.dispose();
+    boicoins.value = 0;
+  }
+
   // Pega da API
   Future<void> getItensTroca() async {
     setLoading(true);
@@ -28,12 +35,8 @@ class TrocaController extends BaseController{
     update();
   }
 
-  int calcularBoicoinsUnidade(int unidades, double boicoinsPorUnidade) {
+  int calcularBoicoins(double unidades, double boicoinsPorUnidade) {
     return (unidades * boicoinsPorUnidade).toInt();
-  }
-
-  int calcularBoicoinsMl(double ml, double boicoinsPorUnidade) {
-    return ((ml * boicoinsPorUnidade)).toInt(); // Coloca em Litro
   }
 
   void onCalcularPressed(ItemTroca item) {
@@ -42,16 +45,7 @@ class TrocaController extends BaseController{
       update();
       return;
     }
-    switch (item.unidadeMedida.toUpperCase()) {
-      case 'UNIDADE':
-        boicoins.value = calcularBoicoinsUnidade(int.parse(quantidadeController.text), item.boicoinsPorUnidade).toInt();
-        break;
-      case 'LITRO':
-        boicoins.value = calcularBoicoinsMl(double.parse(quantidadeController.text), item.boicoinsPorUnidade).toInt();
-        break;
-      default:
-        throw Exception('O item não tem uma unidade definida!');
-    }
+    boicoins.value = calcularBoicoins(double.parse(quantidadeController.text), item.boicoinsPorUnidade).toInt();
     update();
   }
 
