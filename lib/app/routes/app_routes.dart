@@ -17,6 +17,7 @@ import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
+import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/doacoes/pix/pix_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobrenos_module.dart';
@@ -60,6 +61,7 @@ class AppPages {
     AddItemModule.page,
     EditorItemModule.page,
     ItemsAdminModule.page,
-    EditorEventoModule.page
+    EditorEventoModule.page,
+    ProdutosModule.page,
   ];
 }
