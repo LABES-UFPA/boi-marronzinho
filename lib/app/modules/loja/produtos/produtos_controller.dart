@@ -8,10 +8,21 @@ import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_module.dart';
 import 'package:get/get.dart';
 
 class ProdutosController extends BaseController {
-
   List<Produto> produtos = [];
-  RxInt quantidade = 0.obs;
+  RxInt quantidade = 1.obs;
   RxInt saldo = 0.obs;
+  Map<String, dynamic> carrinho = {
+    'produto': Produto(
+        id: 'aaaa',
+        nome: 'Camisa',
+        descricao: 'Camis',
+        precoBoicoins: 100,
+        precoReal: 100,
+        quantidadeEmEstoque: 100,
+        imagemURL: 'assets/images/eventos/evento-1.jpg',
+        criadoEm: DateTime.now()),
+    'quantidade': 10,
+  };
 
   @override
   void onInit() async {
@@ -33,25 +44,103 @@ class ProdutosController extends BaseController {
 
   void getTesteProdutos() async {
     produtos = [
-      Produto(id: 'aaaa', nome: 'Camisa', descricao: 'Camis', precoBoicoins: 100, precoReal: 100, quantidadeEmEstoque: 100, imagemURL: 'assets/images/eventos/evento-1.jpg', criadoEm: DateTime.now()),
-      Produto(id: 'aaaa', nome: 'Camisa', descricao: 'Camis', precoBoicoins: 100, precoReal: 100, quantidadeEmEstoque: 100, imagemURL: 'assets/images/eventos/evento-1.jpg', criadoEm: DateTime.now()),
-      Produto(id: 'aaaa', nome: 'Camisa', descricao: 'Camis', precoBoicoins: 100, precoReal: 100, quantidadeEmEstoque: 100, imagemURL: 'assets/images/eventos/evento-1.jpg', criadoEm: DateTime.now()),
-      Produto(id: 'aaaa', nome: 'Camisa', descricao: 'Camis', precoBoicoins: 100, precoReal: 100, quantidadeEmEstoque: 100, imagemURL: 'assets/images/eventos/evento-1.jpg', criadoEm: DateTime.now()),
-      Produto(id: 'aaaa', nome: 'Camisa', descricao: 'Camis', precoBoicoins: 100, precoReal: 100, quantidadeEmEstoque: 100, imagemURL: 'assets/images/eventos/evento-1.jpg', criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
+      Produto(
+          id: 'aaaa',
+          nome: 'Camisa',
+          descricao: 'Camis',
+          precoBoicoins: 100,
+          precoReal: 100,
+          quantidadeEmEstoque: 100,
+          imagemURL: 'assets/images/eventos/evento-1.jpg',
+          criadoEm: DateTime.now()),
     ];
   }
 
   Future<void> getSaldo() async {
     // TODO: Ver se tem em cache
-    final response = await ProfileRepository().getProfileInfo(id: UserCredentialsRepository().getCredentials().userId);
-    final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar saldo de boicoins');
+    final response = await ProfileRepository().getProfileInfo(
+        id: UserCredentialsRepository().getCredentials().userId);
+    final isValid = isValidResponse(
+        response: response, title: 'Sucesso ao pegar saldo de boicoins');
     if (isValid && response.data != null) {
       saldo.value = response.data!.saldoBoicoins.toInt();
     }
   }
 
   void onMinusPressed() {
-    if (quantidade > 0) {
+    if (quantidade > 1) {
       quantidade -= 1;
     }
   }
@@ -63,40 +152,30 @@ class ProdutosController extends BaseController {
   }
 
   Future<void> pagarComBoicoins(Produto produto) async {
-    if (produto.precoBoicoins.toInt() > saldo.value) {
+    if (produto.precoBoicoins.toInt() * quantidade.value > saldo.value) {
       Get.offAndToNamed(ProdutosModule.path);
-      return Toast.error(
-          'Erro na Compra',
-          'Você não tem boicoins suficientes',
-          delayed: true
-      );
+      return Toast.error('Erro na Compra', 'Você não tem boicoins suficientes',
+          delayed: true);
     }
 
     final response = await ProdutoRepository().comprarProduto(
         usuarioId: UserCredentialsRepository().getCredentials().userId,
-        produtoId: produto.id
-    );
+        produtoId: produto.id);
 
     final isValid = isValidResponse(response: response, title: response.reason);
     if (isValid && response.data != null) {
       Get.offAndToNamed(ProdutosModule.path);
-      return Toast.success(
-          'Inscrição confirmada!',
-          'Você comprou o seu ${produto.nome}! Venha pegar no Boi!'
-      );
+      return Toast.success('Inscrição confirmada!',
+          'Você comprou o seu ${produto.nome}! Venha pegar no Boi!');
     }
     Get.offAndToNamed(ProdutosModule.path);
-    return Toast.alert('Algo deu errado na sua compra!', 'Chame o administrador!');
+    return Toast.alert(
+        'Algo deu errado na sua compra!', 'Chame o administrador!');
   }
 
+  void onFloatingCarrinhoPressed() {}
 
+  void pagarComPix(Produto produto) {}
 
-  void pagarComPix(Produto produto) {
-
-  }
-
-  void onCarrinhoPressed() {
-
-  }
-
+  void onAddCarrinhoPressed() {}
 }

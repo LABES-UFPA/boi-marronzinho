@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
+import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
 import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,12 +11,17 @@ class ProdutosView extends GetView<ProdutosController> {
   const ProdutosView({super.key});
 
   static const bgColor = Color(0xFFF69302);
-  static final _pagamentoBoldStyle = TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold);
+  static final _pagamentoBoldStyle =
+      TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => print('aaaa'),
+          child: const Icon(Icons.shopping_cart),
+        ),
           backgroundColor: bgColor,
           body: Obx(() {
             if (controller.isLoading.isTrue) {
@@ -38,8 +44,8 @@ class ProdutosView extends GetView<ProdutosController> {
                         itemBuilder: (context, index) {
                           return ProdutoCard(
                               produto: controller.produtos[index],
-                            onTap: () => Get.to(_buildDescricaoProduto(controller.produtos[index], context))
-                          );
+                              onTap: () => Get.to(_buildDescricaoProduto(
+                                  controller.produtos[index], context)));
                         }),
                   ),
                 ),
@@ -49,7 +55,10 @@ class ProdutosView extends GetView<ProdutosController> {
     );
   }
 
-  Widget _buildAppBar({required String texto, bool showIcon = true}) {
+  Widget _buildAppBar(
+      {required String texto,
+      bool showIcon = true,
+      Function? customCallbackOnExit}) {
     if (showIcon) {
       return Stack(
         children: [
@@ -71,22 +80,26 @@ class ProdutosView extends GetView<ProdutosController> {
                         width: 40.w,
                       ),
                       onPressed: () {
+                        if (customCallbackOnExit != null) {
+                          customCallbackOnExit();
+                        }
                         Get.back();
                       },
-                    ),
-                    const Icon(
-                      Icons.storefront_sharp,
                     ),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          SizedBox(width: 10.w),
+                          Icon(
+                            Icons.cached,
+                            color: Colors.black,
+                            size: 30.sp,
+                          ),
                           SizedBox(width: 5.w),
-                          Expanded(
-                            child: AutoSizeText(
+                          Center(
+                            child: Text(
                               texto,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 36.sp,
                                 fontWeight: FontWeight.bold,
@@ -126,6 +139,9 @@ class ProdutosView extends GetView<ProdutosController> {
                       width: 40.w,
                     ),
                     onPressed: () {
+                      if (customCallbackOnExit != null) {
+                        customCallbackOnExit();
+                      }
                       Get.back();
                     },
                   ),
@@ -133,12 +149,11 @@ class ProdutosView extends GetView<ProdutosController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        SizedBox(width: 10.w),
                         SizedBox(width: 5.w),
-                        Expanded(
-                          child: AutoSizeText(
+                        Center(
+                          child: Text(
                             texto,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 36.sp,
                               fontWeight: FontWeight.bold,
@@ -166,7 +181,12 @@ class ProdutosView extends GetView<ProdutosController> {
           children: [
             Column(
               children: [
-                _buildAppBar(texto: '', showIcon: false),
+                _buildAppBar(
+                    texto: '',
+                    showIcon: false,
+                    customCallbackOnExit: () {
+                      controller.quantidade.value = 1;
+                    }),
 
                 // Imagem, Valores e Descrição
                 SingleChildScrollView(
@@ -174,21 +194,19 @@ class ProdutosView extends GetView<ProdutosController> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-
                         // Imagem
                         Column(
                           children: [
                             ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
                               child: Image.asset(produto.imagemURL),
                             ),
 
                             // Nome do Produto
                             Text(
                               produto.nome,
-                              style: TextStyle(
-                                  fontSize: 30.sp
-                              ),
+                              style: TextStyle(fontSize: 30.sp),
                             ),
 
                             // Valores e Quantidade
@@ -213,8 +231,12 @@ class ProdutosView extends GetView<ProdutosController> {
                                         height: 50.h,
                                         child: Row(
                                           children: [
-                                            Image.asset('assets/images/icons/boicoin.png'),
-                                            Text(produto.precoBoicoins.toInt().toString(),
+                                            Image.asset(
+                                                'assets/images/icons/boicoin.png'),
+                                            Text(
+                                                produto.precoBoicoins
+                                                    .toInt()
+                                                    .toString(),
                                                 style: TextStyle(
                                                   fontSize: 32.sp,
                                                   fontWeight: FontWeight.bold,
@@ -237,21 +259,19 @@ class ProdutosView extends GetView<ProdutosController> {
                             Row(
                               children: [
                                 RichText(
-                                  text: TextSpan(
-                                    style: DefaultTextStyle.of(context).style,
-                                      children: [
+                                    text: TextSpan(
+                                        style:
+                                            DefaultTextStyle.of(context).style,
+                                        children: [
                                       const TextSpan(
-                                        text: 'Descrição: ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        )
-                                      ),
+                                          text: 'Descrição: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          )),
                                       TextSpan(
-                                          text: produto.descricao,
+                                        text: produto.descricao,
                                       ),
-                                    ]
-                                  )
-                                )
+                                    ]))
                               ],
                             ),
                           ],
@@ -277,7 +297,7 @@ class ProdutosView extends GetView<ProdutosController> {
                       child: PagamentoButton(
                         text: 'Adicionar ao Carrinho',
                         callback: () {
-                          controller.onCarrinhoPressed();
+                          controller.onAddCarrinhoPressed();
                         },
                         color: const Color(0xFFF69302),
                       ),
@@ -303,20 +323,21 @@ class ProdutosView extends GetView<ProdutosController> {
     );
   }
 
+
   Widget _buildQuantidadeSelector() {
     return Obx(() {
       return Row(
         children: [
-          QuantidadeButton(icon: Icons.remove, callback: () => controller.onMinusPressed()),
+          QuantidadeButton(
+              icon: Icons.remove, callback: () => controller.onMinusPressed()),
           10.horizontalSpace,
           Text(
-              controller.quantidade.value.toString(),
-            style: TextStyle(
-              fontSize: 23.sp
-            ),
+            controller.quantidade.value.toString(),
+            style: TextStyle(fontSize: 23.sp),
           ),
           10.horizontalSpace,
-          QuantidadeButton(icon: Icons.add, callback: () => controller.onPlusPressed()),
+          QuantidadeButton(
+              icon: Icons.add, callback: () => controller.onPlusPressed()),
         ],
       );
     });
@@ -347,10 +368,8 @@ class ProdutosView extends GetView<ProdutosController> {
                   Text(
                     'Seu saldo BoiCoins: ',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp
-                    ),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
                   ),
                   SizedBox(
                     height: 30.h,
@@ -367,13 +386,12 @@ class ProdutosView extends GetView<ProdutosController> {
             // Descrição da Compra
             Expanded(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Descrição da Compra', style: _pagamentoBoldStyle),
-                    Text('1x (${produto.nome})')
-                  ],
-                )
-            ),
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Descrição da Compra', style: _pagamentoBoldStyle),
+                Text('${controller.quantidade.value}x (${produto.nome})')
+              ],
+            )),
 
             5.verticalSpace,
             const Divider(),
@@ -392,19 +410,15 @@ class ProdutosView extends GetView<ProdutosController> {
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                        'R\$ ${produto.precoReal.toStringAsFixed(2)}',
-                        style: _pagamentoBoldStyle
-                    ),
+                    child: Text('R\$ ${(produto.precoReal * controller.quantidade.value).toStringAsFixed(2)}',
+                        style: _pagamentoBoldStyle),
                   ),
-                  Text('ou', style: TextStyle(
-                      fontSize: 20.sp
-                  )),
+                  Text('ou', style: TextStyle(fontSize: 20.sp)),
                   Expanded(
                     flex: 2,
                     child: SizedBox(
                       height: 60.h,
-                      child: MostraSaldoBoicoins(produto.precoBoicoins.toInt()),
+                      child: MostraSaldoBoicoins((produto.precoBoicoins.toInt() * controller.quantidade.value).toInt()),
                     ),
                   )
                 ],
@@ -426,30 +440,36 @@ class ProdutosView extends GetView<ProdutosController> {
                         'Método de Pagamento',
                         style: _pagamentoBoldStyle,
                       ),
-
                       10.verticalSpace,
-
                       Expanded(
                         child: Column(
                           children: [
-                            PagamentoButton(text: 'Pix', callback: () { controller.pagarComPix(produto); }, color: const Color(0xFFF69302),),
-
+                            PagamentoButton(
+                              text: 'Pix',
+                              callback: () {
+                                controller.pagarComPix(produto);
+                              },
+                              color: const Color(0xFFF69302),
+                            ),
                             10.verticalSpace,
-
-                            PagamentoButton(text: 'Boicoins', callback: () { controller.pagarComBoicoins(produto); }, color: const Color(0xFFF69302),),
+                            PagamentoButton(
+                              text: 'Boicoins',
+                              callback: () {
+                                controller.pagarComBoicoins(produto);
+                              },
+                              color: const Color(0xFFF69302),
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                )
-            ),
+                )),
           ],
         ),
       ),
     );
   }
-
 }
 
 class AppBarClipper extends CustomClipper<Path> {
@@ -514,8 +534,10 @@ class ProdutoCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                        child: Text('R\$ ${produto.precoReal.toStringAsFixed(2)}',
-                            style: _precoRealStyle, textAlign: TextAlign.center)),
+                        child: Text(
+                            'R\$ ${produto.precoReal.toStringAsFixed(2)}',
+                            style: _precoRealStyle,
+                            textAlign: TextAlign.center)),
                     Expanded(
                         child: SizedBox(
                       height: 22.h,
@@ -544,7 +566,11 @@ class PagamentoButton extends StatelessWidget {
   final Function callback;
   final Color color;
 
-  const PagamentoButton({required this.text, required this.callback, required this.color ,super.key});
+  const PagamentoButton(
+      {required this.text,
+      required this.callback,
+      required this.color,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -556,41 +582,35 @@ class PagamentoButton extends StatelessWidget {
               backgroundColor: color,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  )
-              )
-          ),
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ))),
           child: AutoSizeText(
             text,
             style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 18.sp
-          ),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 18.sp),
             textAlign: TextAlign.center,
-          )
-      ),
+          )),
     );
   }
 }
-
 
 class QuantidadeButton extends StatelessWidget {
   final IconData icon;
   final Function callback;
 
-  const QuantidadeButton({super.key, required this.icon, required this.callback});
+  const QuantidadeButton(
+      {super.key, required this.icon, required this.callback});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => callback(),
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(
-            Radius.circular(10)
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         child: Container(
           width: 34.w,
           height: 34.h,
@@ -615,15 +635,11 @@ class MostraSaldoBoicoins extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Transform.scale(
-            scale: 1,
-            child: Image.asset('assets/images/icons/boicoin.png')
-        ),
+            scale: 1, child: Image.asset('assets/images/icons/boicoin.png')),
         10.horizontalSpace,
-        Text(
-            saldo.toString(),
+        Text(saldo.toString(),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)
-        )
+            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold))
       ],
     );
   }
