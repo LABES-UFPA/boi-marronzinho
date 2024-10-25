@@ -173,6 +173,7 @@ class CarteiraView extends GetView<CarteiraController> {
                       width: 40.w,
                     ),
                     onPressed: () {
+                      Get.delete<CarteiraController>();
                       Get.back();
                     },
                   ),

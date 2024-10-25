@@ -21,7 +21,7 @@ class EventosAdmController extends BaseController {
     setLoading(true);
 
     final response = await eventosRepo.fetchEventos();
-    final isValid = isValidResponse(response: response, title: response.reason);
+    final isValid = isValidResponse(response: response, title: 'Sucesso ao carregar a lista');
     if (isValid && response.data != null) {
       eventos = response.data;
     }

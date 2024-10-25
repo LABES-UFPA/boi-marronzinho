@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/modules/administrador/eventos/cadastro_evento/cadastro_evento_controller.dart';
-import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/componentes/buildAppBar.dart';
-import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -35,7 +33,7 @@ class AddEventoView extends GetView<AddEventoController> {
                           alignment: AlignmentDirectional.bottomCenter,
                           children: [
                             Obx(() {
-                              return imageOficina();
+                              return imageEvento();
                             }),
                             Padding(
                               padding: EdgeInsets.all(6.0.r),
@@ -96,7 +94,7 @@ class AddEventoView extends GetView<AddEventoController> {
   }
 
 
-  Widget imageOficina() {
+  Widget imageEvento() {
     return controller.image == null
         ? Container(
             width: 350.w,

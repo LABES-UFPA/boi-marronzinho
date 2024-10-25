@@ -105,6 +105,9 @@ class AddEventoController extends BaseController {
         String isoDate = parsedDate.toUtc().toIso8601String();
         //String imageJson = await ImageData(_image, dadosRequest);
         print('-------------------------------');
+        print(nomeController.text);
+        print(descricaoController.text);
+        print(isoDate);
         print('Imagem --->>>>>${_image.value!.path}');
         print(imagem);
 
@@ -113,9 +116,9 @@ class AddEventoController extends BaseController {
           descricao: descricaoController.text,
           dataEvento: isoDate, // Usar data no formato ISO 8601
           urlEndereco: enderecoController.text,
+          image: imagem!,
         );
 
-        
         Get.back();
       } catch (e) {
         print("Erro ao cadastrar evento: $e");

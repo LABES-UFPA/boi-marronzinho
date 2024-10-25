@@ -3,12 +3,13 @@ import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_respo
 import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
 import 'package:get/get.dart';
 
 class OficinasController extends BaseController {
-  
+  late ApiHelpers apiHelpers = ApiHelpers();
   List<Oficina> oficinas = <Oficina>[];
   int saldo = 0;
 

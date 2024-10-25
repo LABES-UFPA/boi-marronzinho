@@ -1,6 +1,7 @@
 import 'package:boi_marronzinho/app/modules/administrador/contas/contas_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/eventos/cadastro_evento/cadastro_evento_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/eventos/editor_evento/editor_evento_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/eventos/eventos_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/item_troca/cadastro_item/cadastro_item_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/item_troca/editor_item/editor_item_module.dart';
@@ -58,6 +59,7 @@ class AppPages {
     EventosAdminModule.page,
     AddItemModule.page,
     EditorItemModule.page,
-    ItemsAdminModule.page
+    ItemsAdminModule.page,
+    EditorEventoModule.page
   ];
 }

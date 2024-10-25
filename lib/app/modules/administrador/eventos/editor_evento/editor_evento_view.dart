@@ -33,9 +33,9 @@ class EditorEventoView extends GetView<EditorEventoController> {
                         Stack(
                           alignment: AlignmentDirectional.bottomCenter,
                           children: [
-                            // Obx(() {
-                            //   return imageEvento();
-                            // }),
+                             Obx(() {
+                               return imageEvento();
+                             }),
                             Padding(
                               padding: EdgeInsets.all(6.0.r),
                               child: ButtonBox(
@@ -62,33 +62,9 @@ class EditorEventoView extends GetView<EditorEventoController> {
                                     TextInputType.text,
                                     controller.validateText),
                                 SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Boicoins',
-                                    controller.precoBoicoinsController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Reais',
-                                    controller.precoReaisController,
-                                    TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    controller.validateNumber,
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
                                 inputBoxDate('Data do Evento', context,
                                     controller.dateController),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Limite de Participantes',
-                                    controller.participantesController,
-                                    TextInputType.number,
-                                    controller.validateParticipants, // Atualize a validação para participantes
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
+                              
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -144,51 +120,51 @@ class EditorEventoView extends GetView<EditorEventoController> {
     );
   }
 
-  // Widget imageEvento() {
-  //   if (controller.image == null) {
-  //     if (controller.evento.imagem.isEmpty) {
-  //       return Container(
-  //         width: 350.w,
-  //         height: 160.h,
-  //         child: Icon(
-  //           Icons.image,
-  //           size: 50,
-  //           color: Colors.white,
-  //         ),
-  //         decoration: BoxDecoration(
-  //           color: const Color.fromARGB(255, 206, 206, 206),
-  //           borderRadius: BorderRadius.circular(16.0),
-  //         ),
-  //       );
-  //     } else {
-  //       return Container(
-  //         width: 350.w,
-  //         height: 200.h,
-  //         decoration: BoxDecoration(
-  //           shape: BoxShape.rectangle,
-  //           borderRadius: BorderRadius.circular(16.0),
-  //           image: DecorationImage(
-  //             image: MemoryImage(base64Decode(controller.evento.imagem)), // Atualize para evento
-  //             fit: BoxFit.cover,
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   } else {
-  //     return Container(
-  //       width: 350.w,
-  //       height: 200.h,
-  //       decoration: BoxDecoration(
-  //         shape: BoxShape.rectangle,
-  //         borderRadius: BorderRadius.circular(16.0),
-  //         image: DecorationImage(
-  //           image: FileImage(controller.image!),
-  //           fit: BoxFit.cover,
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
+   Widget imageEvento() {
+     if (controller.image == null) {
+       if (controller.evento.imagem.isEmpty) {
+        return Container(
+           width: 350.w,
+           height: 160.h,
+           child: Icon(
+             Icons.image,
+             size: 50,
+             color: Colors.white,
+           ),
+           decoration: BoxDecoration(
+             color: const Color.fromARGB(255, 206, 206, 206),
+             borderRadius: BorderRadius.circular(16.0),
+           ),
+         );
+       } else {
+         return Container(
+           width: 350.w,
+           height: 200.h,
+           decoration: BoxDecoration(
+             shape: BoxShape.rectangle,
+             borderRadius: BorderRadius.circular(16.0),
+             image: DecorationImage(
+               image: MemoryImage(base64Decode(controller.evento.imagem)), // Atualize para evento
+               fit: BoxFit.cover,
+             ),
+           ),
+         );
+       }
+     } else {
+       return Container(
+         width: 350.w,
+         height: 200.h,
+         decoration: BoxDecoration(
+           shape: BoxShape.rectangle,
+           borderRadius: BorderRadius.circular(16.0),
+           image: DecorationImage(
+             image: FileImage(controller.image!),
+             fit: BoxFit.cover,
+           ),
+         ),
+       );
+     }
+   }
 
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation,

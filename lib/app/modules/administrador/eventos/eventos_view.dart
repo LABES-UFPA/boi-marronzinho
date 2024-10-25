@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:boi_marronzinho/app/data/models/evento/evento.dart';
 import 'package:boi_marronzinho/app/modules/administrador/eventos/eventos_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
-import 'package:boi_marronzinho/app/modules/perfil/perfil_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

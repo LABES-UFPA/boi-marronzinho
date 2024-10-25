@@ -24,9 +24,9 @@ class VouchersView extends GetView<VouchersController> {
             SizedBox(height: 30.h),
             Expanded(
               child: Obx(() {
-                if (controller.isLoading == true) {
-                  return Center(
-                      child: CircularProgressIndicator()); // Mostra um loading.
+                if (controller.isLoading.isTrue) {
+                  return const Center(
+                      child: CircularProgressIndicator());
                 }
                 if (controller.vouchers.isEmpty) {
                   return Center(
@@ -162,12 +162,12 @@ class VouchersView extends GetView<VouchersController> {
                   height: 6.h,
                 ),
                 Container(
-                  
                   width: 220.w,
                   child: Text(
                     descricao,
                     softWrap: true,
-                    overflow: TextOverflow.visible,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey),
                   ),
                 )

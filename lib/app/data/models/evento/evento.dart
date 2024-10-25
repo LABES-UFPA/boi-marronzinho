@@ -3,6 +3,7 @@ class Evento {
   final String nome;
   final String descricao;
   final DateTime dataEvento;
+  final String imagem;
   final String linkEndereco;
 
   Evento({
@@ -10,6 +11,7 @@ class Evento {
     required this.nome,
     required this.descricao,
     required this.dataEvento,
+    required this.imagem,
     required this.linkEndereco,
   });
 
@@ -19,6 +21,7 @@ class Evento {
       nome: map['nome'],
       descricao: map['descricao'],
       dataEvento: DateTime.parse(map['dataEvento']),
+      imagem: map['imagem'] ?? '', // Prevenir null
       linkEndereco: map['linkEndereco'],
     );
   }

@@ -23,6 +23,7 @@ class EditorEventoController extends BaseController {
   final ImagePicker _picker = ImagePicker();
   late Evento evento;  // Altere para Evento
   var selectDate = DateTime.now().obs;
+  File? imagem;
   var _image = Rxn<File>();
   var _imageCarregda = Rxn<File>();
   File? get image => _image.value;
@@ -68,6 +69,7 @@ class EditorEventoController extends BaseController {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       _image.value = File(pickedFile.path);
+      imagem = File(pickedFile.path);
     }
   }
 
@@ -97,6 +99,7 @@ class EditorEventoController extends BaseController {
         nome: nomeController.text,
         descricao: descricaoController.text,
         dataEvento: dateController.text,
+        imagem: imagem!,
         urlEndereco: enderecoController.text, 
       );
 

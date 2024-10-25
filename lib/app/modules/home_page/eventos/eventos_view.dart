@@ -18,9 +18,29 @@ class EventosView extends GetView<EventosController> {
         child: Scaffold(
           backgroundColor: bgColor,
           body: Obx(() {
-            if (controller.isLoading.isTrue) {
+            if (controller.isLoading == true) {
               return const Center(
                 child: CircularProgressIndicator()
+              );
+            }
+            if (controller.eventos.isEmpty) {
+              return Column(
+                children: [
+                  _buildAppBar(texto: 'Eventos'),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'Não há eventos cadastrados no momento',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               );
             }
             return Column(
