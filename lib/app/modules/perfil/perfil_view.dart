@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -127,7 +128,7 @@ class PerfilView extends GetView<PerfilController> {
                 SizedBox(width: 20.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
-                Text(
+                AutoSizeText(
                   text,
                   style: TextStyle(
                     color: Colors.white,

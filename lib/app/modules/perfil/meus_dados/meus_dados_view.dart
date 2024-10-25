@@ -1,5 +1,7 @@
 import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
+import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
+import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/meus_dados/meus_dados_controller.dart';
 import 'package:boi_marronzinho/app/modules/meus_dados/meus_dados_model.dart';
 import 'package:flutter/material.dart';
@@ -50,8 +52,13 @@ class MeusDadosView extends GetView<MeusDadosController> {
               return;
             },
             onLongPress: () {
-              print("Conta deletada");
               ProfileRepository().deletarConta(id: UserCredentialsRepository().getCredentials().userId);
+              controller.cleanCacheEndStore();
+              Get.offAllNamed(LoginModule.path);
+              return Toast.success(
+                  'Conta deletada com sucesso',
+                  'Esperamos que você volte'
+              );
             },
             child: const Text("DELETAR CONTA", style: TextStyle(color: Colors.white),),
           ),

@@ -24,6 +24,10 @@ class CarteiraController extends BaseController {
     final response = await ProfileRepository().getExtrato(id: userId);
 
     if (response.valid) {
+      if (response.data!.isEmpty) {
+        extrato = [];
+        return;
+      }
       extrato = response.data!.map((t) {
         return ItemExtrato(value: t.quantidade.toInt(), description: t.descricao);
       }).toList();
