@@ -30,6 +30,7 @@ class ProdutosController extends BaseController {
     setLoading(true);
     // TODO: Mudar para getProdutos()
     getTesteProdutos();
+    await getSaldo();
     setLoading(false);
     update();
   }
@@ -40,6 +41,10 @@ class ProdutosController extends BaseController {
     if (isValid && response.data != null) {
       produtos = response.data;
     }
+  }
+
+  void resetDescricaoPage() {
+    quantidade.value = 1;
   }
 
   void getTesteProdutos() async {
