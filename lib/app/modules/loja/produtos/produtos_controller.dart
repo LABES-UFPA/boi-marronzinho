@@ -63,7 +63,7 @@ class ProdutosController extends BaseController {
   }
 
   Future<void> pagarComBoicoins(Produto produto) async {
-    if (produto.precoBoicoin.toInt() > saldo) {
+    if (produto.precoBoicoins.toInt() > saldo.value) {
       Get.offAndToNamed(ProdutosModule.path);
       return Toast.error(
           'Erro na Compra',
@@ -74,7 +74,7 @@ class ProdutosController extends BaseController {
 
     final response = await ProdutoRepository().comprarProduto(
         usuarioId: UserCredentialsRepository().getCredentials().userId,
-        oficinaId: oficina.id
+        produtoId: produto.id
     );
 
     final isValid = isValidResponse(response: response, title: response.reason);
@@ -82,11 +82,11 @@ class ProdutosController extends BaseController {
       Get.offAndToNamed(ProdutosModule.path);
       return Toast.success(
           'Inscrição confirmada!',
-          'Você se inscreveu na oficina ${oficina.nomeOficina}! Te esperamos lá!'
+          'Você comprou o seu ${produto.nome}! Venha pegar no Boi!'
       );
     }
     Get.offAndToNamed(ProdutosModule.path);
-    return Toast.alert('Você já está inscrito!', 'Você já se inscreveu nesta oficina!');
+    return Toast.alert('Algo deu errado na sua compra!', 'Chame o administrador!');
   }
 
 
