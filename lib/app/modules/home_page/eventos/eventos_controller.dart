@@ -14,8 +14,7 @@ class EventosController extends BaseController {
   void onInit() {
     super.onInit();
     setLoading(true);
-    // TODO: tirar isso na produção. colocar getOficinas()
-    getEventosTeste();
+    getEventos();
     setLoading(false);
   }
 
@@ -24,7 +23,7 @@ class EventosController extends BaseController {
   }
 
   // Mesmo da Scarlet
-  Future<void> getOficinas() async {
+  Future<void> getEventos() async {
     final response = await EventosRepository().fetchEventos();
     final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar lista de oficinas');
     if (isValid && response.data != null) {

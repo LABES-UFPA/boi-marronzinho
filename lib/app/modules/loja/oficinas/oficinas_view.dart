@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
+import 'package:boi_marronzinho/app/data/util/url.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +24,28 @@ class OficinasView extends GetView<OficinasController> {
           if (controller.isLoading.isTrue) {
             return const Center(child: CircularProgressIndicator());
           }
+
+          if (controller.oficinas.isEmpty) {
+            return Column(
+              children: [
+                _buildAppBar(texto: 'Oficinas'),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Não há oficinas cadastradas no momento',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
           return Column(
             children: [
               _buildAppBar(texto: 'Oficinas'),
@@ -41,7 +65,63 @@ class OficinasView extends GetView<OficinasController> {
     );
   }
 
-  Widget _buildAppBar({required String texto}) {
+  Widget _buildAppBar({required String texto, bool showIcon = true}) {
+    if (showIcon) {
+      return Stack(
+        children: [
+          ClipPath(
+            clipper: AppBarClipper(),
+            child: Container(
+              height: 100.h,
+              decoration: const BoxDecoration(
+                color: Color(0xFFFFFFFF),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10).h,
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Image.asset(
+                        'assets/images/icons/mingcute_arrow-up-fill.png',
+                        height: 40.h,
+                        width: 40.w,
+                      ),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    const Icon(
+                      Icons.co_present,
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 5.w),
+                          Expanded(
+                            child: AutoSizeText(
+                              texto,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 36.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return Stack(
       children: [
         ClipPath(
@@ -140,7 +220,7 @@ class OficinasView extends GetView<OficinasController> {
 
                                     // TODO: Máscara na Data
                                     const TextSpan(text: "Data: ", style: _boldStyle),
-                                    TextSpan(text: "${oficina.dataOficina.toString()}\n"),
+                                    TextSpan(text: "${ DateFormat('dd/MM/yyyy - HH:mm').format(oficina.dataOficina)}hrs\n"),
 
                                     const TextSpan(text: "Descrição: ", style: _boldStyle),
                                     TextSpan(text: "${oficina.descricao}\n"),
@@ -151,7 +231,9 @@ class OficinasView extends GetView<OficinasController> {
                     Expanded(
                       child: InkWell(
                         // TODO: Abrir Mapa e retirar o print
-                          onTap: () => print("Abra o Google Maps"),
+                          onTap: () {
+                            OpenUrl().openGoogleMaps(oficina.linkEndereco);
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border(top: BorderSide(width: 1.w))),
@@ -180,30 +262,41 @@ class OficinasView extends GetView<OficinasController> {
           // Column, Padding, Column
           body: Column(
             children: [
-              _buildAppBar(texto: oficina.nomeOficina),
-              // Imagem
-              Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    // TODO: substituir com imagem aqui
-                    child: Image.asset('assets/images/eventos/evento-1.jpg'),
-                  )
-              ),
+              _buildAppBar(texto: oficina.nomeOficina, showIcon: false),
 
-              // Descrição - Scrollable
+
+              // Scrollable Container
               Expanded(
                 child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        oficina.descricao,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                  child: Column(
+                    children: [
+                      // Imagem
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            controller.apiHelpers.buildUrl(
+                              url: oficina.imagem,
+                              endpoint: Endpoints.MINIO,
+                            ),
+                          ),
                         ),
                       ),
-                    )
+
+                      // Descrição
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          oficina.descricao,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
