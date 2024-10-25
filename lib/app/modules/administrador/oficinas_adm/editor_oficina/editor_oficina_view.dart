@@ -20,6 +20,7 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
     File? _image;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
         body: Container(
           child: Column(

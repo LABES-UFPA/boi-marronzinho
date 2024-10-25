@@ -19,6 +19,7 @@ class EditorEventoView extends GetView<EditorEventoController> {
     File? _image;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
         body: Container(
           child: Column(

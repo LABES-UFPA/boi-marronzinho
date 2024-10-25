@@ -18,6 +18,7 @@ class AddEventoView extends GetView<AddEventoController> {
     File? _image;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
         body: Container(
           child: Column(
