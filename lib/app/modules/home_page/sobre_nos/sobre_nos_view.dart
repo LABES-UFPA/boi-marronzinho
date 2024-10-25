@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../componentes/AppBarClipper.dart';
+
 class SobreNosView extends GetView<SobreNosController> {
   const SobreNosView({Key? key}) : super(key: key);
 
@@ -119,11 +121,11 @@ class SobreNosView extends GetView<SobreNosController> {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    'Coletivo MultiverCidades da Amazônia       \n'
-                    'Instituto Amazônia Cultural       \n'
-                    'Instituto Amazônia Cultural       \n'
-                    'Grupo de Capoeira Sou Angoleiro       \n'
-                    'Coletivo Lutar Sempre        \n',
+                    '- Coletivo MultiverCidades da Amazônia       \n'
+                    '- Instituto Amazônia Cultural       \n'
+                    '- Instituto Amazônia Cultural       \n'
+                    '- Grupo de Capoeira Sou Angoleiro       \n'
+                    '- Coletivo Lutar Sempre        \n',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,
@@ -144,10 +146,10 @@ class SobreNosView extends GetView<SobreNosController> {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    'Laboratório Saber e Conviver/Faesa/UFPA\n'
-                    'Clínica de Direito à Cidade/PPGDDA/UFPA\n'
-                    'Movimento Bandeirantes São Domingos de Gusmão\n'
-                    'Rede de Supermercado Econômico\n',
+                    '- Laboratório Saber e Conviver/Faesa/UFPA\n'
+                    '- Clínica de Direito à Cidade/PPGDDA/UFPA\n'
+                    '- Movimento Bandeirantes São Domingos de Gusmão\n'
+                    '- Rede de Supermercado Econômico\n',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,
@@ -166,20 +168,3 @@ class SobreNosView extends GetView<SobreNosController> {
   }
 }
 
-class AppBarClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width - 60, size.height);
-    path.quadraticBezierTo(
-        size.width, size.height, size.width, size.height - 60);
-    path.lineTo(size.width, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

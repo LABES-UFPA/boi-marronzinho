@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+import '../../componentes/AppBarClipper.dart';
+
 class EventosView extends GetView<EventosController> {
   static const Color bgColor = Color(0xFFF69302);
 
@@ -16,12 +18,11 @@ class EventosView extends GetView<EventosController> {
         child: Scaffold(
           backgroundColor: bgColor,
           body: Obx(() {
-            if (controller.isLoading.isTrue) {
+            if (controller.isLoading == true) {
               return const Center(
                 child: CircularProgressIndicator()
               );
             }
-
             if (controller.eventos.isEmpty) {
               return Column(
                 children: [
@@ -42,7 +43,6 @@ class EventosView extends GetView<EventosController> {
                 ],
               );
             }
-
             return Column(
               children: [
                 _buildAppBar(texto: 'Eventos'),
@@ -238,21 +238,3 @@ class EventosView extends GetView<EventosController> {
   }
 }
 
-/* Clipper */
-class AppBarClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width - 60, size.height);
-    path.quadraticBezierTo(
-        size.width, size.height, size.width, size.height - 60);
-    path.lineTo(size.width, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

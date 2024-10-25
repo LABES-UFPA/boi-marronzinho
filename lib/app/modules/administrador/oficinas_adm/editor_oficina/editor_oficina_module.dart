@@ -3,7 +3,7 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_of
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 abstract class EditorOficinaModule {
-  static const path = '/editoficina';
+  static const path = '/editooficina';
 
   static GetPage page = GetPage(
     name: path,

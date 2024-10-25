@@ -1,3 +1,5 @@
+import 'dart:io';
+
 abstract interface class IEventosRepository {
   Future<dynamic> fetchEventos();
   Future<dynamic> fetchEventoPorId({
@@ -10,6 +12,7 @@ abstract interface class IEventosRepository {
     required String nome,
     required String descricao,
     required String dataEvento,
+    required File image,
     required String urlEndereco,
   });
   Future<dynamic> editarEvento({
@@ -17,6 +20,7 @@ abstract interface class IEventosRepository {
     required String nome,
     required String descricao,
     required String dataEvento,
+    required File imagem,
     required String urlEndereco,
   });
 }

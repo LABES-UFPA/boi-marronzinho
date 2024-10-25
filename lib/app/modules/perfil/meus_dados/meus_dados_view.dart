@@ -1,5 +1,6 @@
 import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
+import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/meus_dados/meus_dados_controller.dart';
@@ -174,23 +175,7 @@ class MeusDadosView extends GetView<MeusDadosController> {
   }
 }
 
-class AppBarClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width - 60, size.height);
-    path.quadraticBezierTo(
-        size.width, size.height, size.width, size.height - 60);
-    path.lineTo(size.width, 0);
-    path.close();
 
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
 
 // Widget para ícone e nome do usuário
 // Recebe parâmetro "name"
