@@ -232,7 +232,7 @@ class OficinasView extends GetView<OficinasController> {
                       child: InkWell(
                         // TODO: Abrir Mapa e retirar o print
                           onTap: () {
-                            OpenUrl().openGoogleMaps(oficina.linkEndereco);
+                            OpenUrl.openGoogleMaps(oficina.linkEndereco);
                           },
                           child: Container(
                             decoration: BoxDecoration(

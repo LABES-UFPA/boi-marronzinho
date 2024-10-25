@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OpenUrl {
-  Future<void> openGoogleMaps(String url) async {
+  static Future<void> openGoogleMaps(String url) async {
     String? googleMapsUrl = url; // Obtenha o link do TextEditingController
 
     if (googleMapsUrl.isNotEmpty) {
@@ -16,5 +16,5 @@ class OpenUrl {
       print('URL do Google Maps não está disponível.');
     }
   }
-
+  
 }

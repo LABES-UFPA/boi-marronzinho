@@ -14,8 +14,7 @@ class LogoutTimerController extends BaseController {
   RxBool isLoggedIn = false.obs;
   late final Timer _timer;
 
-  // Inicia o timer para logout. Chama a função de 30 em 30 segundos.
-  // Só não chama se tiver no login ou splash
+
   void initLogoutTimer() {
     _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
       log('LogoutTimer: Verificação periódica em andamento');

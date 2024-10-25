@@ -1,3 +1,4 @@
+import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_controller.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,7 @@ class PerfilView extends GetView<PerfilController> {
                       controller.onVouchersPressed();
                     });
                   }),
+                  //teste
                   Obx(() {
                     return controller.userCheck.value == true
                         ? buildMenuItem(
@@ -125,7 +127,7 @@ class PerfilView extends GetView<PerfilController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 20.w),
+                SizedBox(width: 16.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 AutoSizeText(
@@ -186,20 +188,3 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-class AppBarClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width - 60, size.height);
-    path.quadraticBezierTo(
-        size.width, size.height, size.width, size.height - 60);
-    path.lineTo(size.width, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:boi_marronzinho/app/data/models/profile/profile.dart';
-import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
+import 'package:boi_marronzinho/app/data/models/user_permissions/user_permission.dart';
 import 'package:boi_marronzinho/app/modules/administrador/contas/contas_controller.dart';
-import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
+import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
+import 'package:boi_marronzinho/app/modules/componentes/buildAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,7 +17,7 @@ class ContasView extends GetView<ContasController> {
         body: Container(
           child: Column(
             children: [
-              _buildAppBar(),
+              buildAppBar('assets/images/icons/mingcute_arrow-up-fill.png', text: 'Contas ADM'),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                 child: searchMenu(controller.searchController),
@@ -66,56 +63,7 @@ class ContasView extends GetView<ContasController> {
     );
   }
 
-  Widget _buildAppBar() {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10.w),
-                        Center(
-                          child: Text(
-                            'Contas ADM',
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  
 
   Widget Box(BuildContext context, text, UserPermission conta) {
     return Container(

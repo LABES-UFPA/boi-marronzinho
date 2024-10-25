@@ -24,7 +24,7 @@ class OficinasAdmController extends BaseController {
     setLoading(true);
 
     final response = await oficinasRepo.fetchOficinas();
-    final isValid = isValidResponse(response: response, title: response.reason);
+    final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar lista de oficinas');
     if (isValid && response.data != null) {
       oficinas = response.data;
     }

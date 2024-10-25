@@ -5,36 +5,32 @@ import 'package:get/get.dart';
 
 class EventosController extends BaseController {
   RxBool isDescriptionOpen = false.obs;
+  final eventosRepo = EventosRepository();
   late Evento selectedEvent;
-
-  // TODO: Integrar com a API
-  List<Evento> eventos = [];
+  List<Evento> eventos = <Evento>[];
 
   @override
   void onInit() {
     super.onInit();
-    setLoading(true);
     getEventos();
-    setLoading(false);
   }
 
   void toggleDescription() {
     isDescriptionOpen.toggle();
   }
 
-  // Mesmo da Scarlet
   Future<void> getEventos() async {
-    final response = await EventosRepository().fetchEventos();
-    final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar lista de oficinas');
+    setLoading(true);
+
+    final response = await eventosRepo.fetchEventos();
+    final isValid = isValidResponse(
+        response: response, title: 'Sucesso ao carregar a lista');
     if (isValid && response.data != null) {
       eventos = response.data;
     }
-  }
 
-  void getEventosTeste() async {
-    eventos = [
-      Evento(id: 'aaaaa', nome: 'Evento do Boi', descricao: 'descricao', dataEvento: DateTime.now(), linkEndereco: 'linkEndereco')
-    ];
+    setLoading(false);
+    update();
   }
 
   // TODO: Precisa abrir o Google Maps aqui
