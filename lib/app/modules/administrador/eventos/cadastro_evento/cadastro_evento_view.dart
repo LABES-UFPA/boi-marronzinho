@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:boi_marronzinho/app/modules/administrador/eventos/cadastro_evento/cadastro_evento_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
+import 'package:boi_marronzinho/app/modules/componentes/buildAppBar.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +24,7 @@ class AddEventoView extends GetView<AddEventoController> {
         body: Container(
           child: Column(
             children: [
-              _buildAppBar(),
+              buildAppBar('assets/images/icons/mingcute_arrow-up-fill.png', text: ''),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -55,7 +56,7 @@ class AddEventoView extends GetView<AddEventoController> {
                                   controller.nomeController,
                                   TextInputType.text,
                                   controller.validateText,
-                                  'Ex: Oficina de Pintura',
+                                  'Ex: Festival de Cultura',
                                 ),
                                 SizedBox(height: 22.h),
                                 inputBox(
@@ -63,38 +64,10 @@ class AddEventoView extends GetView<AddEventoController> {
                                     controller.descricaoController,
                                     TextInputType.text,
                                     controller.validateText,
-                                    'Ex: Aprenda técnicas de pintura...'),
+                                    'Ex: Junte-se a nós para...'),
                                 SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Boicoins',
-                                    controller.precoBoicoinsController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    'Ex: 50',
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Preço em Reais',
-                                    controller.precoReaisController,
-                                    TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    controller.validateNumber,
-                                    'Ex: 25.40',
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
-                                SizedBox(height: 22.h),
-                                inputBoxDate('Data da Oficina', context,
+                                inputBoxDate('Data da Evento', context,
                                     controller.dateController),
-                                SizedBox(height: 22.h),
-                                inputBox(
-                                    'Limite de Participantes',
-                                    controller.participantesController,
-                                    TextInputType.number,
-                                    controller.validateNumber,
-                                    'Ex: 25',
-                                    formato:
-                                        FilteringTextInputFormatter.digitsOnly),
                                 SizedBox(
                                   height: 20.h,
                                 ),
@@ -105,7 +78,7 @@ class AddEventoView extends GetView<AddEventoController> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
-                            text: 'Adicionar Oficina',
+                            text: 'Adicionar Evento',
                             function: controller.onCadastroEvento,
                           ),
                         ),
@@ -122,38 +95,6 @@ class AddEventoView extends GetView<AddEventoController> {
     );
   }
 
-  Widget _buildAppBar() {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget imageOficina() {
     return controller.image == null

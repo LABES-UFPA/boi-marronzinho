@@ -85,6 +85,7 @@ class PerfilView extends GetView<PerfilController> {
                       controller.onVouchersPressed();
                     });
                   }),
+                  //teste
                   Obx(() {
                     return controller.userCheck.value == true
                         ? buildMenuItem(
@@ -125,7 +126,7 @@ class PerfilView extends GetView<PerfilController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 20.w),
+                SizedBox(width: 16.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 Text(

@@ -72,7 +72,7 @@ class HomePageView extends GetView<HomePageController> {
                       Color(0xFFF69302), Color(0xFFBA400A), () {
                     controller.onEventosPressed();
                   }),
-                  buildMenuItem('Mapa', Icons.location_on, Color(0xFFBA400A),
+                  buildMenuItem('Localização', Icons.location_on, Color(0xFFBA400A),
                       Color(0xFFB12623), () {
                     controller.onMapaPressed();
                   }),
@@ -114,7 +114,7 @@ class HomePageView extends GetView<HomePageController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 20.w),
+                SizedBox(width: 16.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 Text(

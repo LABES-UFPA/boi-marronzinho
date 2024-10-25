@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:boi_marronzinho/app/data/repositories/evento/evento_repository.dart';
 import 'package:boi_marronzinho/app/data/util/url.dart';
 import 'package:http/http.dart' as http;
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
@@ -91,9 +92,6 @@ class AddEventoController extends BaseController {
     if (registerEventoFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        double precoBoicoins =
-            double.tryParse(precoBoicoinsController.text) ?? 0.0;
-        double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
         print(dateController.text);
         DateTime? parsedDate;
         try {
@@ -110,21 +108,17 @@ class AddEventoController extends BaseController {
         print('Imagem --->>>>>${_image.value!.path}');
         print(imagem);
 
-        final registerOficina = await OficinasRepository().cadastrarOficina(
+        final registerEvento = await EventosRepository().cadastrarEvento(
           nome: nomeController.text,
           descricao: descricaoController.text,
-          precoBoicoins: precoBoicoins,
-          precoReal: precoReais,
-          dataOficina: isoDate, // Usar data no formato ISO 8601
-          limiteOficina: int.tryParse(participantesController.text) ?? 20,
-          imagem: imagem!,
+          dataEvento: isoDate, // Usar data no formato ISO 8601
           urlEndereco: enderecoController.text,
         );
 
         
         Get.back();
       } catch (e) {
-        print("Erro ao cadastrar oficina: $e");
+        print("Erro ao cadastrar evento: $e");
       } finally {
         setLoading(false);
       }

@@ -30,12 +30,9 @@ class EditorEventoController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    // evento = Get.arguments as Evento; // Altere para Evento
-    // nomeController.text = evento.nomeEvento; // Altere para nomeEvento
-    // descricaoController.text = evento.descricao; 
-    // precoBoicoinsController.text = evento.precoBoicoin.toString();
-    // precoReaisController.text = evento.precoReal.toString();
-    // participantesController.text = evento.limiteParticipantes.toString();
+    evento = Get.arguments as Evento; // Altere para Evento
+    nomeController.text = evento.nome; // Altere para nomeEvento
+    descricaoController.text = evento.descricao; 
   }
   
   String? validateText(String? value) {

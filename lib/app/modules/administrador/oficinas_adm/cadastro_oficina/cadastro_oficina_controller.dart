@@ -132,6 +132,7 @@ class AddOficinaController extends BaseController {
   }
 
   Future<void> fetchAddressFromCEP(String cep) async {
+    String link ='';
     try {
       isLoading.value = true;
       final response =
@@ -145,7 +146,7 @@ class AddOficinaController extends BaseController {
         }
 
         address.value = addressData!['logradouro'] ?? 'Endereço não encontrado';
-        enderecoController.text = await getGoogleMapsLinkFromAddress();
+        link = await getGoogleMapsLinkFromAddress();
       } else {
         throw Exception('Erro ao buscar o endereço');
       }

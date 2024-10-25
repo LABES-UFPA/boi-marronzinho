@@ -107,7 +107,7 @@ class LojaView extends GetView<LojaController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 20.w),
+                SizedBox(width: 16.w),
                 Icon(icon, color: Colors.white, size: 40.sp),
                 SizedBox(width: 20.w),
                 Text(

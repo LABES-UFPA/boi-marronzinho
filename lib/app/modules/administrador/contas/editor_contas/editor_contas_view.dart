@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_controller.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
-import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
-import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
+import 'package:boi_marronzinho/app/modules/componentes/buildAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +21,7 @@ class EditorContaView extends GetView<EditorContaController> {
         body: Container(
           child: Column(
             children: [
-              _buildAppBar(),
+              buildAppBar('assets/images/icons/mingcute_arrow-up-fill.png', text: ''),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -73,38 +71,7 @@ class EditorContaView extends GetView<EditorContaController> {
     );
   }
 
-  Widget _buildAppBar() {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  
 
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation,

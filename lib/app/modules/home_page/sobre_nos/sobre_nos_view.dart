@@ -121,11 +121,11 @@ class SobreNosView extends GetView<SobreNosController> {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    'Coletivo MultiverCidades da Amazônia       \n'
-                    'Instituto Amazônia Cultural       \n'
-                    'Instituto Amazônia Cultural       \n'
-                    'Grupo de Capoeira Sou Angoleiro       \n'
-                    'Coletivo Lutar Sempre        \n',
+                    '- Coletivo MultiverCidades da Amazônia       \n'
+                    '- Instituto Amazônia Cultural       \n'
+                    '- Instituto Amazônia Cultural       \n'
+                    '- Grupo de Capoeira Sou Angoleiro       \n'
+                    '- Coletivo Lutar Sempre        \n',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,
@@ -146,10 +146,10 @@ class SobreNosView extends GetView<SobreNosController> {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    'Laboratório Saber e Conviver/Faesa/UFPA\n'
-                    'Clínica de Direito à Cidade/PPGDDA/UFPA\n'
-                    'Movimento Bandeirantes São Domingos de Gusmão\n'
-                    'Rede de Supermercado Econômico\n',
+                    '- Laboratório Saber e Conviver/Faesa/UFPA\n'
+                    '- Clínica de Direito à Cidade/PPGDDA/UFPA\n'
+                    '- Movimento Bandeirantes São Domingos de Gusmão\n'
+                    '- Rede de Supermercado Econômico\n',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,

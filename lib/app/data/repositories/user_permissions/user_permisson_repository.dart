@@ -1,5 +1,5 @@
-import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
-import 'package:boi_marronzinho/app/data/repositories/user_permission/user_permission_repository.interface.dart';
+import 'package:boi_marronzinho/app/data/models/user_permissions/user_permission.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_permissions/user_permission_repository.interface.dart';
 import 'package:boi_marronzinho/app/data/request_repository.dart';
 import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/storage/cached_request.dart';

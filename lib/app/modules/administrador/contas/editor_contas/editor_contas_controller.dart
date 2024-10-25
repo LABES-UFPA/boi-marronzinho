@@ -1,10 +1,9 @@
 import 'dart:io';
-import 'package:boi_marronzinho/app/data/models/user_permission/user_permission.dart';
-import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
-import 'package:boi_marronzinho/app/data/repositories/user_permission/user_permisson_repository.dart';
+import 'package:boi_marronzinho/app/data/models/user_permissions/user_permission.dart';
+import 'package:boi_marronzinho/app/data/repositories/user_permissions/user_permisson_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+
 
 class EditorContaController extends GetxController {
   final TextEditingController firstNameController = TextEditingController();
@@ -12,12 +11,13 @@ class EditorContaController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController tipoUsuarioController = TextEditingController();
   final GlobalKey<FormState> editContaFormKey = GlobalKey<FormState>();
+  late UserPermission conta;
   RxString selectedOption = ''.obs;
   @override
   void onInit() {
     super.onInit();
     // Receber dados da conta que será editada
-    UserPermission conta = Get.arguments as UserPermission;
+    conta = Get.arguments as UserPermission;
     firstNameController.text = conta.firstName;
     lastNameController.text = conta.lastName;
     emailController.text = conta.email;
@@ -36,10 +36,11 @@ class EditorContaController extends GetxController {
     if (editContaFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        // Aqui você pode fazer a requisição para atualizar a conta
-        // final updatedConta = await UserPermissionRepository().atualizarPermissaoUsuario(
-        //   id:
-        // );
+
+         final updatedConta = await UserPermissionRepository().atualizarPermissaoUsuario(
+           id: conta.id,
+           novaPermissao: tipoUsuarioController.text,
+         );
 
         Get.back(); // Redirecionar após edição
       } finally {
