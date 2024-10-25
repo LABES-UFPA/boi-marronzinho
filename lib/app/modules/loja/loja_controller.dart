@@ -2,6 +2,7 @@ import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
+import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/troca/troca_module.dart';
 import 'package:boi_marronzinho/app/modules/perfil/perfil_module.dart';
 import 'package:get/get.dart';
@@ -13,8 +14,7 @@ class LojaController extends BaseController {
   }
 
   void onProdutosPressed() {
-    throw UnimplementedError();
-    //Get.toNamed(ProdutosModule.path);
+    Get.toNamed(ProdutosModule.path);
   }
 
   void onOficinasPressed() {
