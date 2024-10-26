@@ -48,7 +48,7 @@ class OficinasController extends BaseController {
 
   Future<void> pagarComBoicoins(Oficina oficina) async {
     if (oficina.precoBoicoin.toInt() > saldo) {
-      Get.offAndToNamed(OficinasModule.path);
+      Get.until((route) => route.settings.name == OficinasModule.path);
       return Toast.error(
           'Erro na Inscrição',
           'Você não tem boicoins suficientes',
@@ -63,13 +63,14 @@ class OficinasController extends BaseController {
 
     final isValid = isValidResponse(response: response, title: response.reason);
     if (isValid && response.data != null) {
-      Get.offAndToNamed(OficinasModule.path);
+      Get.until((route) => route.settings.name == OficinasModule.path);
       return Toast.success(
           'Inscrição confirmada!',
           'Você se inscreveu na oficina ${oficina.nomeOficina}! Te esperamos lá!'
       );
     }
-    Get.offAndToNamed(OficinasModule.path);
+
+    Get.until((route) => route.settings.name == OficinasModule.path);
     return Toast.alert('Você já está inscrito!', 'Você já se inscreveu nesta oficina!');
   }
 
