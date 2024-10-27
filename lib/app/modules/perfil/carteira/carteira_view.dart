@@ -107,7 +107,6 @@ class CarteiraView extends GetView<CarteiraController> {
     // TODO: Botar Expanded na altura do Coitainer
     return Container(
       width: 0.87.sw,
-      height: 99.h,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
           color: Colors.white,
