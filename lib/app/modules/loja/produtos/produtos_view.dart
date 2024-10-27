@@ -27,7 +27,10 @@ class ProdutosView extends GetView<ProdutosController> {
             texto: 'Produtos',
           ),
           floatingActionButton: FloatingActionButton.large(
-            onPressed: () => Get.to(_buildCarrinho()),
+            onPressed: () {
+              controller.onFloatingCarrinhoPressed();
+              Get.to(_buildCarrinho());
+            },
             shape: const CircleBorder(),
             backgroundColor: Colors.white,
             child: const Icon(Icons.shopping_cart_rounded, size: 50,)
@@ -96,7 +99,7 @@ class ProdutosView extends GetView<ProdutosController> {
                               ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
-                                child: Image.asset(produto.imagemURL),
+                                child: Image.network(produto.imagemURL),
                               ),
 
                               // Nome do Produto
@@ -194,12 +197,14 @@ class ProdutosView extends GetView<ProdutosController> {
                         flex: 2,
                         child: PagamentoButton(
                           text: 'Adicionar ao Carrinho',
-                          callback: () {
-                            controller.addProdutoToCarrinho(
-                                produto, controller.quantidade.value);
-                            controller.resetDescricaoPage();
-                            controller.getTotalProdutosCarrinho();
-                            Get.off(() => _buildCarrinho());
+                          // TODO: devia estar no controller
+                          callback: () async {
+                            final result = await controller.onAdicionarAoCarrinhoPressed(produto, controller.quantidade.value);
+                            if (result) {
+                              Get.off(() => _buildCarrinho());
+                              return;
+                            }
+                            Toast.error('Erro ao adicionar produto ao carrinho', 'Tente novamente mais tarde');
                           },
                           color: const Color(0xFFF69302),
                         ),
@@ -210,11 +215,10 @@ class ProdutosView extends GetView<ProdutosController> {
                         child: PagamentoButton(
                           text: 'Comprar',
                           callback: () {
-                            // Get.to(() => _buildPaginaCompra(produto));
                             Get.to(() => PageRevisaoDeCompra(
                                 callbackOnPixPressed: () => print('pix'),
                                 callbackOnBoicoinsPressed: () =>
-                                    print('boicoins'),
+                                    print('Boicoins'),
                                 produtos: [
                                   ItemCarrinho(
                                       produto: produto,
@@ -307,12 +311,18 @@ class ProdutosView extends GetView<ProdutosController> {
                             ),
                           ),
                           Expanded(
-                            child: Text(
-                              'Ou',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                              ),
-                              textAlign: TextAlign.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Ou',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                           ),
                           Expanded(
@@ -320,6 +330,8 @@ class ProdutosView extends GetView<ProdutosController> {
                             child: SizedBox(
                               height: 40.h,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Image.asset(
                                       'assets/images/icons/boicoin.png'),
@@ -339,24 +351,26 @@ class ProdutosView extends GetView<ProdutosController> {
                       ),
 
                       // Botão de Método de Pagamento
-                      BoiButton(
-                          text: 'Método de Pagamento',
-                          color: const Color(0xFFF69302),
-                          width: double.infinity,
-                          height: 50.h,
-                          callbackOnPressed: () {
-                            if (controller.carrinho.isEmpty) {
-                              return Toast.error('O carrinho está vazio!',
-                                  'Tente inserir algo no seu carrinho');
-                            }
-                            Get.to(() => PageRevisaoDeCompra(
-                                  produtos: controller.carrinho,
-                                  saldo: controller.saldo.value,
-                                  callbackOnBoicoinsPressed: () =>
-                                      print('Boicoins'),
-                                  callbackOnPixPressed: () => print('Pix'),
-                                ));
-                          })
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: BoiButton(
+                            text: 'Método de Pagamento',
+                            color: const Color(0xFFF69302),
+                            width: double.infinity,
+                            height: 50.h,
+                            callbackOnPressed: () {
+                              if (controller.carrinho.isEmpty) {
+                                return Toast.error('O carrinho está vazio!',
+                                    'Tente inserir algo no seu carrinho');
+                              }
+                              Get.to(() => PageRevisaoDeCompra(
+                                    produtos: controller.carrinho,
+                                    saldo: controller.saldo.value,
+                                    callbackOnBoicoinsPressed: () => controller.onBoicoinsPressed(),
+                                    callbackOnPixPressed: () => print('Pix'),
+                                  ));
+                            }),
+                      )
                     ],
                   ),
                 ),
@@ -382,7 +396,7 @@ class ProdutosView extends GetView<ProdutosController> {
             flex: 2,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset('assets/images/eventos/evento-1.jpg')),
+                child: Image.network(produto.imagemURL)),
           ),
           Expanded(
             flex: 2,

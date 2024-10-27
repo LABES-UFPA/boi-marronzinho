@@ -145,28 +145,31 @@ class PageRevisaoDeCompra extends StatelessWidget {
                     ),
                     10.verticalSpace,
                     Expanded(
-                      child: Column(
-                        children: [
-                          BoiButton(
-                            text: 'Pix',
-                            callbackOnPressed: () {
-                              callbackOnPixPressed();
-                            },
-                            color: const Color(0xFFF69302),
-                            width: double.infinity,
-                            height: 100.h,
-                          ),
-                          10.verticalSpace,
-                          BoiButton(
-                            text: 'Boicoins',
-                            callbackOnPressed: () {
-                              callbackOnBoicoinsPressed();
-                            },
-                            color: const Color(0xFFF69302),
-                            width: double.infinity,
-                            height: 100.h,
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            BoiButton(
+                              text: 'Pix',
+                              callbackOnPressed: () {
+                                callbackOnPixPressed();
+                              },
+                              color: const Color(0xFFF69302),
+                              width: double.infinity,
+                              height: 60.h,
+                            ),
+                            10.verticalSpace,
+                            BoiButton(
+                              text: 'Boicoins',
+                              callbackOnPressed: () {
+                                callbackOnBoicoinsPressed();
+                              },
+                              color: const Color(0xFFF69302),
+                              width: double.infinity,
+                              height: 60.h,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

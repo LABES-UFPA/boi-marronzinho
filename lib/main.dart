@@ -22,8 +22,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await initProviders();
 
-  // TODO: Tirar isso aqui na produção
-  MemoryStore(StorageKeys.USER_TOKEN).remove();
+  // MemoryStore(StorageKeys.USER_TOKEN).remove();
 
   // Checa se o Token em cache expirou
   if (MemoryStore(StorageKeys.USER_TOKEN).read<String>() != null) {
