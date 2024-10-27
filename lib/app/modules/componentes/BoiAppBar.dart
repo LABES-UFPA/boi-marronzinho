@@ -46,8 +46,9 @@ class BoiAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Get.back();
                     },
                   ),
-                  Icon(
-                    icon,
+                  Visibility(
+                    visible: icon != null,
+                    child: Icon(icon),
                   ),
                   Expanded(
                     child: Row(
