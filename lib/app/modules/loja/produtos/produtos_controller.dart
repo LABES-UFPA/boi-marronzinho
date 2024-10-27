@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.dart';
@@ -7,22 +9,22 @@ import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_module.dart';
 import 'package:get/get.dart';
 
+class ItemCarrinho {
+  final Produto produto;
+  final int quantidade;
+
+  ItemCarrinho({required this.produto, required this.quantidade});
+
+}
+
 class ProdutosController extends BaseController {
   List<Produto> produtos = [];
   RxInt quantidade = 1.obs;
   RxInt saldo = 0.obs;
-  Map<String, dynamic> carrinho = {
-    'produto': Produto(
-        id: 'aaaa',
-        nome: 'Camisa',
-        descricao: 'Camis',
-        precoBoicoins: 100,
-        precoReal: 100,
-        quantidadeEmEstoque: 100,
-        imagemURL: 'assets/images/eventos/evento-1.jpg',
-        criadoEm: DateTime.now()),
-    'quantidade': 10,
-  };
+  RxDouble carrinhoTotalReais = 0.0.obs;
+  RxInt carrinhoTotalBoicoins = 0.obs;
+
+  List<ItemCarrinho> carrinho = <ItemCarrinho>[].obs;
 
   @override
   void onInit() async {
@@ -41,6 +43,23 @@ class ProdutosController extends BaseController {
     if (isValid && response.data != null) {
       produtos = response.data;
     }
+  }
+
+  void getTotalProdutosCarrinho() {
+    double totalReais = 0;
+    int totalBoicoins = 0;
+    for (var item in carrinho) {
+      totalReais += item.produto.precoReal * item.quantidade;
+      totalBoicoins += (item.produto.precoBoicoins * item.quantidade).toInt();
+    }
+    carrinhoTotalReais.value = totalReais;
+    carrinhoTotalBoicoins.value = totalBoicoins;
+  }
+
+  void resetCarrinho() {
+    carrinho.clear();
+    carrinhoTotalBoicoins.value = 0;
+    carrinhoTotalReais.value = 0;
   }
 
   void resetDescricaoPage() {
@@ -182,5 +201,17 @@ class ProdutosController extends BaseController {
 
   void pagarComPix(Produto produto) {}
 
-  void onAddCarrinhoPressed() {}
+  void removeProdutoFromCarrinho(int index) {
+    log('Removendo produto do carrinho');
+    carrinho.removeAt(index);
+    getTotalProdutosCarrinho();
+  }
+
+  // Adiciona um procuto no carrinho
+  void addProdutoToCarrinho(Produto produto, int quantidade) {
+    // TODO: Verifica se já tem
+    carrinho.add(
+      ItemCarrinho(produto: produto, quantidade: quantidade)
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
-import 'package:boi_marronzinho/app/data/storage/memory_storage.dart';
+import 'package:boi_marronzinho/app/modules/componentes/boiButton.dart';
 import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,10 +18,10 @@ class ProdutosView extends GetView<ProdutosController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => print('aaaa'),
-          child: const Icon(Icons.shopping_cart),
-        ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => Get.to(_buildCarrinho()),
+            child: const Icon(Icons.shopping_cart),
+          ),
           backgroundColor: bgColor,
           body: Obx(() {
             if (controller.isLoading.isTrue) {
@@ -297,7 +297,10 @@ class ProdutosView extends GetView<ProdutosController> {
                       child: PagamentoButton(
                         text: 'Adicionar ao Carrinho',
                         callback: () {
-                          controller.onAddCarrinhoPressed();
+                          controller.addProdutoToCarrinho(produto, controller.quantidade.value);
+                          controller.resetDescricaoPage();
+                          controller.getTotalProdutosCarrinho();
+                          Get.off(() => _buildCarrinho());
                         },
                         color: const Color(0xFFF69302),
                       ),
@@ -322,7 +325,6 @@ class ProdutosView extends GetView<ProdutosController> {
       ),
     );
   }
-
 
   Widget _buildQuantidadeSelector() {
     return Obx(() {
@@ -410,7 +412,8 @@ class ProdutosView extends GetView<ProdutosController> {
                     ),
                   ),
                   Expanded(
-                    child: Text('R\$ ${(produto.precoReal * controller.quantidade.value).toStringAsFixed(2)}',
+                    child: Text(
+                        'R\$ ${(produto.precoReal * controller.quantidade.value).toStringAsFixed(2)}',
                         style: _pagamentoBoldStyle),
                   ),
                   Text('ou', style: TextStyle(fontSize: 20.sp)),
@@ -418,7 +421,10 @@ class ProdutosView extends GetView<ProdutosController> {
                     flex: 2,
                     child: SizedBox(
                       height: 60.h,
-                      child: MostraSaldoBoicoins((produto.precoBoicoins.toInt() * controller.quantidade.value).toInt()),
+                      child: MostraSaldoBoicoins(
+                          (produto.precoBoicoins.toInt() *
+                                  controller.quantidade.value)
+                              .toInt()),
                     ),
                   )
                 ],
@@ -470,6 +476,170 @@ class ProdutosView extends GetView<ProdutosController> {
       ),
     );
   }
+
+  Widget _buildCarrinho() {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Obx(() {
+          return Column(
+            children: [
+              _buildAppBar(texto: 'Carrinho', showIcon: true),
+              const Divider(),
+              Expanded(
+                // Adicionado para ajustar o ListView.builder
+                child: ListView.builder(
+                  itemCount: controller.carrinho.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        _buildItemCarrinho(
+                          produto: controller.carrinho[index].produto,
+                          quantidade: controller.carrinho[index].quantidade,
+                          indexOnCarrinho: index,
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Valores
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: AutoSizeText(
+                            'Total R\$${controller.carrinhoTotalReais.value
+                                .toStringAsFixed(2)}', style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.sp,
+                          ),
+                            maxLines: 1,
+                            textAlign: TextAlign.center,),
+                        ),
+                        Expanded(
+                          child: Text('Ou', style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                            textAlign: TextAlign.center,),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(
+                            height: 40.h,
+                            child: Row(
+                              children: [
+                                Image.asset('assets/images/icons/boicoin.png'),
+                                AutoSizeText(
+                                  controller.carrinhoTotalBoicoins.value
+                                      .toString(), style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.sp,
+                                ),),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+
+                    // Botão de Método de Pagamento
+                    BoiButton(
+                        text: 'Método de Pagamento',
+                        color: const Color(0xFFF69302),
+                        width: double.infinity,
+                        height: 50.h,
+                        callbackOnPressed: () => print('Método de pagamento'))
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildItemCarrinho({required Produto produto, required int quantidade, required int indexOnCarrinho}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Foto
+          Expanded(
+            flex: 2,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset('assets/images/eventos/evento-1.jpg')),
+          ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: [
+                Text('${quantidade}x ${produto.nome}'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'R\$ ${produto.precoReal.toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25.h,
+                            child: Row(
+                              children: [
+                                Image.asset('assets/images/icons/boicoin.png'),
+                                Text(produto.precoBoicoins.toInt().toString(),
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    10.horizontalSpace,
+                  ],
+                )
+              ],
+            ),
+          ),
+          // Botão de remover
+          Expanded(
+            child: IconButton(
+              onPressed: () {
+                controller.removeProdutoFromCarrinho(indexOnCarrinho);
+              },
+              icon: const Icon(Icons.highlight_remove),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 }
 
 class AppBarClipper extends CustomClipper<Path> {
