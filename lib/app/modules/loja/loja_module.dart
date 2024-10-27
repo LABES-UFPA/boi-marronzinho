@@ -7,7 +7,7 @@ abstract class LojaModule {
 
   static GetPage page = GetPage(
     name: path,
-    page: () =>  LojaView(),
+    page: () => LojaView(),
     binding: LojaBinding(),
   );
 }

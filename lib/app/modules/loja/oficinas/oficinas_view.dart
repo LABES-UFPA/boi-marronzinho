@@ -1,7 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
 import 'package:boi_marronzinho/app/data/util/url.dart';
+import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +19,7 @@ class OficinasView extends GetView<OficinasController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: const BoiAppBar(texto: 'Oficinas', icon: Icons.co_present),
         backgroundColor: bgColor,
         body: Obx(() {
           if (controller.isLoading.isTrue) {
@@ -28,7 +29,6 @@ class OficinasView extends GetView<OficinasController> {
           if (controller.oficinas.isEmpty) {
             return Column(
               children: [
-                _buildAppBar(texto: 'Oficinas'),
                 Expanded(
                   child: Center(
                     child: Text(
@@ -48,7 +48,6 @@ class OficinasView extends GetView<OficinasController> {
 
           return Column(
             children: [
-              _buildAppBar(texto: 'Oficinas'),
               // Oficinas
               Expanded(
                 child: ListView.builder(
@@ -62,115 +61,6 @@ class OficinasView extends GetView<OficinasController> {
           );
         })
       ),
-    );
-  }
-
-  Widget _buildAppBar({required String texto, bool showIcon = true}) {
-    if (showIcon) {
-      return Stack(
-        children: [
-          ClipPath(
-            clipper: AppBarClipper(),
-            child: Container(
-              height: 100.h,
-              decoration: const BoxDecoration(
-                color: Color(0xFFFFFFFF),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10).h,
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Image.asset(
-                        'assets/images/icons/mingcute_arrow-up-fill.png',
-                        height: 40.h,
-                        width: 40.w,
-                      ),
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                    const Icon(
-                      Icons.co_present,
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 5.w),
-                          Expanded(
-                            child: AutoSizeText(
-                              texto,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 36.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 5.w),
-                        Expanded(
-                          child: AutoSizeText(
-                            texto,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -258,11 +148,11 @@ class OficinasView extends GetView<OficinasController> {
   Widget _buildDescriptionPage(Oficina oficina) {
     return SafeArea(
       child: Scaffold(
+        appBar: BoiAppBar(texto: oficina.nomeOficina, icon: null),
           backgroundColor: const Color(0xFFBA400A),
           // Column, Padding, Column
           body: Column(
             children: [
-              _buildAppBar(texto: oficina.nomeOficina, showIcon: false),
 
 
               // Scrollable Container
@@ -404,7 +294,7 @@ class OficinasView extends GetView<OficinasController> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(),
+        appBar: const BoiAppBar(texto: '', icon: null),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,

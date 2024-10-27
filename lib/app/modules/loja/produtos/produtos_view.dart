@@ -26,9 +26,11 @@ class ProdutosView extends GetView<ProdutosController> {
             customCallbackOnExit: () {},
             texto: 'Produtos',
           ),
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.large(
             onPressed: () => Get.to(_buildCarrinho()),
-            child: const Icon(Icons.shopping_cart),
+            shape: const CircleBorder(),
+            backgroundColor: Colors.white,
+            child: const Icon(Icons.shopping_cart_rounded, size: 50,)
           ),
           backgroundColor: bgColor,
           body: Obx(() {
