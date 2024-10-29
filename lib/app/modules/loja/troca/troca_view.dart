@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 class TrocaView extends GetView<TrocaController> {
   const TrocaView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,10 +37,11 @@ class TrocaView extends GetView<TrocaController> {
                   itemCount: controller.itensTroca.length,
                   itemBuilder: (context, index) {
                     final item = controller.itensTroca[index];
-                    controller.itemSelecionado = controller.itensTroca[index];
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
-                      child: Box(item),
+                      child: Box(item, () {
+                        controller.itemSelecionado = controller.itensTroca[index];
+                      }),
                     );
                   },
                 ),
@@ -53,10 +53,11 @@ class TrocaView extends GetView<TrocaController> {
     );
   }
 
-  Widget Box(ItemTroca item) {
+  Widget Box(ItemTroca item, Function callbackOnPressed) {
     return InkWell(
       onTap: () {
-          Get.to(() => _buildConversor(item));
+        callbackOnPressed();
+        Get.to(() => _buildConversor(item));
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 18.w),
@@ -105,146 +106,150 @@ class TrocaView extends GetView<TrocaController> {
                   child: Center(
                     child: Column(
                       children: [
-                        Center(
-                          child: AutoSizeText(
-                            'Conversor de Boicoins',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 36.sp,
+                        Column(
+                          children: [
+                            Center(
+                              child: AutoSizeText(
+                                'Conversor de Boicoins',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36.sp,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        10.verticalSpace,
-                        Container(
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Expanded(child: Icon(Icons.arrow_circle_right_outlined)),
-                                    Expanded(
-                                      flex: 2,
-                                      child: AutoSizeText(
-                                        item.nomeItem,
-                                        maxLines: 2,
-                                        style: TextStyle(
+                            10.verticalSpace,
+                            Container(
+                              height: 50.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black, width: 1),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        const Expanded(child: Icon(Icons.arrow_circle_right_outlined)),
+                                        Expanded(
+                                          flex: 2,
+                                          child: AutoSizeText(
+                                            item.nomeItem,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 1,
+                                    thickness: 1,
+                                    color: Colors.black,
+                                  ),
+                                  Expanded(
+                                    child: TextField(
+                                      textAlignVertical: TextAlignVertical.center,
+                                      controller: controller.quantidadeController,
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        hintText: item.unidadeMedida.capitalizeFirst,
+                                        hintStyle: TextStyle(
                                           fontSize: 20.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const VerticalDivider(
-                                width: 1,
-                                thickness: 1,
-                                color: Colors.black,
-                              ),
-                              Expanded(
-                                child: TextField(
-                                  textAlignVertical: TextAlignVertical.center,
-                                  controller: controller.quantidadeController,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    hintText: item.unidadeMedida.capitalizeFirst,
-                                    hintStyle: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        20.verticalSpace,
-                        Icon(
-                          Icons.swap_horiz_outlined,
-                          size: 50.sp,
-                        ),
-                        20.verticalSpace,
-                        Container(
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/images/icons/boicoin.png', scale: 0.5),
-                                    Text(
-                                      'Boicoins',
-                                      style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                            20.verticalSpace,
+                            Icon(
+                              Icons.swap_horiz_outlined,
+                              size: 50.sp,
+                            ),
+                            20.verticalSpace,
+                            Container(
+                              height: 50.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black, width: 1),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
                                 ),
                               ),
-                              const VerticalDivider(
-                                width: 1,
-                                thickness: 1,
-                                color: Colors.black,
-                              ),
-                              Expanded(
-                                child: Obx(() {
-                                  return AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 150), // Duração mais rápida
-                                    transitionBuilder: (Widget child, Animation<double> animation) {
-                                      return ScaleTransition(
-                                        scale: CurvedAnimation(parent: animation, curve: Curves.easeInOut), // Curva mais rápida e suave
-                                        child: child,
-                                      );
-                                    },
-                                    child: Text(
-                                      controller.boicoins.value.toString(),
-                                      key: ValueKey<int>(controller.boicoins.value),
-                                      style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset('assets/images/icons/boicoin.png', scale: 0.5),
+                                        Text(
+                                          'Boicoins',
+                                          style: TextStyle(
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 1,
+                                    thickness: 1,
+                                    color: Colors.black,
+                                  ),
+                                  Expanded(
+                                    child: Obx(() {
+                                      return AnimatedSwitcher(
+                                        duration: const Duration(milliseconds: 150), // Duração mais rápida
+                                        transitionBuilder: (Widget child, Animation<double> animation) {
+                                          return ScaleTransition(
+                                            scale: CurvedAnimation(parent: animation, curve: Curves.easeInOut), // Curva mais rápida e suave
+                                            child: child,
+                                          );
+                                        },
+                                        child: Text(
+                                          controller.boicoins.value.toString(),
+                                          key: ValueKey<int>(controller.boicoins.value),
+                                          style: TextStyle(
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         20.verticalSpace,
                         SizedBox(
                           width: 1.sw,
                           height: 100,
-                          child: _buildButton('Calcular', Colors.red, () {
+                          child: _buildButton('Realizar Troca', Colors.red, () {
                             controller.onCalcularPressed(item);
                           })
                         ),
@@ -257,122 +262,6 @@ class TrocaView extends GetView<TrocaController> {
           ),
         ),
       );
-    }
-
-  Widget _buildAppBar({required String texto, bool showIcon = true, Function? customCallbackOnExit}) {
-    if (showIcon) {
-      return Stack(
-        children: [
-          ClipPath(
-            clipper: AppBarClipper(),
-            child: Container(
-              height: 100.h,
-              decoration: const BoxDecoration(
-                color: Color(0xFFFFFFFF),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10).h,
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Image.asset(
-                        'assets/images/icons/mingcute_arrow-up-fill.png',
-                        height: 40.h,
-                        width: 40.w,
-                      ),
-                      onPressed: () {
-                        if (customCallbackOnExit != null) {
-                          customCallbackOnExit();
-                        }
-                        Get.back();
-                      },
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 10.w),
-                          Icon(
-                            Icons.cached,
-                            color: Colors.black,
-                            size: 30.sp,
-                          ),
-                          SizedBox(width: 5.w),
-                          Center(
-                            child: Text(
-                              texto,
-                              style: TextStyle(
-                                fontSize: 36.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      if (customCallbackOnExit != null) {
-                        customCallbackOnExit();
-                      }
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10.w),
-                        SizedBox(width: 5.w),
-                        Center(
-                          child: Text(
-                            texto,
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-
   }
     
   // Butao
