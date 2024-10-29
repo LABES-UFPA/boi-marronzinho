@@ -3,8 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,8 +25,10 @@ class EditorOficinaController extends BaseController {
   late Oficina oficina;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
-  var _imageCarregda = Rxn<File>();
   File? get image => _image.value;
+  File? imagem;
+  String url='';
+  late ApiHelpers apiHelpers = ApiHelpers();
 
   @override
   void onInit() {
@@ -37,6 +40,11 @@ class EditorOficinaController extends BaseController {
     precoBoicoinsController.text = oficina.precoBoicoin.toString();
     precoReaisController.text = oficina.precoReal.toString();
     participantesController.text = oficina.limiteParticipantes.toString();
+    url = ApiHelpers().buildUrl(
+      url:oficina.imagem,
+      endpoint: Endpoints.MINIO
+    );
+    print('url ----->>>>>> ${url}');
   }
   
   String? validateText(String? value) {
@@ -72,6 +80,7 @@ class EditorOficinaController extends BaseController {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       _image.value = File(pickedFile.path);
+      imagem = File(pickedFile.path);
     }
   }
 
@@ -114,6 +123,7 @@ class EditorOficinaController extends BaseController {
       }
     }
   }
+
 
 
 }

@@ -10,7 +10,8 @@ import 'dart:developer';
 import 'package:boi_marronzinho/app/data/storage/cached_request.dart';
 import 'package:dio/dio.dart';
 
-final class OficinasRepository extends RequestRepository implements IOficinasRepository {
+final class OficinasRepository extends RequestRepository
+    implements IOficinasRepository {
   static const String oficinasUrl = '/oficinas/lista-oficinas';
   static const String criarOficinasUrl = '/oficinas/cria-oficinas';
   static const String deletarOficinasUrl = '/oficinas/deleta-oficinas';
@@ -23,7 +24,8 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
 
   @override
   Future<dynamic> fetchOficinas() async {
-    final url = apiHelpers.buildUrl(url: oficinasUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final url = apiHelpers.buildUrl(
+        url: oficinasUrl, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
       final response = await client.get(url);
@@ -51,16 +53,15 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
   }
 
   @override
-  Future <dynamic> cadastrarOficina(
+  Future<dynamic> cadastrarOficina(
       {required String nome,
-        required String descricao,
-        required double precoBoicoins,
-        required double precoReal,
-        required String dataOficina,
-        required int limiteOficina,
-        required File imagem,
-        required String urlEndereco
-      }) async {
+      required String descricao,
+      required double precoBoicoins,
+      required double precoReal,
+      required String dataOficina,
+      required int limiteOficina,
+      required File imagem,
+      required String urlEndereco}) async {
     final url = apiHelpers.buildUrl(url: criarOficinasUrl);
 
     final formData = FormData.fromMap({
@@ -71,7 +72,8 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
       'dataEvento': dataOficina,
       'limiteParticipantes': limiteOficina,
       'linkEndereco': urlEndereco,
-      'file': await MultipartFile.fromFile(imagem.path, filename: imagem.path.split('/').last),
+      'file': await MultipartFile.fromFile(imagem.path,
+          filename: imagem.path.split('/').last),
     });
 
     try {
@@ -87,11 +89,11 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
     }
   }
 
-
   @override
   Future deletarOficinas({required String id}) async {
-    final url = apiHelpers.buildUrl(url: deletarOficinasUrl, endpoint: Endpoints.BOI_MARRONZINHO);
-    final bodyRequest = {'id':id};
+    final url = apiHelpers.buildUrl(
+        url: deletarOficinasUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final bodyRequest = {'id': id};
     try {
       final response = await client.delete(url, bodyRequest);
       final invalidResponse = isValidResponse(response);
@@ -106,8 +108,10 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
   }
 
   @override
-  Future inscricaoOficina({required String usuarioId, required String oficinaId}) async {
-    final url = apiHelpers.buildUrl(url: inscreverEmOficina, endpoint: Endpoints.BOI_MARRONZINHO);
+  Future inscricaoOficina(
+      {required String usuarioId, required String oficinaId}) async {
+    final url = apiHelpers.buildUrl(
+        url: inscreverEmOficina, endpoint: Endpoints.BOI_MARRONZINHO);
     final bodyRequest = {
       'usuarioId': usuarioId,
       'oficinaId': oficinaId,
@@ -119,7 +123,11 @@ final class OficinasRepository extends RequestRepository implements IOficinasRep
         return invalidResponse;
       }
 
-      return (valid: true, reason: 'Inscrição confirmada com sucesso!', data: response.data);
+      return (
+        valid: true,
+        reason: 'Inscrição confirmada com sucesso!',
+        data: response.data
+      );
     } catch (error, trace) {
       return errorResponse(error, trace: trace);
     }

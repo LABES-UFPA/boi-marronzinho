@@ -3,13 +3,13 @@ import 'package:boi_marronzinho/app/modules/administrador/contas/contas_module.d
 import 'package:boi_marronzinho/app/modules/administrador/eventos/eventos_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/item_troca/item_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/produtos/produtos_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/scanner/scanner_module.dart';
 import 'package:get/get.dart';
 
 class AdminController extends BaseController{
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
   }
 
@@ -17,7 +17,7 @@ class AdminController extends BaseController{
     Get.toNamed(EventosAdminModule.path);
   }
   void onProdutosPressed() {
-    //Get.toNamed(ProdutosModule.path);
+    Get.toNamed(ProdutosAdminModule.path);
   }
   void onOficinasPressed() {
     Get.toNamed(OficinasAdminModule.path);

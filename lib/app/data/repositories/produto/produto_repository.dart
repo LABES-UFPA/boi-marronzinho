@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.interface.dart';
 import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/request_repository.dart';
+import 'package:dio/dio.dart';
 
 final class ProdutoRepository extends RequestRepository
     implements IProdutosRepository {
@@ -75,4 +78,70 @@ final class ProdutoRepository extends RequestRepository
     }
   }
 
+  Future<dynamic> cadastrarProduto({
+    required String nome,
+    required String descricao,
+    required double precoBoicoins,
+    required double precoReal,
+    required int quantidadeEmEstoque,
+    required File imagem,
+  }) async {
+    final url = apiHelpers.buildUrl(url: adicionarProdutoUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+      print('  Imagem: ${imagem.path}');
+    final eventData = {
+      'nome': nome,
+      'descricao': descricao,
+      'precoBoicoins': precoBoicoins,
+      'precoReal': precoReal,
+      'quantidadeEmEstoque': quantidadeEmEstoque,
+    };
+    final eventDataString = jsonEncode(eventData);
+    final formData = FormData.fromMap({
+      'request':
+          eventDataString, // Adicione o JSON como string no campo 'request'
+      'file': await MultipartFile.fromFile(imagem.path,
+          filename: imagem.path.split('/').last),
+    });
+
+    try {
+      // Faça a requisição POST com multipart/form-data
+      final response = await client.post(
+        url, formData,
+        
+      );
+
+      if (response.statusCode == 200) {
+        return (valid: true, reason: null, data: response.data);
+      } else {
+        return (
+          valid: false,
+          reason: response.statusMessage,
+          data: response.data
+        );
+      }
+    } catch (error, stacktrace) {
+      print("Erro: $error");
+      print("Stacktrace: $stacktrace");
+      return errorResponse(error, trace: stacktrace);
+    }
+  }
+
+  
+
+   Future<dynamic> deletarProduto({required String id}) async {
+    final url = apiHelpers.buildUrl(url: removerProdutoUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final bodyRequest = {'id': id};
+
+    try {
+      final response = await client.delete(url, bodyRequest);
+      final invalidResponse = isValidResponse(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      return (valid: true, reason: null, data: null);
+    } catch (error, trace) {
+      return errorResponse(error, trace: trace);
+    }
+  }
 }

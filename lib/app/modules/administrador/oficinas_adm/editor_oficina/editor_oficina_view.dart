@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_view.dart';
@@ -147,55 +149,41 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
   }
 
   Widget imageOficina() {
-    // Verifica se a imagem local (File) é nula
-    if (controller.image == null) {
-      // Se a imagem local for nula, verifica se a imagem Base64 está disponível
-      if (controller.oficina.imagem.isEmpty) {
-        // Se a imagem Base64 também estiver vazia, exibe o ícone
-        return Container(
-          width: 350.w,
-          height: 160.h,
-          child: Icon(
-            Icons.image,
-            size: 50,
-            color: Colors.white,
-          ),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 206, 206, 206),
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-        );
-      } else {
-        // Se a imagem Base64 estiver disponível, a exibe
-        return Container(
-          width: 350.w,
-          height: 200.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(16.0),
-            image: DecorationImage(
-              image: MemoryImage(base64Decode(controller.oficina.imagem)),
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      }
-    } else {
-      // Se a imagem local não for nula, a exibe
-      return Container(
-        width: 350.w,
-        height: 200.h,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(16.0),
-          image: DecorationImage(
-            image: FileImage(controller.image!),
-            fit: BoxFit.cover,
-          ),
+  // Verifica se a imagem local (File) é nula
+  if (controller.image == null) {
+    // Se a imagem local for nula, verifica se a imagem Base64 está disponível
+    return Container(
+      width: 350.w,
+      height: 160.h,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 206, 206, 206),
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: Image.network(
+        ApiHelpers().buildUrl(
+      url:controller.oficina.imagem,
+      endpoint: Endpoints.MINIO
+    ),
+        fit: BoxFit.cover,
+      ),
+    );
+  } else {
+    // Se a imagem local não for nula, a exibe
+    return Container(
+      width: 350.w,
+      height: 200.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(16.0),
+        image: DecorationImage(
+          image: FileImage(controller.image!),
+          fit: BoxFit.cover,
         ),
-      );
-    }
+      ),
+    );
   }
+}
+
 
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation,

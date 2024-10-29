@@ -12,7 +12,7 @@ class ContasController extends BaseController {
   //RxBool get isLoading => super.isLoading;
   //var isLoading = true.obs;
   List<UserPermission> contas = <UserPermission>[];
-
+  var filteredContas = <UserPermission>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -68,6 +68,20 @@ class ContasController extends BaseController {
         ],
       ),
     );
+  }
+
+  void filterContas() {
+    final query = searchController.text.toLowerCase();
+    if (query.isEmpty) {
+      filteredContas.assignAll(contas);
+    } else {
+      filteredContas.assignAll(
+        contas.where((conta) {
+          final fullName = '${conta.firstName} ${conta.lastName}'.toLowerCase();
+          return fullName.contains(query);
+        }),
+      );
+    }
   }
 
   void goToEditConta(UserPermission conta) {
