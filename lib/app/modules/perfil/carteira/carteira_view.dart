@@ -1,4 +1,5 @@
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
+import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
 import 'package:boi_marronzinho/app/modules/perfil/carteira/carteira_controller.dart';
 import 'package:boi_marronzinho/app/modules/perfil/carteira/carteira_model.dart';
 import 'package:flutter/material.dart';
@@ -14,46 +15,50 @@ class CarteiraView extends GetView<CarteiraController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: const BoiAppBar(texto: 'Carteira', icon: Icons.account_balance_wallet),
         backgroundColor: bgColor,
-        body: Column(
-          children: [
-            _buildAppBar(),
-            Expanded(
-              child: Obx(() {
-                if (controller.isLoading.isTrue) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Obx(() {
+                  if (controller.isLoading.isTrue) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Column(
+                    children: [
+                      10.verticalSpace,
+                      CoinCounter(coins: controller.boicoins.value),
+                      10.verticalSpace,
+                      _buildExtratoButton('Extrato', controller.onExtratoPressed),
+                      10.verticalSpace,
+                      Expanded(
+                        child: Obx(() {
+                          if (controller.showExtrato == true.obs) {
+                            return ListView.builder(
+                                itemCount: controller.extrato.length,
+                                itemBuilder: (context, index) {
+                                  final item = controller.extrato[index];
+                                  return Column(
+                                    children: [
+                                      _buildExtratoItem(item),
+                                      10.verticalSpace,
+                                    ],
+                                  );
+                                });
+                          }
+                          return 10.verticalSpace;
+                        }),
+                      ),
+                    ],
                   );
-                }
-                return Column(
-                  children: [
-                    10.verticalSpace,
-                    CoinCounter(coins: controller.boicoins.value),
-                    10.verticalSpace,
-                    _buildExtratoButton('Extrato', controller.onExtratoPressed),
-                    10.verticalSpace,
-                    Expanded(
-                      child: Obx(() {
-                        if (controller.showExtrato == true.obs) {
-                          return ListView.builder(
-                              itemCount: controller.extrato.length,
-                              itemBuilder: (context, index) {
-                                final item = controller.extrato[index];
-                                return Column(
-                                  children: [
-                                    _buildExtratoItem(item),
-                                    10.verticalSpace,
-                                  ],
-                                );
-                              });
-                        }
-                        return 10.verticalSpace;
-                      }),
-                    ),
-                  ],
-                );
-              }),
-            )],
+                }),
+              )],
+          ),
         ),
       ),
     );
@@ -107,7 +112,6 @@ class CarteiraView extends GetView<CarteiraController> {
     // TODO: Botar Expanded na altura do Coitainer
     return Container(
       width: 0.87.sw,
-      height: 99.h,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -149,64 +153,6 @@ class CarteiraView extends GetView<CarteiraController> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.delete<CarteiraController>();
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10.w),
-                        Icon(
-                          Icons.account_balance_wallet,
-                          color: Colors.black,
-                          size: 30.sp,
-                        ),
-                        SizedBox(width: 5.w),
-                        Center(
-                          child: Text(
-                            'Carteira',
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 

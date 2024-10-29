@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:boi_marronzinho/app/data/models/produto/carrinho.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.interface.dart';
 import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
@@ -17,10 +18,10 @@ final class ProdutoRepository extends RequestRepository
   static const String atualizarProdutoUrl = '/lojas/atualiza-produto/';
 
   // Carrinho
-  static const String carrinhoUrl = '/lojas/carrinho';
-  static const String carrinhoAdicionarItemUrl = '/lojas/carrinho/adiciona-item';
+  static const String carrinhoUrl = '/lojas/carrinho/';
+  static const String carrinhoAdicionarItemUrl = '/lojas/carrinho/adiciona-item/';
   static const String carrinhoRemoverItemUrl = '/lojas/carrinho/remove-item/';
-  static const String finalizarCompra = '/lojas/compra/finalizar';
+  static const String finalizarCompraUrl = '/lojas/compra/finalizar/';
 
   // late final CachedRequest _cache;
 
@@ -58,16 +59,125 @@ final class ProdutoRepository extends RequestRepository
     }
   }
 
+  // Usuário
+
+
   @override
-  Future comprarProduto({required String usuarioId, required String produtoId}) async {
-    final url = apiHelpers.buildUrl(url: finalizarCompra, endpoint: Endpoints.BOI_MARRONZINHO);
+  Future getCarrinho({required String usuarioId}) async {
+    final url = apiHelpers.buildUrl(
+        url: carrinhoUrl + usuarioId, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    try {
+      final response = await client.get(url);
+
+      final invalidResponse = isValidResponse<List<Produto>>(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      // await _cache.cacheRequest(response.data);
+
+      final itens = List.from(response.data)
+          .map((item) => Carrinho.fromMap(item))
+          .toList();
+
+      return (
+      valid: true,
+      reason: 'Sucesso ao pegar todos os itens do Carrinho da API',
+      data: itens
+      );
+    } catch (e, stackTrace) {
+      log('Error fetching oficinas', error: e, stackTrace: stackTrace);
+      return (
+      valid: false,
+      reason: 'Erro interno durante a requisição',
+      data: null
+      );
+    }
+  }
+
+  @override
+  Future addItemCarrinho({required String usuarioId, required String produtoId, required int quantidade}) async {
+    final url = apiHelpers.buildUrl(
+        url: carrinhoAdicionarItemUrl + usuarioId, endpoint: Endpoints.BOI_MARRONZINHO);
     final bodyRequest = {
-      'usuarioId': usuarioId,
-      'oficinaId': produtoId,
+      'produtoId': produtoId,
+      'quantidade': quantidade
     };
+
     try {
       final response = await client.post(url, bodyRequest);
-      final invalidResponse = isValidResponse(response);
+
+      final invalidResponse = isValidResponse<List<Produto>>(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      // await _cache.cacheRequest(response.data);
+
+      final message = response.data;
+
+      return (
+        valid: true,
+        reason: 'Sucesso ao adicionar item no carrinho',
+        data: message
+      );
+    } catch (e, stackTrace) {
+      log('Error adding item to carrinho', error: e, stackTrace: stackTrace);
+      return (
+        valid: false,
+        reason: 'Erro interno durante a requisição',
+        data: null
+      );
+    }
+  }
+
+  @override
+  Future removeItemCarrinho (
+      {required String usuarioId, required String itemId}) async {
+    final url = apiHelpers.buildUrl(
+        url: carrinhoRemoverItemUrl + itemId + '/' + usuarioId, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    final bodyRequest = {};
+    try {
+      final response = await client.delete(url, bodyRequest);
+
+      final invalidResponse = isValidResponse<List<Produto>>(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      // await _cache.cacheRequest(response.data);
+
+      final message = response.data;
+
+      return (
+      valid: true,
+      reason: 'Sucesso ao remover item do Carrinho na API',
+      data: message
+      );
+    } catch (e, stackTrace) {
+      log('Error deleting itens from Carrinho', error: e, stackTrace: stackTrace);
+      return (
+      valid: false,
+      reason: 'Erro interno durante a requisição',
+      data: null
+      );
+    }
+  }
+
+
+  @override
+  Future finalizarCompra({required String usuarioId}) async {
+    final url = apiHelpers.buildUrl(
+        url: finalizarCompraUrl + usuarioId, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    final bodyRequest = {};
+
+    try {
+      final response = await client.post(url, bodyRequest);
+
+      final invalidResponse = isValidResponse<List<Produto>>(response);
       if (!invalidResponse.valid) {
         return invalidResponse;
       }
@@ -77,38 +187,40 @@ final class ProdutoRepository extends RequestRepository
       return errorResponse(error, trace: trace);
     }
   }
-
-  Future<dynamic> cadastrarProduto({
+  
+  @override
+  Future<dynamic> addProduto({
     required String nome,
     required String descricao,
     required double precoBoicoins,
     required double precoReal,
     required int quantidadeEmEstoque,
-    required File imagem,
+    required File image, // Arquivo de imagem para upload
   }) async {
-    final url = apiHelpers.buildUrl(url: adicionarProdutoUrl, endpoint: Endpoints.BOI_MARRONZINHO);
-      print('  Imagem: ${imagem.path}');
-    final eventData = {
+    final url = apiHelpers.buildUrl(
+        url: adicionarProdutoUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    // Crie o JSON com os dados do produto como uma string JSON válida
+    final productData = {
       'nome': nome,
       'descricao': descricao,
       'precoBoicoins': precoBoicoins,
       'precoReal': precoReal,
       'quantidadeEmEstoque': quantidadeEmEstoque,
     };
-    final eventDataString = jsonEncode(eventData);
+
+    // Use jsonEncode para converter o mapa em uma string JSON válida
+    final productDataString = jsonEncode(productData);
+
+    // Crie um FormData para enviar o multipart/form-data
     final formData = FormData.fromMap({
-      'request':
-          eventDataString, // Adicione o JSON como string no campo 'request'
-      'file': await MultipartFile.fromFile(imagem.path,
-          filename: imagem.path.split('/').last),
+      'request': productDataString, // Adicione o JSON como string no campo 'request'
+      'file': await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
     });
 
     try {
       // Faça a requisição POST com multipart/form-data
-      final response = await client.post(
-        url, formData,
-        
-      );
+      final response = await client.post(url, formData);
 
       if (response.statusCode == 200) {
         return (valid: true, reason: null, data: response.data);
@@ -125,15 +237,22 @@ final class ProdutoRepository extends RequestRepository
       return errorResponse(error, trace: stacktrace);
     }
   }
-
   
-
-   Future<dynamic> deletarProduto({required String id}) async {
-    final url = apiHelpers.buildUrl(url: removerProdutoUrl, endpoint: Endpoints.BOI_MARRONZINHO);
-    final bodyRequest = {'id': id};
+  @override
+  Future atualizaProduto({required String produtoId}) {
+    // TODO: implement atualizaProduto
+    throw UnimplementedError();
+  }
+  
+ 
+  
+  @override
+  Future removeProduto({required String produtoId}) async {
+    final url = apiHelpers.buildUrl(
+        url: removerProdutoUrl + produtoId, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
-      final response = await client.delete(url, bodyRequest);
+      final response = await client.delete(url, {});
       final invalidResponse = isValidResponse(response);
       if (!invalidResponse.valid) {
         return invalidResponse;

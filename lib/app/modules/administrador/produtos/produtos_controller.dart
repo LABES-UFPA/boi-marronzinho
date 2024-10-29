@@ -73,8 +73,8 @@ class ProdutosAdmController extends BaseController {
 
   Future<void> onDeleteProduto(Produto produto) async {
     try {
-      final registerProduto = await ProdutoRepository().deletarProduto(
-        id: produto.id,
+      final registerProduto = await ProdutoRepository().removeProduto(
+        produtoId: produto.id,
       );
       update();
     } finally {

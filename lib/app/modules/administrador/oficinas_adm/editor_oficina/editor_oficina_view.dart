@@ -100,7 +100,7 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
                             text: 'Salvar Alterações',
-                            function: controller.onEditOficina,
+                            function: controller.onEditarOficina,
                           ),
                         ),
                       ],
@@ -152,19 +152,18 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
   // Verifica se a imagem local (File) é nula
   if (controller.image == null) {
     // Se a imagem local for nula, verifica se a imagem Base64 está disponível
-    return Container(
-      width: 350.w,
-      height: 160.h,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 206, 206, 206),
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Image.network(
-        ApiHelpers().buildUrl(
-      url:controller.oficina.imagem,
-      endpoint: Endpoints.MINIO
-    ),
-        fit: BoxFit.cover,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16.0),
+      child: Container(
+        width: 350.w,
+        height: 160.h,
+        child: Image.network(
+          ApiHelpers().buildUrl(
+            url: controller.oficina.imagem,
+            endpoint: Endpoints.MINIO,
+          ),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   } else {

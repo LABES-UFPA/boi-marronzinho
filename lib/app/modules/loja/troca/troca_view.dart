@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/models/troca/item_troca.dart';
+import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
 import 'package:boi_marronzinho/app/modules/loja/troca/troca_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ class TrocaView extends GetView<TrocaController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: const BoiAppBar(texto: 'Trocas', icon: Icons.cached),
         backgroundColor: const Color(0xFFB12623),
         body: Obx(() {
           if (controller.isLoading.isTrue) {
@@ -20,7 +22,6 @@ class TrocaView extends GetView<TrocaController> {
           }
           return Column(
             children: [
-              _buildAppBar(texto: 'Trocas'),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 20.w),
                 child: Text(
@@ -37,6 +38,7 @@ class TrocaView extends GetView<TrocaController> {
                   itemCount: controller.itensTroca.length,
                   itemBuilder: (context, index) {
                     final item = controller.itensTroca[index];
+                    controller.itemSelecionado = controller.itensTroca[index];
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
                       child: Box(item),
@@ -90,17 +92,14 @@ class TrocaView extends GetView<TrocaController> {
   Widget _buildConversor(ItemTroca item) {
     return SafeArea(
         child: Scaffold(
+          appBar: BoiAppBar(texto: '', icon: null, customCallbackOnExit: () {
+            controller.quantidadeController.clear();
+            controller.boicoins.value = 0;
+          },),
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
             child: Column(
               children: [
-                _buildAppBar(
-                    texto: '',
-                    showIcon: false,
-                    customCallbackOnExit: () {
-                      controller.quantidadeController.clear();
-                      controller.boicoins.value = 0;
-                    }),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Center(

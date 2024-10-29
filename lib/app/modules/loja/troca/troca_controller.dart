@@ -7,11 +7,15 @@ import 'package:get/get.dart';
 class TrocaController extends BaseController{
   final TextEditingController quantidadeController = TextEditingController();
   RxInt boicoins = 0.obs;
+  ItemTroca? itemSelecionado;
   List<ItemTroca> itensTroca = <ItemTroca>[];
 
   @override
   void onInit() {
     super.onInit();
+    quantidadeController.addListener(() {
+      onCalcularPressed(itemSelecionado!);
+    });
     getItensTroca();
   }
 

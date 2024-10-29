@@ -4,7 +4,7 @@ const EnvironmentProperties LOCAL_ENV = EnvironmentProperties(
   cacheLifespan: 60000,
   endpoint: EndpointProperties(
     projeto: 'https://ed97-45-228-141-7.ngrok-free.app/api/v1',
-    minio: 'https://ed97-45-228-141-7.ngrok-free.app',
+    minio: 'https://913c-45-228-141-7.ngrok-free.app',
     timeout: 1000,
   ),
 );
@@ -13,7 +13,7 @@ const EnvironmentProperties PRODUCTION_ENV = EnvironmentProperties(
   cacheLifespan: 300000,
   endpoint: EndpointProperties(
     projeto: 'https://ed97-45-228-141-7.ngrok-free.app/api/v1',
-    minio: 'https://ed97-45-228-141-7.ngrok-free.app',
+    minio: 'https://913c-45-228-141-7.ngrok-free.app',
     timeout: 80,
   ),
 );

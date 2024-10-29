@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.dart';
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -82,20 +83,28 @@ class AddProdutoController extends BaseController {
         //print(quantidadeEmEstoque);
         print('Imagem --->>>>>${_image.value!.path}');
 
-        final cadastrarProdutoResponse = await produtoRepository.cadastrarProduto(
+        final cadastrarProdutoResponse = await produtoRepository.addProduto(
           nome: nomeController.text,
           descricao: descricaoController.text,
           precoBoicoins: precoBoicoins,
           precoReal: precoReal,
           quantidadeEmEstoque: int.tryParse(quantidadeController.text) ?? 20,
-          imagem: imagem!,
+          image: imagem!,
         );
 
         if (cadastrarProdutoResponse['valid']) {
           Get.back();
-          Get.snackbar("Sucesso", "Produto cadastrado com sucesso!");
+          return Toast.success(
+            'Produto cadastrado com sucesso!',
+            'O produto foi adicionado com sucesso.',
+            delayed: true,
+          );
         } else {
-          Get.snackbar("Erro", cadastrarProdutoResponse['reason'] ?? "Erro ao cadastrar produto.");
+          return Toast.error(
+            'Erro ao cadastrar produto',
+            cadastrarProdutoResponse['reason'] ?? 'Erro ao cadastrar produto.',
+            delayed: true,
+          );
         }
       } catch (e) {
         print("Erro ao cadastrar produto: $e");

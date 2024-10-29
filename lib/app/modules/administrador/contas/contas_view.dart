@@ -20,7 +20,7 @@ class ContasView extends GetView<ContasController> {
               buildAppBar('assets/images/icons/mingcute_arrow-up-fill.png', text: 'Contas ADM'),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: searchMenu(controller.searchController),
+                child: searchMenu(),
               ),
               Expanded(
                 child: Obx(() {
@@ -43,9 +43,9 @@ class ContasView extends GetView<ContasController> {
                   }
 
                   return ListView.builder(
-                    itemCount: controller.contas.length,
+                    itemCount: controller.filteredContas.length,
                     itemBuilder: (context, index) {
-                      final conta = controller.contas[index];
+                      final conta = controller.filteredContas[index];
 
                       return Padding(
                         padding: EdgeInsets.symmetric(
@@ -128,7 +128,7 @@ class ContasView extends GetView<ContasController> {
   }
 
   
-  Widget searchMenu(TextEditingController searchController) {
+  Widget searchMenu() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -141,13 +141,13 @@ class ContasView extends GetView<ContasController> {
           SizedBox(width: 8),
           Expanded(
             child: TextField(
-              controller: searchController,
+              
               decoration: InputDecoration(
                 hintText: 'Buscar...',
                 border: InputBorder.none,
               ),
               onChanged: (value) {
-                controller.filterContas();
+                controller.filterContas(value);
               },
             ),
           ),

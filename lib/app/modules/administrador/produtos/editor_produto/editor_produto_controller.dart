@@ -94,7 +94,7 @@ class EditorProdutoController extends BaseController {
   //   if (editProdutoFormKey.currentState?.validate() ?? false) {
   //     setLoading(true);
   //     try {
-  //       final registerProduto = await ProdutoRepository().editarProduto(
+  //       final registerProduto = await ProdutoRepository().atualizaProduto(
   //         id: produto.id,
   //         nome: nomeController.text,
   //         descricao: descricaoController.text,

@@ -5,10 +5,12 @@ import 'dart:typed_data';
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
+import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.dart';
 import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class EditorOficinaController extends BaseController {
   final TextEditingController nomeController = TextEditingController();
@@ -101,28 +103,46 @@ class EditorOficinaController extends BaseController {
     }
   }
 
-  Future<void> onEditOficina() async {
-    if (editOficinaFormKey2.currentState?.validate() ?? false) {
-      setLoading(true);
+  Future<void> onEditarOficina() async {
+  if (editOficinaFormKey2.currentState?.validate() ?? false) {
+    setLoading(true);
+    try {
+      double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
+      double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
+
+      DateTime? parsedDate;
       try {
-        double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
-        double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
-
-        /*final registerOficina = await OficinasRepository().cadastrarOficina(
-          nome: nomeController.text,
-          descricao: descricaoController.text,
-          precoBoicoin: precoBoicoins,
-          precoReal: precoReais,
-          dataOficina: dateController.text,
-          limiteOficina: int.tryParse(participantesController.text) ?? 20,
-        );*/
-
-        Get.back();
-      } finally {
+        parsedDate = DateFormat("dd/MM/yyyy").parse(dateController.text);
+      } catch (e) {
+        print("Formato de data inválido: ${dateController.text}");
         setLoading(false);
+        return;
       }
+
+      String isoDate = parsedDate.toUtc().toIso8601String();
+
+      // Crie a requisição de atualização
+      final editarOficina = await OficinasRepository().editarOficina(
+        id: oficina.id, // Inclua o ID da oficina para identificar qual será atualizada
+        nome: nomeController.text,
+        descricao: descricaoController.text,
+        precoBoicoins: precoBoicoins,
+        precoReal: precoReais,
+        dataOficina: isoDate, 
+        limiteOficina: int.tryParse(participantesController.text) ?? 20,
+        imagem: imagem!,
+        urlEndereco: enderecoController.text,
+      );
+
+      Get.back();
+    } catch (e) {
+      print("Erro ao editar oficina: $e");
+    } finally {
+      setLoading(false);
     }
   }
+}
+
 
 
 

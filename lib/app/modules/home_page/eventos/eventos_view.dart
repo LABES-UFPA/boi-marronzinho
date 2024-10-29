@@ -1,4 +1,5 @@
 import 'package:boi_marronzinho/app/data/models/evento/evento.dart';
+import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
 import 'package:boi_marronzinho/app/modules/home_page/eventos/eventos_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,9 +17,10 @@ class EventosView extends GetView<EventosController> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          appBar: const BoiAppBar(texto: 'Eventos', icon: Icons.event),
           backgroundColor: bgColor,
           body: Obx(() {
-            if (controller.isLoading == true) {
+            if (controller.isLoading.isTrue) {
               return const Center(
                 child: CircularProgressIndicator()
               );
@@ -26,7 +28,7 @@ class EventosView extends GetView<EventosController> {
             if (controller.eventos.isEmpty) {
               return Column(
                 children: [
-                  _buildAppBar(texto: 'Eventos'),
+                  // _buildAppBar(texto: 'Eventos'),
                   Expanded(
                     child: Center(
                       child: Text(
@@ -45,7 +47,7 @@ class EventosView extends GetView<EventosController> {
             }
             return Column(
               children: [
-                _buildAppBar(texto: 'Eventos'),
+                // _buildAppBar(texto: 'Eventos'),
                 Expanded(
                   child: ListView.builder(
                     itemCount: controller.eventos.length,
@@ -102,10 +104,6 @@ class EventosView extends GetView<EventosController> {
                               style: DefaultTextStyle.of(context).style,
                               children: <TextSpan>[
                             const TextSpan(
-                                text: "Localização: ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: "${evento.linkEndereco}\n"),
-                            const TextSpan(
                                 text: "Data: ",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             TextSpan(text: " ${ DateFormat('dd/MM/yyyy - HH:mm').format(evento.dataEvento)}hrs\n"),
@@ -120,7 +118,7 @@ class EventosView extends GetView<EventosController> {
             Expanded(
               child: InkWell(
                   // TODO: Abrir Mapa e retirar o print
-                  onTap: () => controller.onVerLocationPressed(),
+                  onTap: () => controller.onVerLocationPressed(evento),
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border(top: BorderSide(width: 1.w))),
@@ -144,11 +142,11 @@ class EventosView extends GetView<EventosController> {
   Widget _buildDetalhesEvento(Evento evento) {
     return SafeArea(
       child: Scaffold(
+        appBar: BoiAppBar(texto: evento.nome, icon: null,),
           backgroundColor: const Color(0xFFBA400A),
           // Column, Padding, Column
           body: Column(
             children: [
-              _buildAppBar(texto: evento.nome),
               // Imagem
               Padding(
                   padding: const EdgeInsets.all(10),
@@ -180,61 +178,5 @@ class EventosView extends GetView<EventosController> {
     );
   }
 
-  Widget _buildAppBar({required String texto}) {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10.w),
-                        Icon(
-                          Icons.event,
-                          color: Colors.black,
-                          size: 30.sp,
-                        ),
-                        SizedBox(width: 5.w),
-                        Center(
-                          child: Text(
-                            texto,
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 

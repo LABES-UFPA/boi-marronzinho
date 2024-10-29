@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/modules/administrador/produtos/editor_produto/editor_produto_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/componentes/ButtonBox.dart';
@@ -120,15 +122,20 @@ class EditorProdutoView extends GetView<EditorProdutoController> {
     
     if (controller.image == null) {
       if (controller.produto.imagemURL.isEmpty) {
-        return Container(
-          width: 350.w,
-          height: 160.h,
-          child: Image.network(controller.url),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 206, 206, 206),
-            borderRadius: BorderRadius.circular(16.0),
+        return ClipRRect(
+      borderRadius: BorderRadius.circular(16.0),
+      child: Container(
+        width: 350.w,
+        height: 160.h,
+        child: Image.network(
+          ApiHelpers().buildUrl(
+            url: controller.produto.imagemURL,
+            endpoint: Endpoints.MINIO,
           ),
-        );
+          fit: BoxFit.cover,
+        ),
+      ),
+    );;
       } else {
         return Container(
           width: 350.w,
