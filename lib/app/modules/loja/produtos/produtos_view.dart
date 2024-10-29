@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
@@ -56,8 +57,9 @@ class ProdutosView extends GetView<ProdutosController> {
                         itemBuilder: (context, index) {
                           return ProdutoCard(
                               produto: controller.produtos[index],
+                              controller: controller,
                               onTap: () => Get.to(_buildDescricaoProduto(
-                                  controller.produtos[index], context)));
+                                  controller.produtos[index], context,)));
                         }),
                   ),
                 ),
@@ -99,7 +101,12 @@ class ProdutosView extends GetView<ProdutosController> {
                               ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
-                                child: Image.network(produto.imagemURL),
+                                child: Image.network(
+                                    controller.apiHelpers.buildUrl(
+                                      url: produto.imagemURL,
+                                      endpoint: Endpoints.MINIO
+                                    )
+                                ),
                               ),
 
                               // Nome do Produto
@@ -396,7 +403,11 @@ class ProdutosView extends GetView<ProdutosController> {
             flex: 2,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(produto.imagemURL)),
+                child: Image.network(
+                  controller.apiHelpers.buildUrl(
+                      url: produto.imagemURL, endpoint: Endpoints.MINIO
+                  )
+                )),
           ),
           Expanded(
             flex: 2,
@@ -475,8 +486,9 @@ class AppBarClipper extends CustomClipper<Path> {
 class ProdutoCard extends StatelessWidget {
   final Produto produto;
   final Function onTap;
+  final ProdutosController controller;
 
-  const ProdutoCard({super.key, required this.produto, required this.onTap});
+  const ProdutoCard({super.key, required this.produto, required this.onTap, required this.controller});
 
   static final _precoRealStyle =
       TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold);
@@ -501,7 +513,12 @@ class ProdutoCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 // TODO: Pegar pelo Bucket
-                child: Image.asset(produto.imagemURL),
+                child: Image.network(
+                    controller.apiHelpers.buildUrl(
+                        url: produto.imagemURL,
+                      endpoint: Endpoints.MINIO
+                    )
+                ),
               ),
 
               // Nome

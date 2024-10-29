@@ -6,6 +6,7 @@ import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_module.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class ItemCarrinho {
 }
 
 class ProdutosController extends BaseController {
+  late ApiHelpers apiHelpers = ApiHelpers();
   List<Produto> produtos = [];
   RxInt quantidade = 1.obs;
   RxInt saldo = 0.obs;
@@ -263,7 +265,7 @@ class ProdutosController extends BaseController {
       await getCarrinho();
       getTotalProdutosCarrinho();
       return true;
-    } catch (e, i){
+    } catch (e, _){
       return false;
     }
   }
