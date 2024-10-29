@@ -1,6 +1,7 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/models/evento/evento.dart';
 import 'package:boi_marronzinho/app/data/repositories/evento/evento_repository.dart';
+import 'package:boi_marronzinho/app/data/util/url.dart';
 import 'package:get/get.dart';
 
 class EventosController extends BaseController {
@@ -33,8 +34,7 @@ class EventosController extends BaseController {
     update();
   }
 
-  // TODO: Precisa abrir o Google Maps aqui
-  onVerLocationPressed() {
-    print("Abre o Google Maps");
+  onVerLocationPressed(Evento evento) {
+    OpenUrl.openGoogleMaps(evento.linkEndereco);
   }
 }
