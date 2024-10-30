@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
@@ -56,8 +57,9 @@ class ProdutosView extends GetView<ProdutosController> {
                         itemBuilder: (context, index) {
                           return ProdutoCard(
                               produto: controller.produtos[index],
+                              controller: controller,
                               onTap: () => Get.to(_buildDescricaoProduto(
-                                  controller.produtos[index], context)));
+                                  controller.produtos[index], context,)));
                         }),
                   ),
                 ),
@@ -99,7 +101,12 @@ class ProdutosView extends GetView<ProdutosController> {
                               ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
-                                child: Image.network(produto.imagemURL),
+                                child: Image.network(
+                                    controller.apiHelpers.buildUrl(
+                                      url: produto.imagemURL,
+                                      endpoint: Endpoints.MINIO
+                                    )
+                                ),
                               ),
 
                               // Nome do Produto
@@ -396,13 +403,18 @@ class ProdutosView extends GetView<ProdutosController> {
             flex: 2,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(produto.imagemURL)),
+                child: Image.network(
+                  controller.apiHelpers.buildUrl(
+                      url: produto.imagemURL, endpoint: Endpoints.MINIO
+                  )
+                )),
           ),
+          // Descrição
           Expanded(
             flex: 2,
             child: Column(
               children: [
-                Text('${quantidade}x ${produto.nome}'),
+                Text(produto.nome),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -440,13 +452,44 @@ class ProdutosView extends GetView<ProdutosController> {
               ],
             ),
           ),
-          // Botão de remover
+
+          // Botão de diminuir/aumentar e remover
           Expanded(
-            child: IconButton(
-              onPressed: () {
-                controller.removeProdutoFromCarrinho(indexOnCarrinho);
-              },
-              icon: const Icon(Icons.highlight_remove),
+            flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: QuantidadeButton(
+                            icon: Icons.remove,
+                            callback: () {
+                              controller.onItemCarrinhoMinusPressed(indexOnCarrinho);
+                            }
+                        )
+                    ),
+                    Expanded(child: Obx(() {
+                      return Text(controller.carrinhoQuantidades[indexOnCarrinho].toString(), textAlign: TextAlign.center);
+                    })),
+                    Expanded(
+                        child: QuantidadeButton(
+                            icon: Icons.add,
+                            callback: () {
+                              controller.onItemCarrinhoPlusPressed(indexOnCarrinho);
+                            }
+                        )
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    controller.removeProdutoFromCarrinho(indexOnCarrinho);
+                  },
+                  icon: const Icon(Icons.highlight_remove),
+                ),
+              ],
             ),
           )
         ],
@@ -475,8 +518,9 @@ class AppBarClipper extends CustomClipper<Path> {
 class ProdutoCard extends StatelessWidget {
   final Produto produto;
   final Function onTap;
+  final ProdutosController controller;
 
-  const ProdutoCard({super.key, required this.produto, required this.onTap});
+  const ProdutoCard({super.key, required this.produto, required this.onTap, required this.controller});
 
   static final _precoRealStyle =
       TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold);
@@ -498,12 +542,18 @@ class ProdutoCard extends StatelessWidget {
           child: Column(
             children: [
               // Imagem
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                // TODO: Pegar pelo Bucket
-                child: Image.asset(produto.imagemURL),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  // TODO: Pegar pelo Bucket
+                  child: Image.network(
+                      controller.apiHelpers.buildUrl(
+                          url: produto.imagemURL,
+                        endpoint: Endpoints.MINIO
+                      )
+                  ),
+                ),
               ),
-
               // Nome
               Text(
                 produto.nome,
@@ -511,30 +561,28 @@ class ProdutoCard extends StatelessWidget {
               ),
 
               // Row
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: Text(
-                            'R\$ ${produto.precoReal.toStringAsFixed(2)}',
-                            style: _precoRealStyle,
-                            textAlign: TextAlign.center)),
-                    Expanded(
-                        child: SizedBox(
-                      height: 22.h,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/images/icons/boicoin.png'),
-                            Text(produto.precoBoicoins.toInt().toString(),
-                                style: _precoBoicoins,
-                                textAlign: TextAlign.center)
-                          ]),
-                    )),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Text(
+                          'R\$ ${produto.precoReal.toStringAsFixed(2)}',
+                          style: _precoRealStyle,
+                          textAlign: TextAlign.center)),
+                  Expanded(
+                      child: SizedBox(
+                    height: 22.h,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/icons/boicoin.png'),
+                          Text(produto.precoBoicoins.toInt().toString(),
+                              style: _precoBoicoins,
+                              textAlign: TextAlign.center)
+                        ]),
+                  )),
+                ],
               )
             ],
           ),

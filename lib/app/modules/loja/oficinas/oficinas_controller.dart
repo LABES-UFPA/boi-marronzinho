@@ -6,6 +6,7 @@ import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_cred
 import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
+import 'package:boi_marronzinho/app/modules/perfil/carteira/carteira_model.dart';
 import 'package:get/get.dart';
 
 class OficinasController extends BaseController {
@@ -34,11 +35,20 @@ class OficinasController extends BaseController {
 
   Future<void> getSaldo() async {
     // TODO: Ver se tem em cache
-    final response = await ProfileRepository().getProfileInfo(id: UserCredentialsRepository().getCredentials().userId);
-    final isValid = isValidResponse(response: response, title: 'Sucesso ao pegar saldo de boicoins');
-    if (isValid && response.data != null) {
-      saldo = response.data!.saldoBoicoins.toInt();
+    var extrato = [];
+    final userId = UserCredentialsRepository().getCredentials().userId;
+    final response = await ProfileRepository().getExtrato(id: userId);
+    if (response.valid) {
+      if (response.data!.isEmpty) {
+        extrato = [];
+        return;
+      }
+      extrato = response.data!.map((t) {
+        return ItemExtrato(value: t.quantidade.toInt(), description: t.descricao);
+      }).toList();
     }
+
+    saldo = extrato.map((item) => item.value).reduce((val1, val2) => val1 + val2);
   }
 
   // TODO: Pagar com Pix aqui

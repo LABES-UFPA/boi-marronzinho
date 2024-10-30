@@ -6,6 +6,7 @@ import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/profile/profile_repository.dart';
 import 'package:boi_marronzinho/app/data/repositories/user_credentials/user_credentials_repository.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
 import 'package:boi_marronzinho/app/modules/loja/produtos/produtos_module.dart';
 import 'package:get/get.dart';
@@ -13,13 +14,14 @@ import 'package:get/get.dart';
 class ItemCarrinho {
   final Produto produto;
   final Carrinho? carrinho;
-  final int quantidade;
+  int quantidade;
 
   ItemCarrinho({this.carrinho, required this.produto, required this.quantidade});
 
 }
 
 class ProdutosController extends BaseController {
+  late ApiHelpers apiHelpers = ApiHelpers();
   List<Produto> produtos = [];
   RxInt quantidade = 1.obs;
   RxInt saldo = 0.obs;
@@ -27,6 +29,7 @@ class ProdutosController extends BaseController {
   RxInt carrinhoTotalBoicoins = 0.obs;
 
   List<ItemCarrinho> carrinho = <ItemCarrinho>[].obs;
+  List<int> carrinhoQuantidades = <int>[].obs;
 
   @override
   void onInit() async {
@@ -59,98 +62,13 @@ class ProdutosController extends BaseController {
 
   void resetCarrinho() {
     carrinho.clear();
+    carrinhoQuantidades.clear();
     carrinhoTotalBoicoins.value = 0;
     carrinhoTotalReais.value = 0;
   }
 
   void resetDescricaoPage() {
     quantidade.value = 1;
-  }
-
-  void getTesteProdutos() async {
-    produtos = [
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-      Produto(
-          id: 'aaaa',
-          nome: 'Camisa',
-          descricao: 'Camis',
-          precoBoicoins: 100,
-          precoReal: 100,
-          quantidadeEmEstoque: 100,
-          imagemURL: 'assets/images/eventos/evento-1.jpg',
-          criadoEm: DateTime.now()),
-    ];
   }
 
   Future<void> getSaldo() async {
@@ -174,28 +92,35 @@ class ProdutosController extends BaseController {
       quantidade += 1;
     }
   }
-  //
-  // Future<void> pagarComBoicoins(Produto produto) async {
-  //   if (produto.precoBoicoins.toInt() * quantidade.value > saldo.value) {
-  //     Get.offAndToNamed(ProdutosModule.path);
-  //     return Toast.error('Erro na Compra', 'Você não tem boicoins suficientes',
-  //         delayed: true);
-  //   }
-  //
-  //   final response = await ProdutoRepository().addItemCarrinho(
-  //       usuarioId: UserCredentialsRepository().getCredentials().userId,
-  //       produtoId: produto.id);
-  //
-  //   final isValid = isValidResponse(response: response, title: response.reason);
-  //   if (isValid && response.data != null) {
-  //     Get.offAndToNamed(ProdutosModule.path);
-  //     return Toast.success('Inscrição confirmada!',
-  //         'Você comprou o seu ${produto.nome}! Venha pegar no Boi!');
-  //   }
-  //   Get.offAndToNamed(ProdutosModule.path);
-  //   return Toast.alert(
-  //       'Algo deu errado na sua compra!', 'Chame o administrador!');
-  // }
+
+  void onItemCarrinhoPlusPressed(int indexOnCarrinho) {
+    if (carrinhoQuantidades[indexOnCarrinho] >= 99) {
+      return;
+    }
+
+    carrinho[indexOnCarrinho].quantidade += 1;
+    carrinhoQuantidades[indexOnCarrinho] += 1;
+    ProdutoRepository().atualizarQuantidadeCarrinhoProduto(
+      produtoId: carrinho[indexOnCarrinho].produto.id,
+      quantidade: carrinhoQuantidades[indexOnCarrinho],
+      usuarioId: UserCredentialsRepository().getCredentials().userId,
+    );
+    getTotalProdutosCarrinho();
+  }
+
+  void onItemCarrinhoMinusPressed(int indexOnCarrinho) {
+    if (carrinhoQuantidades[indexOnCarrinho] == 1) {
+      return;
+    }
+    carrinhoQuantidades[indexOnCarrinho] -= 1;
+    carrinho[indexOnCarrinho].quantidade -= 1;
+    ProdutoRepository().atualizarQuantidadeCarrinhoProduto(
+      produtoId: carrinho[indexOnCarrinho].produto.id,
+      quantidade: carrinhoQuantidades[indexOnCarrinho],
+      usuarioId: UserCredentialsRepository().getCredentials().userId,
+    );
+    getTotalProdutosCarrinho();
+  }
 
   void onFloatingCarrinhoPressed() async {
     await getCarrinho();
@@ -220,6 +145,7 @@ class ProdutosController extends BaseController {
     if (isValid && response.data != null) {
       for (var item in response.data) {
         carrinho.add(ItemCarrinho(produto: searchProdutoById(item.produtoId), quantidade: item.quantidade, carrinho: item));
+        carrinhoQuantidades.add(item.quantidade);
       }
     }
     setLoading(false);
@@ -244,7 +170,6 @@ class ProdutosController extends BaseController {
     if (!isValid) {
       return Toast.error('Erro ao adicionar ao carrinho', 'Tente novamente mais tarde');
     }
-
   }
 
   Future<void> onBoicoinsPressed() async  {
@@ -263,7 +188,7 @@ class ProdutosController extends BaseController {
       await getCarrinho();
       getTotalProdutosCarrinho();
       return true;
-    } catch (e, i){
+    } catch (e, _){
       return false;
     }
   }

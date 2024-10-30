@@ -22,6 +22,8 @@ final class ProdutoRepository extends RequestRepository
   static const String carrinhoAdicionarItemUrl = '/lojas/carrinho/adiciona-item/';
   static const String carrinhoRemoverItemUrl = '/lojas/carrinho/remove-item/';
   static const String finalizarCompraUrl = '/lojas/compra/finalizar/';
+  static const String carrinhoAtualizaQuantidadeUrl = '/lojas/carrinho/atualiza-quantidade-item/';
+
 
   // late final CachedRequest _cache;
 
@@ -187,7 +189,7 @@ final class ProdutoRepository extends RequestRepository
       return errorResponse(error, trace: trace);
     }
   }
-  
+
   @override
   Future<dynamic> addProduto({
     required String nome,
@@ -237,15 +239,47 @@ final class ProdutoRepository extends RequestRepository
       return errorResponse(error, trace: stacktrace);
     }
   }
-  
+
+  Future atualizarQuantidadeCarrinhoProduto({required String produtoId, required int quantidade, required String usuarioId}) async {
+    final url = apiHelpers.buildUrl(
+        url: carrinhoAtualizaQuantidadeUrl + usuarioId, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    final bodyRequest = {
+      'produtoId': produtoId,
+      'quantidade': quantidade
+    };
+
+    try {
+      final response = await client.put(url, bodyRequest);
+
+      final invalidResponse = isValidResponse<List<Produto>>(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      return (
+      valid: true,
+      reason: 'Sucesso ao atualizar quantidade!',
+      data: 'Quantidade atualizada com sucesso');
+    } catch (e, stackTrace) {
+      log('Error ', error: e, stackTrace: stackTrace);
+      return (
+      valid: false,
+      reason: 'Erro interno durante a requisição',
+      data: e
+      );
+    }
+  }
+
+
   @override
   Future atualizaProduto({required String produtoId}) {
     // TODO: implement atualizaProduto
     throw UnimplementedError();
   }
-  
- 
-  
+
+
+
   @override
   Future removeProduto({required String produtoId}) async {
     final url = apiHelpers.buildUrl(

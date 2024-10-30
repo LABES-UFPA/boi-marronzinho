@@ -24,7 +24,7 @@ class BoiButton extends StatelessWidget {
       child: ElevatedButton(
           onPressed: () => callbackOnPressed(),
           style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF69302),
+              backgroundColor: color,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
