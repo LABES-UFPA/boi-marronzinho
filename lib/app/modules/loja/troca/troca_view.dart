@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:boi_marronzinho/app/data/models/troca/item_troca.dart';
 import 'package:boi_marronzinho/app/global_ui/components/toast.dart';
@@ -485,9 +488,9 @@ class TrocaView extends GetView<TrocaController> {
                           color: const Color(0xFF00A91B),
                           width: double.infinity,
                           height: 50.h,
-                          callbackOnPressed: () {
-                            controller.onConfirmarTrocaPressed();
-                            Get.to(() => _buildQRCodePage());
+                          callbackOnPressed: () async {
+                            await controller.onConfirmarTrocaPressed(item, quantidadeItem, boicoins.toDouble());
+                            Get.to(() => _buildQRCodePage(controller.qrcode!));
                           }),
                     ),
                   ),
@@ -500,38 +503,36 @@ class TrocaView extends GetView<TrocaController> {
     );
   }
 
-  Widget _buildQRCodePage() {
+  Widget _buildQRCodePage(String qrcode) {
     return SafeArea(
       child: Scaffold(
         appBar: const BoiAppBar(texto: '', icon: null),
-        body: widget(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    'QR Code',
-                    style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Tire print da tela para não perder o QR Code!',
-                    style: TextStyle(fontSize: 20.sp),
-                    textAlign: TextAlign.center,
-                  ),
-                  Expanded(
-                    child: Image.asset('assets/images/eventos/evento-1.jpg')
-                  ),
-                  Expanded(
-                      child: Text(
-                        'O QR Code ficará disponivel por: 2 dias',
-                        style: TextStyle(fontSize: 20.sp),
-                          textAlign: TextAlign.center
-                      )
-                  )
-                ],
-              ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  'QR Code',
+                  style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  'Tire print da tela para não perder o QR Code!',
+                  style: TextStyle(fontSize: 20.sp),
+                  textAlign: TextAlign.center,
+                ),
+                Expanded(
+                  child: Image.memory(base64Decode(qrcode))
+                ),
+                Expanded(
+                    child: Text(
+                      'O QR Code ficará disponivel por: 2 dias',
+                      style: TextStyle(fontSize: 20.sp),
+                        textAlign: TextAlign.center
+                    )
+                )
+              ],
             ),
           ),
         ),

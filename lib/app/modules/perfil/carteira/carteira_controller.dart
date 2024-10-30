@@ -10,6 +10,11 @@ class CarteiraController extends BaseController {
   RxInt boicoins = 0.obs;
   final credentialsRepo = UserCredentialsRepository();
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   void onInit() {
@@ -34,11 +39,6 @@ class CarteiraController extends BaseController {
     }
 
     boicoins.value = extrato.map((item) => item.value).reduce((val1, val2) => val1 + val2);
-
-    final profileInfoResponse = await ProfileRepository().getProfileInfo(id: userId);
-    if (profileInfoResponse.valid) {
-      boicoins.value = profileInfoResponse.data!.saldoBoicoins.toInt();
-    }
 
     update();
   }

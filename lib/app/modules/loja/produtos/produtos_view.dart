@@ -409,11 +409,12 @@ class ProdutosView extends GetView<ProdutosController> {
                   )
                 )),
           ),
+          // Descrição
           Expanded(
             flex: 2,
             child: Column(
               children: [
-                Text('${quantidade}x ${produto.nome}'),
+                Text(produto.nome),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -451,13 +452,44 @@ class ProdutosView extends GetView<ProdutosController> {
               ],
             ),
           ),
-          // Botão de remover
+
+          // Botão de diminuir/aumentar e remover
           Expanded(
-            child: IconButton(
-              onPressed: () {
-                controller.removeProdutoFromCarrinho(indexOnCarrinho);
-              },
-              icon: const Icon(Icons.highlight_remove),
+            flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: QuantidadeButton(
+                            icon: Icons.remove,
+                            callback: () {
+                              controller.onItemCarrinhoMinusPressed(indexOnCarrinho);
+                            }
+                        )
+                    ),
+                    Expanded(child: Obx(() {
+                      return Text(controller.carrinhoQuantidades[indexOnCarrinho].toString(), textAlign: TextAlign.center);
+                    })),
+                    Expanded(
+                        child: QuantidadeButton(
+                            icon: Icons.add,
+                            callback: () {
+                              controller.onItemCarrinhoPlusPressed(indexOnCarrinho);
+                            }
+                        )
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    controller.removeProdutoFromCarrinho(indexOnCarrinho);
+                  },
+                  icon: const Icon(Icons.highlight_remove),
+                ),
+              ],
             ),
           )
         ],
@@ -510,17 +542,18 @@ class ProdutoCard extends StatelessWidget {
           child: Column(
             children: [
               // Imagem
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                // TODO: Pegar pelo Bucket
-                child: Image.network(
-                    controller.apiHelpers.buildUrl(
-                        url: produto.imagemURL,
-                      endpoint: Endpoints.MINIO
-                    )
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  // TODO: Pegar pelo Bucket
+                  child: Image.network(
+                      controller.apiHelpers.buildUrl(
+                          url: produto.imagemURL,
+                        endpoint: Endpoints.MINIO
+                      )
+                  ),
                 ),
               ),
-
               // Nome
               Text(
                 produto.nome,
@@ -528,30 +561,28 @@ class ProdutoCard extends StatelessWidget {
               ),
 
               // Row
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: Text(
-                            'R\$ ${produto.precoReal.toStringAsFixed(2)}',
-                            style: _precoRealStyle,
-                            textAlign: TextAlign.center)),
-                    Expanded(
-                        child: SizedBox(
-                      height: 22.h,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/images/icons/boicoin.png'),
-                            Text(produto.precoBoicoins.toInt().toString(),
-                                style: _precoBoicoins,
-                                textAlign: TextAlign.center)
-                          ]),
-                    )),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Text(
+                          'R\$ ${produto.precoReal.toStringAsFixed(2)}',
+                          style: _precoRealStyle,
+                          textAlign: TextAlign.center)),
+                  Expanded(
+                      child: SizedBox(
+                    height: 22.h,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/icons/boicoin.png'),
+                          Text(produto.precoBoicoins.toInt().toString(),
+                              style: _precoBoicoins,
+                              textAlign: TextAlign.center)
+                        ]),
+                  )),
+                ],
               )
             ],
           ),
