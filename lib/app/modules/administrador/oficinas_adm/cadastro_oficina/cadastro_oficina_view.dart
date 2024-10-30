@@ -78,7 +78,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                                 inputBox(
                                     'Preço em Reais',
                                     controller.precoReaisController,
-                                    TextInputType.numberWithOptions(
+                                    const TextInputType.numberWithOptions(
                                         decimal: true),
                                     controller.validateNumber,
                                     'Ex: 25.40',
@@ -130,7 +130,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
           clipper: AppBarClipper(),
           child: Container(
             height: 100.h,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFFFFFFFF),
             ),
             child: Padding(
@@ -161,7 +161,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
         ? Container(
             width: 350.w,
             height: 160.h,
-            child: Icon(
+            child: const Icon(
               Icons.image,
               size: 50,
               color: Colors.white,
@@ -219,7 +219,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                   : <TextInputFormatter>[],
               decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: const TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 errorStyle:
                     TextStyle(fontSize: 14.sp, overflow: TextOverflow.ellipsis),
@@ -264,7 +264,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                     hintText:
                         "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
                     hintStyle:
-                        TextStyle(color: const Color.fromARGB(255, 88, 88, 88)),
+                        const TextStyle(color: Color.fromARGB(255, 88, 88, 88)),
                     border: InputBorder.none,
                     errorStyle: TextStyle(
                         fontSize: 14.sp, overflow: TextOverflow.ellipsis),
@@ -282,16 +282,23 @@ class AddOficinaView extends GetView<AddOficinaController> {
   }
 
   Widget inputBoxMap(
-    String text,
-    BuildContext context,
-  ) {
+      String text,
+      BuildContext context,
+      ) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return buildCard(context);
-            });
+          context: context,
+          isScrollControlled: true, // Permite que o teclado empurre o conteúdo para cima
+          builder: (BuildContext context) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom, // Espaço do teclado
+              ),
+              child: buildCard(context),
+            );
+          },
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
@@ -311,22 +318,24 @@ class AddOficinaView extends GetView<AddOficinaController> {
               Text(
                 text,
                 style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    height: 0.8.h),
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  height: 0.8.h,
+                ),
               ),
               Obx(() {
                 return !controller.isLoading.value &&
-                        controller.address.value.isNotEmpty &&
-                        controller.ruaController.text.isNotEmpty &&
-                        controller.numberController.text.isNotEmpty
+                    controller.address.value.isNotEmpty &&
+                    controller.ruaController.text.isNotEmpty &&
+                    controller.numberController.text.isNotEmpty
                     ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8).h,
-                      child: Text(
-                          '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
-                    )
-                    : SizedBox.shrink();
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: Text(
+                    '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}',
+                  ),
+                )
+                    : const SizedBox.shrink();
               })
             ],
           ),
@@ -343,7 +352,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
       ),
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0).r,
+          padding: const EdgeInsets.all(16.0).r,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -355,7 +364,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                     TextFormField(
                         controller: controller.cepController,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                           labelText: 'Digite o CEP',
                           errorStyle: TextStyle(
                               fontSize: 14.sp, overflow: TextOverflow.ellipsis),
@@ -374,7 +383,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                     TextFormField(
                       controller: controller.ruaController,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         labelText: 'Digite o nome da rua',
                         errorStyle: TextStyle(
                             fontSize: 14.sp, overflow: TextOverflow.ellipsis),
@@ -388,7 +397,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                     TextFormField(
                       controller: controller.numberController,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         labelText: 'Digite o número do endereço',
                         errorStyle: TextStyle(
                             fontSize: 14.sp, overflow: TextOverflow.ellipsis),
@@ -408,7 +417,7 @@ class AddOficinaView extends GetView<AddOficinaController> {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF69302),
+                          backgroundColor: const Color(0xFFF69302),
                         ),
                         onPressed: () {
                           if (controller.endOficinaFormKey.currentState
@@ -450,7 +459,7 @@ class ButtonBox extends StatelessWidget {
       child: ElevatedButton(
         onPressed: function,
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFF69302),
+            backgroundColor: const Color(0xFFF69302),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20.r),

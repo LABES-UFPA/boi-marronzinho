@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/modules/perfil/carteira/carteira_model.dart';
 import 'package:get/get.dart';
@@ -17,14 +19,14 @@ class CarteiraController extends BaseController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     setLoading(true);
-    getDados();
+    await getDados();
     setLoading(false);
   }
 
-  void getDados() async {
+  Future<void> getDados() async {
     final userId = credentialsRepo.getCredentials().userId;
     final response = await ProfileRepository().getExtrato(id: userId);
 
