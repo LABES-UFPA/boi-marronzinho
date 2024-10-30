@@ -1,6 +1,7 @@
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/models/voucher_response/voucher_response.dart';
 import 'package:boi_marronzinho/app/data/repositories/voucher/voucher_repository.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:boi_marronzinho/app/modules/perfil/vouchers/voucher/voucher_module.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -10,6 +11,7 @@ class VoucherController extends BaseController {
   //RxBool get isLoading => super.isLoading;
   //var isLoading = true.obs;
   List<Voucher> vouchers = <Voucher>[];
+  final ApiHelpers apiHelpers = ApiHelpers();
 
   @override
   void onInit() {
