@@ -53,4 +53,10 @@ class TrocaController extends BaseController{
     update();
   }
 
+  void onConfirmarTrocaPressed() {
+
+  }
+
+
+
 }
