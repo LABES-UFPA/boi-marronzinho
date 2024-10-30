@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:boi_marronzinho/app/modules/perfil/vouchers/voucher/voucher_controller.dart';
@@ -51,8 +52,8 @@ class VoucherView extends GetView<VoucherController> {
                         ),
                         SizedBox(height: 6.h), // Espaçamento antes do QR Code
                         Center(
-                          child: Image.memory(
-                            voucher.getQRCodeImage(),
+                          child: Image.network(
+                            controller.apiHelpers.buildUrl(url: utf8.decode(base64Decode(voucher.qrcode)), endpoint: Endpoints.MINIO),
                             height: 280.h,
                             width: 280.w,
                           ),

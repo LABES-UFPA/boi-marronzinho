@@ -41,7 +41,7 @@ class Voucher {
     };
   }
 
-  Uint8List getQRCodeImage() {
-    return base64Decode(qrcode);
+  String getQRCodeImage() {
+    return utf8.decode(base64Decode(qrcode));
   }
 }

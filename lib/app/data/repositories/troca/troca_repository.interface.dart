@@ -9,13 +9,11 @@ abstract interface class ITroca {
     required String unidadeMedida,
     required double boicoinsPorUnidade,
   });
-  Future<dynamic> atualizarItemTroca({
-    required ItemTroca itemTroca
-  });
-  Future<dynamic> deletarItemTroca({
-    required String id
-  });
-  Future<dynamic> realizarTroca({
-    required Troca troca
-  });
+  Future<dynamic> atualizarItemTroca({required ItemTroca itemTroca});
+  Future<dynamic> deletarItemTroca({required String id});
+  Future<dynamic> realizarTroca(
+      {required String itemTrocaId,
+      required String usuarioId,
+      required double quantidade,
+      required double boicoins});
 }

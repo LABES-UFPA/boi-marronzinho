@@ -26,7 +26,7 @@ class MeusDadosController extends BaseController {
 
   void onLogoutPressed() {
     cleanCacheEndStore();
-    Get.toNamed(LoginModule.path);
+    Get.offAllNamed(LoginModule.path);
     return Toast.success(
         'Deslogado com sucesso!',
         'Volte sempre! MUUUUUUUUU 🐂🐂🐂',

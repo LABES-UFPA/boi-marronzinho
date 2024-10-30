@@ -44,7 +44,7 @@ class VouchersView extends GetView<VouchersController> {
                   itemCount: controller.vouchers.length,
                   itemBuilder: (context, index) {
                     final voucher = controller.vouchers[index];
-                    Uint8List qrCodeImage = voucher.getQRCodeImage();
+                    String qrCodeImage = voucher.getQRCodeImage();
                     return InkWell(
                       onTap: voucher.validado ? null : () {
                         controller.onVoucherDetailPressed(voucher);
@@ -123,7 +123,7 @@ class VouchersView extends GetView<VouchersController> {
     );
   }
 
-  Widget Box(String text, String descricao, Uint8List qrcode, Voucher voucher) {
+  Widget Box(String text, String descricao, String qrcode, Voucher voucher) {
     bool validado = voucher.validado;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),

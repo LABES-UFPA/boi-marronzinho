@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:boi_marronzinho/app/data/models/troca/item_troca.dart';
 import 'package:boi_marronzinho/app/data/models/troca/troca.dart';
 import 'package:boi_marronzinho/app/data/repositories/troca/troca_repository.interface.dart';
@@ -7,6 +9,7 @@ import '../../enumerators/endpoints.enum.dart';
 
 final class TrocaReposity extends RequestRepository implements ITroca {
   static const String listarItensTrocaUrl = '/trocas/itens-troca';
+  static const String realizarTrocaUrl = '/trocas';
   // static const String listarItensTrocaUrl = '/trocas';
   // static const String listarItensTrocaUrl = '/trocas';
   // static const String listarItensTrocaUrl = '/trocas';
@@ -68,9 +71,33 @@ final class TrocaReposity extends RequestRepository implements ITroca {
   }
 
   @override
-  Future realizarTroca({required Troca troca}) {
-    // TODO: implement realizarTroca
-    throw UnimplementedError();
+  Future realizarTroca({required String itemTrocaId, required String usuarioId, required double quantidade, required double boicoins}) async {
+    final url = apiHelpers.buildUrl(url: realizarTrocaUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    final bodyRequest = {
+      'itemTrocaId': itemTrocaId,
+      'usuarioId': usuarioId,
+      'quantidade':quantidade,
+      'boicoinsRecebidos': boicoins,
+    };
+
+    try {
+      final response = await client.post(url, bodyRequest);
+
+      final invalidResponse = isValidResponse(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      final qrcode_base64 = response.data["qrcode_base64"];
+      
+      // await _cache.cacheRequest(response.data);
+
+
+      return (valid: true, reason: 'Sucesso ao realizar a troca', data: qrcode_base64);
+    } catch (e, stackTrace) {
+      return (valid: false, reason: 'Erro interno durante a requisição', data: null);
+    }
   }
 
 
