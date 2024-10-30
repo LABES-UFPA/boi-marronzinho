@@ -7,6 +7,9 @@ import 'package:boi_marronzinho/app/modules/administrador/item_troca/cadastro_it
 import 'package:boi_marronzinho/app/modules/administrador/item_troca/editor_item/editor_item_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/item_troca/item_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/editor_oficina/editor_oficina_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/produtos/cadastro_produto/cadastro_produto_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/produtos/editor_produto/editor_produto_module.dart';
+import 'package:boi_marronzinho/app/modules/administrador/produtos/produtos_module.dart';
 import 'package:boi_marronzinho/app/modules/cadastro/cadastro_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/admin_module.dart';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/cadastro_oficina/cadastro_oficina_module.dart';
@@ -14,6 +17,7 @@ import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_
 import 'package:boi_marronzinho/app/modules/administrador/scanner/scanner_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/doacoes/doacoes_module.dart';
 import 'package:boi_marronzinho/app/modules/home_page/home_page_module.dart';
+import 'package:boi_marronzinho/app/modules/home_page/mapa/localizar_module.dart';
 import 'package:boi_marronzinho/app/modules/login/login_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/loja_module.dart';
 import 'package:boi_marronzinho/app/modules/loja/oficinas/oficinas_module.dart';
@@ -62,6 +66,10 @@ class AppPages {
     EditorItemModule.page,
     ItemsAdminModule.page,
     EditorEventoModule.page,
+    ProdutosAdminModule.page,
+    AddProdutoModule.page,
     ProdutosModule.page,
+    EditorProdutoModule.page,
+    LocalizarModule.page
   ];
 }

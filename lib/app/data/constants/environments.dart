@@ -3,8 +3,8 @@ import 'package:boi_marronzinho/app/data/models/constants/environment_properties
 const EnvironmentProperties LOCAL_ENV = EnvironmentProperties(
   cacheLifespan: 60000,
   endpoint: EndpointProperties(
-    projeto: 'https://2ad1-45-228-141-7.ngrok-free.app/api/v1',
-    minio: 'https://d0ed-45-228-141-7.ngrok-free.app',
+    projeto: 'https://ed97-45-228-141-7.ngrok-free.app/api/v1',
+    minio: 'https://913c-45-228-141-7.ngrok-free.app',
     timeout: 1000,
   ),
 );
@@ -12,8 +12,8 @@ const EnvironmentProperties LOCAL_ENV = EnvironmentProperties(
 const EnvironmentProperties PRODUCTION_ENV = EnvironmentProperties(
   cacheLifespan: 300000,
   endpoint: EndpointProperties(
-    projeto: 'https://2ad1-45-228-141-7.ngrok-free.app/api/v1',
-    minio: 'https://d0ed-45-228-141-7.ngrok-free.app',
+    projeto: 'https://ed97-45-228-141-7.ngrok-free.app/api/v1',
+    minio: 'https://913c-45-228-141-7.ngrok-free.app',
     timeout: 80,
   ),
 );

@@ -1,3 +1,4 @@
+import 'package:boi_marronzinho/app/modules/componentes/ButtonBox.dart';
 import 'package:boi_marronzinho/app/modules/login/login_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,8 @@ class LoginView extends GetView<LoginController> {
                                 ),
                                 ButtonBox(
                                   text: 'Entrar',
-                                  validation: controller.onLogin,
+                                  function: controller.onLogin,
+                                  colortext: Colors.white,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 30).h,
@@ -190,39 +192,3 @@ class InputBox extends StatelessWidget {
   }
 }
 
-class ButtonBox extends StatelessWidget {
-  final String text;
-  final Future<void> Function() validation;
-
-  const ButtonBox({super.key, required this.text, required this.validation});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () async {
-          await validation();
-        },
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFF69302),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20.r),
-                bottomRight: Radius.circular(20.r),
-                topLeft: Radius.circular(20.r),
-              ),
-            ),
-            padding: EdgeInsets.all(12.h)),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold, // Deixar o texto em negrito
-            color: Colors.white, // Cor do texto (preto)
-          ),
-        ),
-      ),
-    );
-  }
-}
