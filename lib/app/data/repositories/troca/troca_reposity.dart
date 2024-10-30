@@ -10,6 +10,7 @@ import '../../enumerators/endpoints.enum.dart';
 
 final class TrocaReposity extends RequestRepository implements ITroca {
   static const String listarItensTrocaUrl = '/trocas/itens-troca';
+  static const String realizarTrocaUrl = '/trocas';
   static const String criarItensTrocaUrl = '/trocas/adiciona-item-troca';
   static const String deletarItensTrocaUrl = '/trocas/deleta-item-troca';
   static const String atualizarItensTrocaUrl = '/trocas';

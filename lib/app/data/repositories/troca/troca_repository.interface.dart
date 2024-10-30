@@ -18,7 +18,10 @@ abstract interface class ITroca {
   Future<dynamic> deletarItemTroca({
     required String id
   });
-  Future<dynamic> realizarTroca({
-    required Troca troca
-  });
+  Future<dynamic> realizarTroca(
+      {required String itemTrocaId,
+      required String usuarioId,
+      required double quantidade,
+      required double boicoins});
 }
+
