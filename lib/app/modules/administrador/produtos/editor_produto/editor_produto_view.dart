@@ -119,10 +119,10 @@ class EditorProdutoView extends GetView<EditorProdutoController> {
   }
 
   Widget imageProduto() {
-    
-    if (controller.image == null) {
-      if (controller.produto.imagemURL.isEmpty) {
-        return ClipRRect(
+  // Verifica se a imagem local (File) é nula
+  if (controller.image == null) {
+    // Se a imagem local for nula, verifica se a imagem Base64 está disponível
+    return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
       child: Container(
         width: 350.w,
@@ -135,36 +135,23 @@ class EditorProdutoView extends GetView<EditorProdutoController> {
           fit: BoxFit.cover,
         ),
       ),
-    );;
-      } else {
-        return Container(
-          width: 350.w,
-          height: 200.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(16.0),
-            image: DecorationImage(
-              image: MemoryImage(base64Decode(controller.produto.imagemURL)), // Atualize para produto
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      }
-    } else {
-      return Container(
-        width: 350.w,
-        height: 200.h,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(16.0),
-          image: DecorationImage(
-            image: FileImage(controller.image!),
-            fit: BoxFit.cover,
-          ),
+    );
+  } else {
+    // Se a imagem local não for nula, a exibe
+    return Container(
+      width: 350.w,
+      height: 200.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(16.0),
+        image: DecorationImage(
+          image: FileImage(controller.image!),
+          fit: BoxFit.cover,
         ),
-      );
-    }
+      ),
+    );
   }
+}
 
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation,

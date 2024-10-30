@@ -32,6 +32,7 @@ class AddOficinaController extends BaseController {
   var isLoading = false.obs;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
+  String link ='';
   File? imagem;
   File? get image => _image.value;
 
@@ -96,6 +97,7 @@ class AddOficinaController extends BaseController {
         double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
         print(dateController.text);
         DateTime? parsedDate;
+        enderecoController.text = link;
         try {
           parsedDate = DateFormat("dd/MM/yyyy").parse(dateController.text);
         } catch (e) {
@@ -105,10 +107,7 @@ class AddOficinaController extends BaseController {
         }
 
         String isoDate = parsedDate.toUtc().toIso8601String();
-        //String imageJson = await ImageData(_image, dadosRequest);
-        print('-------------------------------');
-        print('Imagem --->>>>>${_image.value!.path}');
-        print(imagem);
+       
 
         final registerOficina = await OficinasRepository().cadastrarOficina(
           nome: nomeController.text,
@@ -132,7 +131,7 @@ class AddOficinaController extends BaseController {
   }
 
   Future<void> fetchAddressFromCEP(String cep) async {
-    String link ='';
+    
     try {
       isLoading.value = true;
       final response =

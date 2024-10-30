@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
 import 'package:boi_marronzinho/app/data/models/troca/item_troca.dart';
+import 'package:boi_marronzinho/app/data/repositories/troca/troca_reposity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,8 +12,8 @@ import 'package:image_picker/image_picker.dart';
 class EditorItemController extends BaseController {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController descricaoController = TextEditingController();
-  final TextEditingController precoBoicoinsController = TextEditingController();
-  final TextEditingController precoReaisController = TextEditingController();
+  final TextEditingController boicoinsController = TextEditingController();
+  final TextEditingController unidadeController = TextEditingController();
   final TextEditingController quantidadeController = TextEditingController(); // Atualizado para quantidade
   final TextEditingController dateController = TextEditingController();
   final TextEditingController enderecoController = TextEditingController();
@@ -21,17 +22,18 @@ class EditorItemController extends BaseController {
   late ItemTroca item; // Atualize para o modelo de Item
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
+  RxString selectedOption = ''.obs;
   File? get image => _image.value;
 
   @override
   void onInit() {
     super.onInit();
-    // item = Get.arguments as ItemTroca; // Atualize para o modelo de Item
-    // nomeController.text = item.nomeItem; // Atualize para o campo correto
-    // descricaoController.text = item.descricao; // Atualize para o campo correto
-    // precoBoicoinsController.text = item.precoBoicoin.toString(); // Atualize para o campo correto
+     item = Get.arguments as ItemTroca; // Atualize para o modelo de Item
+     nomeController.text = item.nomeItem; // Atualize para o campo correto
+     descricaoController.text = item.descricao; // Atualize para o campo correto
+     boicoinsController.text = item.boicoinsPorUnidade.toString(); // Atualize para o campo correto
     // precoReaisController.text = item.precoReal.toString(); // Atualize para o campo correto
-    // quantidadeController.text = item.quantidade.toString(); // Atualize para o campo correto
+     quantidadeController.text = item.unidadeMedida.toString(); // Atualize para o campo correto
   }
   
   String? validateText(String? value) {
@@ -48,6 +50,16 @@ class EditorItemController extends BaseController {
     final price = double.tryParse(value);
     if (price == null || price <= 0) {
       return 'Preço inválido';
+    }
+    return null;
+  }
+  String? validateBoicoins(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Campo Obrigatório';
+    }
+    final boicoins = double.tryParse(value);
+    if (boicoins == null || boicoins <= 0) {
+      return 'Valor inválido';
     }
     return null;
   }
@@ -91,8 +103,8 @@ class EditorItemController extends BaseController {
     if (editItemFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
-        double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
+        
+        
 
         /*final registerItem = await ItemsRepository().cadastrarItem(
           nome: nomeController.text,
@@ -109,4 +121,43 @@ class EditorItemController extends BaseController {
       }
     }
   }
+  Future<void> onUpdateItem(String itemId) async {
+  if (editItemFormKey.currentState?.validate() ?? false) {
+    // try {
+    //   // Obter os dados atuais do item antes de quaisquer modificações
+    //   //final currentItemData = await fetchItemDataById(itemId);
+
+    //   // Criar um mapa para armazenar as alterações
+    //   final Map<String, dynamic> updatedFields = {};
+
+    //   // Comparar os campos e adicionar ao mapa se houver alterações
+    //   if (nomeController.text != currentItemData.nome) {
+    //     updatedFields['nome'] = nomeController.text;
+    //   }
+    //   if (descricaoController.text != currentItemData.descricao) {
+    //     updatedFields['descricao'] = descricaoController.text;
+    //   }
+    //   if (boicoinsController.text != currentItemData.boicoins.toString()) {
+    //     updatedFields['boicoins'] = int.parse(boicoinsController.text);
+    //   }
+    //   if (selectedOption.value != currentItemData.unidadeMedida) {
+    //     updatedFields['unidadeMedida'] = selectedOption.value;
+    //   }
+
+    //   // Se houver alterações, enviar para atualizar
+    //   if (updatedFields.isNotEmpty) {
+    //     updatedFields['id'] = itemId; // Inclui o ID para a atualização
+
+    //     await TrocaReposity.atualizarItemTroca(updatedFields); // Atualiza apenas os campos modificados
+    //     Get.snackbar('Sucesso', 'Item atualizado com sucesso!');
+    //     Get.back(); // Volta para a tela anterior
+    //   } else {
+    //     Get.snackbar('Informação', 'Nenhuma alteração detectada.');
+    //   }
+    // } catch (e) {
+    //   Get.snackbar('Erro', 'Não foi possível atualizar o item.');
+    // }
+  }
+}
+
 }

@@ -93,6 +93,8 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                                     controller.validateNumber,
                                     formato:
                                         FilteringTextInputFormatter.digitsOnly),
+                                SizedBox(height: 22.h),
+                                inputBoxMap('Localização', context),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -270,6 +272,161 @@ class EditorOficinaView extends GetView<EditorOficinaController> {
                   },
                 )),
           ],
+        ),
+      ),
+    );
+  }
+  Widget inputBoxMap(
+    String text,
+    BuildContext context,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return buildCard(context);
+            });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.r),
+            bottomRight: Radius.circular(20.r),
+            topLeft: Radius.circular(20.r),
+          ),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    height: 0.8.h),
+              ),
+              Obx(() {
+                return !controller.isLoading.value &&
+                        controller.address.value.isNotEmpty &&
+                        controller.ruaController.text.isNotEmpty &&
+                        controller.numberController.text.isNotEmpty
+                    ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8).h,
+                      child: Text(
+                          '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
+                    )
+                    : SizedBox.shrink();
+              })
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCard(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16).r,
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0).r,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Form(
+                key: controller.endEditOficinaFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                        controller: controller.cepController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Digite o CEP',
+                          errorStyle: TextStyle(
+                              fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters:
+                            FilteringTextInputFormatter.digitsOnly != null
+                                ? <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ]
+                                : <TextInputFormatter>[],
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Por favor, insira o CEP'
+                            : null),
+                    SizedBox(height: 16.h),
+                    TextFormField(
+                      controller: controller.ruaController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Digite o nome da rua',
+                        errorStyle: TextStyle(
+                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                      ),
+                      keyboardType: TextInputType.text,
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Por favor, insira o nome da rua'
+                          : null,
+                    ),
+                    SizedBox(height: 16.h),
+                    TextFormField(
+                      controller: controller.numberController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Digite o número do endereço',
+                        errorStyle: TextStyle(
+                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters:
+                          FilteringTextInputFormatter.digitsOnly != null
+                              ? <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ]
+                              : <TextInputFormatter>[],
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Por favor, insira o número do endereço'
+                          : null,
+                    ),
+                    SizedBox(height: 16.h),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFF69302),
+                        ),
+                        onPressed: () {
+                          if (controller.endEditOficinaFormKey.currentState
+                                  ?.validate() ??
+                              false) {
+                            String cep = controller.cepController.text;
+                            controller.fetchAddressFromCEP(cep);
+                            Get.back();
+                          }
+                        },
+                        child: Text(
+                          'Adicionar Endereço',
+                          style:
+                              TextStyle(fontSize: 16.sp, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16.h),
+            ],
+          ),
         ),
       ),
     );

@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/modules/administrador/item_troca/editor_item/editor_item_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
+import 'package:boi_marronzinho/app/modules/componentes/ButtonBox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,12 +10,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
 class EditorItemView extends GetView<EditorItemController> {
+
   const EditorItemView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ImagePicker _picker = ImagePicker();
     File? _image;
+    
+    // Carregar dados do item usando o itemId
+    // Você deve preencher os controladores com os dados do item que está sendo editado
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -29,48 +34,37 @@ class EditorItemView extends GetView<EditorItemController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: [
-                            
-                            Padding(
-                              padding: EdgeInsets.all(6.0.r),
-                              child: ButtonBox(
-                                text: 'Alterar Imagem',
-                                function: controller.pickImage,
-                              ),
-                            ),
-                          ],
-                        ),
                         Form(
-                          key: controller.editItemFormKey, // Atualize a chave do formulário
+                          key: controller.editItemFormKey,
                           child: Column(
                             children: [
                               SizedBox(height: 22.h),
                               inputBox(
-                                'Nome do Item', // Atualize o texto
+                                'Nome',
                                 controller.nomeController,
                                 TextInputType.text,
                                 controller.validateText,
+                                'Ex: Óleo',
                               ),
                               SizedBox(height: 22.h),
                               inputBox(
-                                'Descrição do Item', // Atualize o texto
+                                'Descrição',
                                 controller.descricaoController,
                                 TextInputType.text,
                                 controller.validateText,
+                                'Ex: Óleo usado...',
                               ),
-                              
+                              SizedBox(height: 22.h),
+                              dropBox('Unidade de Medida', controller.unidadeController, controller.selectedOption),
                               SizedBox(height: 22.h),
                               inputBox(
-                                'Preço em Reais',
-                                controller.precoReaisController,
-                                TextInputType.numberWithOptions(decimal: true),
-                                controller.validateNumber,
+                                'Boicoins por unidade',
+                                controller.boicoinsController,
+                                TextInputType.number,
+                                controller.validateBoicoins,
+                                'Ex: 25',
                                 formato: FilteringTextInputFormatter.digitsOnly,
                               ),
-                              SizedBox(height: 22.h),
-                              inputBoxDate('Data do Item', context, controller.dateController), // Atualize o texto
                               SizedBox(height: 24.h),
                             ],
                           ),
@@ -79,7 +73,7 @@ class EditorItemView extends GetView<EditorItemController> {
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ButtonBox(
                             text: 'Salvar Alterações',
-                            function: controller.onEditItem, // Atualize para o método correto
+                            function: controller.onEditItem, colortext: Colors.black, // Método para atualizar o item
                           ),
                         ),
                       ],
@@ -127,10 +121,8 @@ class EditorItemView extends GetView<EditorItemController> {
     );
   }
 
-  
-
   Widget inputBox(String text, TextEditingController controller,
-      TextInputType type, String? Function(String?) validation,
+      TextInputType type, String? Function(String?) validation, String hint,
       {TextInputFormatter? formato}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
@@ -162,7 +154,7 @@ class EditorItemView extends GetView<EditorItemController> {
                   ? <TextInputFormatter>[formato]
                   : <TextInputFormatter>[],
               decoration: InputDecoration(
-                hintText: controller.text,
+                hintText: hint,
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 errorStyle:
@@ -176,17 +168,22 @@ class EditorItemView extends GetView<EditorItemController> {
     );
   }
 
-  Widget inputBoxDate(
-      String text, BuildContext context, TextEditingController controllerText) {
+  Widget dropBox(
+      String text, TextEditingController controller, RxString selectedOption) {
+    final List<DropdownMenuItem<String>> items = [
+      DropdownMenuItem(value: 'MILILITRO', child: Text('ml')),
+      DropdownMenuItem(value: 'UNIDADE', child: Text('Unidade')),
+    ];
+
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
         ),
       ),
       child: Center(
@@ -196,55 +193,30 @@ class EditorItemView extends GetView<EditorItemController> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 18.sp,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  height: 0.8.h),
+                  color: Colors.black),
             ),
-            Obx(() => TextFormField(
-                  controller: controllerText,
-                  decoration: InputDecoration(
-                    hintText:
-                        "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
-                    border: InputBorder.none,
-                    errorStyle: TextStyle(
-                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                  ),
-                  onTap: () {
-                    controller.selectedDate(context);
-                  },
-                )),
+            Obx(() {
+              return DropdownButtonFormField<String>(
+                value: selectedOption.value.isNotEmpty
+                    ? selectedOption.value
+                    : null,
+                items: items,
+                onChanged: (value) {
+                  selectedOption.value =
+                      value ?? '';
+                  controller.text =
+                      value ?? '';
+                },
+                decoration: InputDecoration(
+                  hintText: 'Selecione a unidade',
+                  border: InputBorder.none,
+                  errorStyle: TextStyle(fontSize: 14),
+                ),
+              );
+            }),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ButtonBox extends StatelessWidget {
-  final String text;
-  final Future<void> Function() function;
-
-  ButtonBox({required this.text, required this.function});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: function,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFF69302),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20.r),
-                bottomRight: Radius.circular(20.r),
-                topLeft: Radius.circular(20.r),
-              ),
-            )),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 18.sp),
         ),
       ),
     );

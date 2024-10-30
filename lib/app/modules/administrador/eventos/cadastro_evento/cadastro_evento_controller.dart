@@ -16,8 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 class AddEventoController extends BaseController {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController descricaoController = TextEditingController();
-  final TextEditingController precoBoicoinsController = TextEditingController();
-  final TextEditingController precoReaisController = TextEditingController();
   final TextEditingController participantesController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController ruaController = TextEditingController();
@@ -92,7 +90,6 @@ class AddEventoController extends BaseController {
     if (registerEventoFormKey.currentState?.validate() ?? false) {
       setLoading(true);
       try {
-        print(dateController.text);
         DateTime? parsedDate;
         try {
           parsedDate = DateFormat("dd/MM/yyyy").parse(dateController.text);
@@ -103,13 +100,7 @@ class AddEventoController extends BaseController {
         }
 
         String isoDate = parsedDate.toUtc().toIso8601String();
-        //String imageJson = await ImageData(_image, dadosRequest);
-        print('-------------------------------');
-        print(nomeController.text);
-        print(descricaoController.text);
-        print(isoDate);
-        print('Imagem --->>>>>${_image.value!.path}');
-        print(imagem);
+   
 
         final registerEvento = await EventosRepository().cadastrarEvento(
           nome: nomeController.text,

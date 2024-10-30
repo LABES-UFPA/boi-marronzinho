@@ -65,7 +65,7 @@ class AddEventoView extends GetView<AddEventoController> {
                                     controller.validateText,
                                     'Ex: Junte-se a nós para...'),
                                 SizedBox(height: 22.h),
-                                inputBoxDate('Data da Evento', context,
+                                inputBoxDate('Data do Evento', context,
                                     controller.dateController),
                                 SizedBox(
                                   height: 20.h,
@@ -275,106 +275,105 @@ class AddEventoView extends GetView<AddEventoController> {
   }
 
   Widget buildCard(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16).r,
-      ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0).r,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Form(
-                key: controller.endEventoFormKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                        controller: controller.cepController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Digite o CEP',
-                          errorStyle: TextStyle(
-                              fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters:
-                            FilteringTextInputFormatter.digitsOnly != null
-                                ? <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ]
-                                : <TextInputFormatter>[],
-                        validator: (value) => value == null || value.isEmpty
-                            ? 'Por favor, insira o CEP'
-                            : null),
-                    SizedBox(height: 16.h),
-                    TextFormField(
-                      controller: controller.ruaController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Digite o nome da rua',
-                        errorStyle: TextStyle(
-                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                      ),
-                      keyboardType: TextInputType.text,
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Por favor, insira o nome da rua'
-                          : null,
-                    ),
-                    SizedBox(height: 16.h),
-                    TextFormField(
-                      controller: controller.numberController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Digite o número do endereço',
-                        errorStyle: TextStyle(
-                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters:
-                          FilteringTextInputFormatter.digitsOnly != null
-                              ? <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ]
-                              : <TextInputFormatter>[],
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Por favor, insira o número do endereço'
-                          : null,
-                    ),
-                    SizedBox(height: 16.h),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF69302),
-                        ),
-                        onPressed: () {
-                          if (controller.endEventoFormKey.currentState
-                                  ?.validate() ??
-                              false) {
-                            String cep = controller.cepController.text;
-                            controller.fetchAddressFromCEP(cep);
-                            Get.back();
-                          }
-                        },
-                        child: Text(
-                          'Adicionar Endereço',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.black),
-                        ),
+  return Card(
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16).r,
+    ),
+    child: SingleChildScrollView( // Permite que o conteúdo role quando o teclado aparece
+      child: Padding(
+        padding: EdgeInsets.all(16.0).r,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Form(
+              key: controller.endEventoFormKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: controller.cepController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Digite o CEP',
+                      errorStyle: TextStyle(
+                        fontSize: 14.sp,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ],
-                ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Por favor, insira o CEP'
+                        : null,
+                  ),
+                  SizedBox(height: 16.h),
+                  TextFormField(
+                    controller: controller.ruaController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Digite o nome da rua',
+                      errorStyle: TextStyle(
+                        fontSize: 14.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Por favor, insira o nome da rua'
+                        : null,
+                  ),
+                  SizedBox(height: 16.h),
+                  TextFormField(
+                    controller: controller.numberController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Digite o número do endereço',
+                      errorStyle: TextStyle(
+                        fontSize: 14.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Por favor, insira o número do endereço'
+                        : null,
+                  ),
+                  SizedBox(height: 16.h),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFF69302),
+                      ),
+                      onPressed: () {
+                        if (controller.endEventoFormKey.currentState?.validate() ?? false) {
+                          String cep = controller.cepController.text;
+                          controller.fetchAddressFromCEP(cep);
+                          Get.back();
+                        }
+                      },
+                      child: Text(
+                        'Adicionar Endereço',
+                        style: TextStyle(fontSize: 16.sp, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 16.h),
-            ],
-          ),
+            ),
+            SizedBox(height: 16.h),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 class ButtonBox extends StatelessWidget {

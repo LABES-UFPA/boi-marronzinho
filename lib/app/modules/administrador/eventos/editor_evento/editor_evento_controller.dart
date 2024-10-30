@@ -7,6 +7,7 @@ import 'package:boi_marronzinho/app/data/models/evento/evento.dart';
 import 'package:boi_marronzinho/app/data/repositories/evento/evento_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class EditorEventoController extends BaseController {
@@ -17,13 +18,17 @@ class EditorEventoController extends BaseController {
   final TextEditingController participantesController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController enderecoController = TextEditingController();
-  final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController longitudeController = TextEditingController();
+  final TextEditingController ruaController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
+  final TextEditingController cepController = TextEditingController();
   final GlobalKey<FormState> editEventoFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> endEditEventoFormKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   late Evento evento;  // Altere para Evento
   var selectDate = DateTime.now().obs;
   File? imagem;
+  Map<String, dynamic>? addressData;
+  var address = ''.obs;
   var _image = Rxn<File>();
   var _imageCarregda = Rxn<File>();
   File? get image => _image.value;
@@ -114,5 +119,47 @@ class EditorEventoController extends BaseController {
     }
   }
 }
+Future<void> fetchAddressFromCEP(String cep) async {
+    try {
+      isLoading.value = true;
+      final response =
+          await http.get(Uri.parse('https://viacep.com.br/ws/$cep/json/'));
+
+      if (response.statusCode == 200) {
+        addressData = jsonDecode(response.body); // Armazena a resposta
+
+        if (addressData!.containsKey('erro')) {
+          throw Exception('CEP não encontrado');
+        }
+
+        address.value = addressData!['logradouro'] ?? 'Endereço não encontrado';
+        enderecoController.text = await getGoogleMapsLinkFromAddress();
+      } else {
+        throw Exception('Erro ao buscar o endereço');
+      }
+    } catch (e) {
+      address.value = 'Erro ao buscar endereço: $e';
+    } finally {
+      isLoading.value = false; // Termina o estado de carregamento
+    }
+  }
+  Future<String> getGoogleMapsLinkFromAddress() async {
+    String street = ruaController.text.trim(); // O nome da rua inserido
+    String number =
+        numberController.text.trim(); // O número da residência digitado
+    String neighborhood =
+        addressData?['bairro'] ?? ''; // Pega o bairro, se disponível
+    String city = addressData?['localidade'] ?? ''; // Pega a cidade
+    String state = addressData?['uf'] ?? ''; // Pega o estado
+    String country = 'Brasil'; // Você pode definir o país, se necessário
+
+    if (street.isNotEmpty && number.isNotEmpty) {
+      String query = Uri.encodeComponent(
+          '$street, $number, $neighborhood, $city, $state, $country');
+      return 'https://www.google.com/maps/search/?api=1&query=$query';
+    } else {
+      throw 'Endereço ou número inválido';
+    }
+  }
 
 }

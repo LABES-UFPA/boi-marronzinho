@@ -29,21 +29,7 @@ class AddItemView extends GetView<AddItemController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: [
-                            Obx(() {
-                              return imageItem();
-                            }),
-                            Padding(
-                              padding: EdgeInsets.all(6.0.r),
-                              child: ButtonBox(
-                                text: 'Adicionar Imagem',
-                                function: controller.pickImage,
-                              ),
-                            ),
-                          ],
-                        ),
+                        
                         Form(
                           key: controller.registerItemFormKey,
                           child: Column(
@@ -54,7 +40,7 @@ class AddItemView extends GetView<AddItemController> {
                                 controller.nomeController,
                                 TextInputType.text,
                                 controller.validateText,
-                                'Ex: Item de Pintura',
+                                'Ex: Óleo',
                               ),
                               SizedBox(height: 22.h),
                               inputBox(
@@ -62,42 +48,19 @@ class AddItemView extends GetView<AddItemController> {
                                 controller.descricaoController,
                                 TextInputType.text,
                                 controller.validateText,
-                                'Ex: Aprenda técnicas de pintura...',
+                                'Ex: Óleo usado...',
                               ),
+                              SizedBox(height: 22.h),
+                              dropBox('Unidade de Medida', controller.unidadeController, controller.selectedOption),
                               SizedBox(height: 22.h),
                               inputBox(
-                                'Preço em Boicoins',
-                                controller.precoBoicoinsController,
-                                TextInputType.number,
-                                controller.validateNumber,
-                                'Ex: 50',
-                                formato:
-                                    FilteringTextInputFormatter.digitsOnly,
-                              ),
-                              SizedBox(height: 22.h),
-                              inputBox(
-                                'Preço em Reais',
-                                controller.precoReaisController,
-                                TextInputType.numberWithOptions(decimal: true),
-                                controller.validateNumber,
-                                'Ex: 25.40',
-                                formato:
-                                    FilteringTextInputFormatter.digitsOnly,
-                              ),
-                              SizedBox(height: 22.h),
-                              inputBoxDate('Data do Item', context, controller.dateController),
-                              SizedBox(height: 22.h),
-                              inputBox(
-                                'Limite de Participantes',
-                                controller.participantesController,
-                                TextInputType.number,
-                                controller.validateNumber,
-                                'Ex: 25',
-                                formato:
-                                    FilteringTextInputFormatter.digitsOnly,
-                              ),
-                              SizedBox(height: 20.h),
-                              inputBoxMap('Localização', context),
+                                    'Boicoins por unidade',
+                                    controller.boicoinsController,
+                                    TextInputType.number,
+                                    controller.validateBoicoins,
+                                    'Ex: 25',
+                                    formato:
+                                        FilteringTextInputFormatter.digitsOnly),
                               SizedBox(height: 24.h),
                             ],
                           ),
@@ -154,35 +117,6 @@ class AddItemView extends GetView<AddItemController> {
     );
   }
 
-  Widget imageItem() {
-    return controller.image == null
-        ? Container(
-            width: 350.w,
-            height: 160.h,
-            child: Icon(
-              Icons.image,
-              size: 50,
-              color: Colors.white,
-            ),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 206, 206, 206),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-          )
-        : Container(
-            width: 350.w,
-            height: 200.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(16.0),
-              image: DecorationImage(
-                image: FileImage(controller.image!),
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-  }
-
   Widget inputBox(String text, TextEditingController controller,
       TextInputType type, String? Function(String?) validation, String hint,
       {TextInputFormatter? formato}) {
@@ -229,18 +163,22 @@ class AddItemView extends GetView<AddItemController> {
       ),
     );
   }
+Widget dropBox(
+      String text, TextEditingController controller, RxString selectedOption) {
+    final List<DropdownMenuItem<String>> items = [
+      DropdownMenuItem(value: 'MILILITRO', child: Text('ml')),
+      DropdownMenuItem(value: 'UNIDADE', child: Text('Unidade')),
+    ];
 
-  Widget inputBoxDate(
-      String text, BuildContext context, TextEditingController controllerText) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
-          topLeft: Radius.circular(20.r),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
         ),
       ),
       child: Center(
@@ -250,183 +188,30 @@ class AddItemView extends GetView<AddItemController> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 18.sp,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  height: 0.8.h),
+                  color: Colors.black),
             ),
-            Obx(() => TextFormField(
-                  controller: controllerText,
-                  decoration: InputDecoration(
-                    hintText:
-                        "${controller.selectDate.value.day}/${controller.selectDate.value.month}/${controller.selectDate.value.year}",
-                    hintStyle:
-                        TextStyle(color: const Color.fromARGB(255, 88, 88, 88)),
-                    border: InputBorder.none,
-                    errorStyle: TextStyle(
-                        fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                  ),
-                  onTap: () {
-                    controller.selectedDate(context);
-                  },
-                )),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget inputBoxMap(
-    String text,
-    BuildContext context,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return buildCard(context);
-            });
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20.r),
-            bottomRight: Radius.circular(20.r),
-            topLeft: Radius.circular(20.r),
-          ),
-        ),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                text,
-                style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    height: 0.8.h),
-              ),
-              Obx(() {
-                return !controller.isLoading.value &&
-                        controller.address.value.isNotEmpty &&
-                        controller.ruaController.text.isNotEmpty &&
-                        controller.numberController.text.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8).h,
-                        child: Text(
-                            '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
-                      )
-                    : SizedBox.shrink();
-              })
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildCard(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16).r,
-      ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0).r,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Form(
-                key: controller.endItemFormKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                        controller: controller.cepController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Digite o CEP',
-                          errorStyle: TextStyle(
-                              fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters:
-                            FilteringTextInputFormatter.digitsOnly != null
-                                ? <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ]
-                                : <TextInputFormatter>[],
-                        validator: (value) => value == null || value.isEmpty
-                            ? 'Por favor, insira o CEP'
-                            : null),
-                    SizedBox(height: 16.h),
-                    TextFormField(
-                      controller: controller.ruaController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Digite o nome da rua',
-                        errorStyle: TextStyle(
-                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                      ),
-                      keyboardType: TextInputType.text,
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Por favor, insira o nome da rua'
-                          : null,
-                    ),
-                    SizedBox(height: 16.h),
-                    TextFormField(
-                      controller: controller.numberController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Digite o número do endereço',
-                        errorStyle: TextStyle(
-                            fontSize: 14.sp, overflow: TextOverflow.ellipsis),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters:
-                          FilteringTextInputFormatter.digitsOnly != null
-                              ? <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ]
-                              : <TextInputFormatter>[],
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Por favor, insira o número do endereço'
-                          : null,
-                    ),
-                    SizedBox(height: 16.h),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF69302),
-                        ),
-                        onPressed: () {
-                          if (controller.endItemFormKey.currentState
-                                  ?.validate() ??
-                              false) {
-                            String cep = controller.cepController.text;
-                            controller.fetchAddressFromCEP(cep);
-                            Get.back();
-                          }
-                        },
-                        child: Text(
-                          'Adicionar Endereço',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ],
+            Obx(() {
+              return DropdownButtonFormField<String>(
+                value: selectedOption.value.isNotEmpty
+                    ? selectedOption.value
+                    : null, // Se o valor não estiver vazio, exibe o valor
+                items: items,
+                onChanged: (value) {
+                  selectedOption.value =
+                      value ?? ''; // Atualiza a variável observável
+                  controller.text =
+                      value ?? ''; // Atualiza o controller, se necessário
+                },
+                decoration: InputDecoration(
+                  hintText: 'Selecione permissão',
+                  border: InputBorder.none,
+                  errorStyle: TextStyle(fontSize: 14),
                 ),
-              ),
-              SizedBox(height: 16.h),
-            ],
-          ),
+              );
+            }),
+          ],
         ),
       ),
     );
