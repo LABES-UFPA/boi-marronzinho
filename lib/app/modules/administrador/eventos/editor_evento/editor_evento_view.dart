@@ -54,20 +54,26 @@ class EditorEventoView extends GetView<EditorEventoController> {
                               children: [
                                 SizedBox(height: 22.h),
                                 inputBox(
-                                    'Nome',
-                                    controller.nomeController,
-                                    TextInputType.text,
-                                    controller.validateText),
+                                  'Nome',
+                                  controller.nomeController,
+                                  TextInputType.text,
+                                  controller.validateText,
+                                  'Ex: Festival de Cultura',
+                                ),
                                 SizedBox(height: 22.h),
                                 inputBox(
                                     'Descrição',
                                     controller.descricaoController,
                                     TextInputType.text,
-                                    controller.validateText),
+                                    controller.validateText,
+                                    'Ex: Junte-se a nós para...'),
                                 SizedBox(height: 22.h),
                                 inputBoxDate('Data do Evento', context,
                                     controller.dateController),
-                              
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                inputBoxMap('Localização', context),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -124,9 +130,10 @@ class EditorEventoView extends GetView<EditorEventoController> {
   }
 
    Widget imageEvento() {
-     if (controller.image == null) {
-       if (controller.evento.imagem.isEmpty) {
-         return ClipRRect(
+  // Verifica se a imagem local (File) é nula
+  if (controller.image == null) {
+    // Se a imagem local for nula, verifica se a imagem Base64 está disponível
+    return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
       child: Container(
         width: 350.w,
@@ -139,39 +146,26 @@ class EditorEventoView extends GetView<EditorEventoController> {
           fit: BoxFit.cover,
         ),
       ),
-    );;
-       } else {
-         return Container(
-           width: 350.w,
-           height: 200.h,
-           decoration: BoxDecoration(
-             shape: BoxShape.rectangle,
-             borderRadius: BorderRadius.circular(16.0),
-             image: DecorationImage(
-               image: MemoryImage(base64Decode(controller.evento.imagem)), // Atualize para evento
-               fit: BoxFit.cover,
-             ),
-           ),
-         );
-       }
-     } else {
-       return Container(
-         width: 350.w,
-         height: 200.h,
-         decoration: BoxDecoration(
-           shape: BoxShape.rectangle,
-           borderRadius: BorderRadius.circular(16.0),
-           image: DecorationImage(
-             image: FileImage(controller.image!),
-             fit: BoxFit.cover,
-           ),
-         ),
-       );
-     }
-   }
+    );
+  } else {
+    // Se a imagem local não for nula, a exibe
+    return Container(
+      width: 350.w,
+      height: 200.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(16.0),
+        image: DecorationImage(
+          image: FileImage(controller.image!),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+}
 
   Widget inputBox(String text, TextEditingController controller,
-      TextInputType type, String? Function(String?) validation,
+      TextInputType type, String? Function(String?) validation, String hint,
       {TextInputFormatter? formato}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
@@ -203,7 +197,7 @@ class EditorEventoView extends GetView<EditorEventoController> {
                   ? <TextInputFormatter>[formato]
                   : <TextInputFormatter>[],
               decoration: InputDecoration(
-                hintText: controller.text,
+                hintText: hint,
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 errorStyle:
@@ -260,6 +254,159 @@ class EditorEventoView extends GetView<EditorEventoController> {
       ),
     );
   }
+  Widget inputBoxMap(
+    String text,
+    BuildContext context,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return buildCard(context);
+            });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.r),
+            bottomRight: Radius.circular(20.r),
+            topLeft: Radius.circular(20.r),
+          ),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    height: 0.8.h),
+              ),
+              Obx(() {
+                return !controller.isLoading.value &&
+                        controller.address.value.isNotEmpty &&
+                        controller.ruaController.text.isNotEmpty &&
+                        controller.numberController.text.isNotEmpty
+                    ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8).h,
+                      child: Text(
+                          '${controller.address.value} ${controller.ruaController.text} ${controller.numberController.text}'),
+                    )
+                    : SizedBox.shrink();
+              })
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCard(BuildContext context) {
+  return Card(
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16).r,
+    ),
+    child: SingleChildScrollView( // Permite que o conteúdo role quando o teclado aparece
+      child: Padding(
+        padding: EdgeInsets.all(16.0).r,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Form(
+              key: controller.endEditEventoFormKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: controller.cepController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Digite o CEP',
+                      errorStyle: TextStyle(
+                        fontSize: 14.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Por favor, insira o CEP'
+                        : null,
+                  ),
+                  SizedBox(height: 16.h),
+                  TextFormField(
+                    controller: controller.ruaController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Digite o nome da rua',
+                      errorStyle: TextStyle(
+                        fontSize: 14.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Por favor, insira o nome da rua'
+                        : null,
+                  ),
+                  SizedBox(height: 16.h),
+                  TextFormField(
+                    controller: controller.numberController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Digite o número do endereço',
+                      errorStyle: TextStyle(
+                        fontSize: 14.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Por favor, insira o número do endereço'
+                        : null,
+                  ),
+                  SizedBox(height: 16.h),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFF69302),
+                      ),
+                      onPressed: () {
+                        if (controller.endEditEventoFormKey.currentState?.validate() ?? false) {
+                          String cep = controller.cepController.text;
+                          controller.fetchAddressFromCEP(cep);
+                          Get.back();
+                        }
+                      },
+                      child: Text(
+                        'Adicionar Endereço',
+                        style: TextStyle(fontSize: 16.sp, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 }
 
 class ButtonBox extends StatelessWidget {

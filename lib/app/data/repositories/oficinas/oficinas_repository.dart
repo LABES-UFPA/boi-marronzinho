@@ -159,41 +159,47 @@ final class OficinasRepository extends RequestRepository
   }
 
   @override
-  Future<dynamic> editarOficina({
+Future<dynamic> editarOficina({
   required String id,
-  required String nome,
-  required String descricao,
-  required double precoBoicoins,
-  required double precoReal,
-  required String dataOficina,
-  required int limiteOficina,
-  required File imagem,
-  required String urlEndereco,
+  String? nome,
+  String? descricao,
+  double? precoBoicoins,
+  double? precoReal,
+  String? dataOficina,
+  int? limiteOficina,
+  File? imagem,
+  String? urlEndereco,
 }) async {
   final url = apiHelpers.buildUrl(
-      url: '/oficinas/$id', // Inclua o ID no endpoint
-      endpoint: Endpoints.BOI_MARRONZINHO);
+    url: '/oficinas/$id', // Inclua o ID no endpoint
+    endpoint: Endpoints.BOI_MARRONZINHO,
+  );
 
-  final oficinaData = {
-    'nome': nome,
-    'descricao': descricao,
-    'precoBoicoins': precoBoicoins,
-    'precoReal': precoReal,
-    'dataOficina': dataOficina,
-    'limiteOficina': limiteOficina,
-    'linkEndereco': urlEndereco,
-  };
+  // Cria um mapa com os campos que não são nulos
+  final oficinaData = <String, dynamic>{};
 
-  final oficinaDataString = jsonEncode(oficinaData);
+  if (nome != null) oficinaData['nome'] = nome;
+  if (descricao != null) oficinaData['descricao'] = descricao;
+  if (precoBoicoins != null) oficinaData['precoBoicoins'] = precoBoicoins;
+  if (precoReal != null) oficinaData['precoReal'] = precoReal;
+  if (dataOficina != null) oficinaData['dataOficina'] = dataOficina;
+  if (limiteOficina != null) oficinaData['limiteOficina'] = limiteOficina;
+  if (urlEndereco != null) oficinaData['linkEndereco'] = urlEndereco;
 
-  final formData = FormData.fromMap({
-    'request': oficinaDataString,
-    'file': await MultipartFile.fromFile(imagem.path,
-        filename: imagem.path.split('/').last),
-  });
+ 
+
+  // Adiciona o arquivo apenas se a imagem não for nula
+  final productDataString = jsonEncode(oficinaData);
+  if (imagem != null) {
+    final formData = FormData.fromMap({
+      'request': productDataString, // Adicione o JSON como string no campo 'request'
+      'file': await MultipartFile.fromFile(imagem.path,
+          filename: imagem.path.split('/').last),
+    });
+  }
 
   try {
-    final response = await client.put(url, formData);
+    final response = await client.put(url, oficinaData);
 
     if (response.statusCode == 200) {
       return (valid: true, reason: null, data: response.data);
@@ -206,5 +212,6 @@ final class OficinasRepository extends RequestRepository
     return errorResponse(error, trace: stacktrace);
   }
 }
+
 
 }

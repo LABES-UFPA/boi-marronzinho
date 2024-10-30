@@ -82,7 +82,7 @@ final class EventosRepository extends RequestRepository
     required String descricao,
     required String dataEvento,
     required String urlEndereco,
-    required File image, // Arquivo de imagem para upload
+    required File image, 
   }) async {
     final url = apiHelpers.buildUrl(url: criarEventosUrl, endpoint: Endpoints.BOI_MARRONZINHO);
 
@@ -107,10 +107,7 @@ final class EventosRepository extends RequestRepository
 
     try {
       // Faça a requisição POST com multipart/form-data
-      final response = await client.post(
-        url, formData,
-        
-      );
+      final response = await client.post(url, formData);
 
       if (response.statusCode == 200) {
         return (valid: true, reason: null, data: response.data);
