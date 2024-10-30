@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_controller.dart';
 import 'package:boi_marronzinho/app/modules/administrador/scanner/scanner_controller.dart';
 import 'package:boi_marronzinho/app/modules/componentes/AppBarClipper.dart';
+import 'package:boi_marronzinho/app/modules/componentes/BoiAppBar.dart';
 import 'package:boi_marronzinho/app/modules/home_page/sobre_nos/sobre_nos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,10 +18,10 @@ class ScannerView extends GetView<ScannerController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: BoiAppBar(texto: 'Scannear Voucher', icon: null),
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            _buildAppBar(), // Método para construir a AppBar (presumo que você já tenha isso implementado)
             Expanded(
               flex: 5,
               child: QRView(
@@ -70,56 +71,6 @@ class ScannerView extends GetView<ScannerController> {
     );
   }
 
-  Widget _buildAppBar() {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: AppBarClipper(),
-          child: Container(
-            height: 100.h,
-            decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10).h,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset(
-                      'assets/images/icons/mingcute_arrow-up-fill.png',
-                      height: 40.h,
-                      width: 40.w,
-                    ),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10.w),
-                        Center(
-                          child: Text(
-                            'Scanner Voucher',
-                            style: TextStyle(
-                              fontSize: 36.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class ButtonBox extends StatelessWidget {
