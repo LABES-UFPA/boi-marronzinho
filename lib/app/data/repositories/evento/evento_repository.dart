@@ -12,7 +12,7 @@ final class EventosRepository extends RequestRepository
     implements IEventosRepository {
   static const String eventosUrl = '/eventos/lista-eventos';
   static const String criarEventosUrl = '/eventos/cria-evento';
-  static const String deletarEventosUrl = '/eventos/deleta-evento';
+  static const String deletarEventosUrl = '/eventos/deleta-evento/';
   static const String editarEventosUrl = '/eventos/atualiza-evento';
   static const String eventoPorIdUrl =
       '/eventos/'; // Base URL para obter evento por ID
@@ -84,8 +84,7 @@ final class EventosRepository extends RequestRepository
     required String urlEndereco,
     required File image, // Arquivo de imagem para upload
   }) async {
-    final url = apiHelpers.buildUrl(
-        url: criarEventosUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+    final url = apiHelpers.buildUrl(url: criarEventosUrl, endpoint: Endpoints.BOI_MARRONZINHO);
 
     // Crie o JSON com os dados do evento como uma string JSON válida
     final eventData = {
@@ -130,14 +129,12 @@ final class EventosRepository extends RequestRepository
   }
 
   @override
-  Future<dynamic> deletarEvento({required String id}) async {
-    // TODO: Delete tá passando id pelo body
+  Future deletarEvento({required String id}) async {
     final url = apiHelpers.buildUrl(
-        url: deletarEventosUrl, endpoint: Endpoints.BOI_MARRONZINHO);
-    final bodyRequest = {'id': id};
+        url: deletarEventosUrl + id, endpoint: Endpoints.BOI_MARRONZINHO);
 
     try {
-      final response = await client.delete(url, bodyRequest);
+      final response = await client.delete(url, {});
       final invalidResponse = isValidResponse(response);
       if (!invalidResponse.valid) {
         return invalidResponse;
@@ -148,6 +145,7 @@ final class EventosRepository extends RequestRepository
       return errorResponse(error, trace: trace);
     }
   }
+
 
   @override
   Future<dynamic> editarEvento({

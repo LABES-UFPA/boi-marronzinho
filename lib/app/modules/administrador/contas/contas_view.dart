@@ -20,7 +20,7 @@ class ContasView extends GetView<ContasController> {
               buildAppBar('assets/images/icons/mingcute_arrow-up-fill.png', text: 'Contas ADM'),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: searchMenu(controller.searchController),
+                child: searchMenu(),
               ),
               Expanded(
                 child: Obx(() {
@@ -43,9 +43,9 @@ class ContasView extends GetView<ContasController> {
                   }
 
                   return ListView.builder(
-                    itemCount: controller.contas.length,
+                    itemCount: controller.filteredContas.length,
                     itemBuilder: (context, index) {
-                      final conta = controller.contas[index];
+                      final conta = controller.filteredContas[index];
 
                       return Padding(
                         padding: EdgeInsets.symmetric(
@@ -127,7 +127,8 @@ class ContasView extends GetView<ContasController> {
     );
   }
 
-  Widget searchMenu(TextEditingController searchController) {
+  
+  Widget searchMenu() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -137,16 +138,16 @@ class ContasView extends GetView<ContasController> {
       child: Row(
         children: [
           Icon(Icons.search, color: Colors.black),
-          SizedBox(width: 8), // Espaçamento entre o ícone e o campo de texto
+          SizedBox(width: 8),
           Expanded(
             child: TextField(
-              controller: searchController,
+              
               decoration: InputDecoration(
                 hintText: 'Buscar...',
                 border: InputBorder.none,
               ),
               onChanged: (value) {
-                // Lógica para filtrar resultados, se necessário
+                controller.filterContas(value);
               },
             ),
           ),
@@ -156,36 +157,3 @@ class ContasView extends GetView<ContasController> {
   }
 }
 
-class ButtonBox extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  ButtonBox({required this.text, required this.onPressed});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFF69302),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20.r),
-                bottomRight: Radius.circular(20.r),
-                topLeft: Radius.circular(20.r),
-              ),
-            ),
-            padding: EdgeInsets.all(14.h)),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold, // Deixar o texto em negrito
-            color: Colors.black, // Cor do texto (preto)
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -83,7 +83,7 @@ final class UserPermissionRepository extends RequestRepository implements IUserP
 
   @override
   Future atualizarUsuario({required String id}) {
-    // TODO: implement atualizarUsuario
+    
     throw UnimplementedError();
   }
 

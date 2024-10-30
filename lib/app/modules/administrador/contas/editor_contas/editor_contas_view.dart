@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:boi_marronzinho/app/modules/administrador/contas/editor_contas/editor_contas_controller.dart';
+import 'package:boi_marronzinho/app/modules/componentes/ButtonBox.dart';
 import 'package:boi_marronzinho/app/modules/componentes/buildAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +50,26 @@ class EditorContaView extends GetView<EditorContaController> {
                                     'Permissão de usuário',
                                     controller.tipoUsuarioController,
                                     controller.selectedOption),
+                                    SizedBox(height: 22.h,),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(20.r),
+                                      bottomRight: Radius.circular(20.r),
+                                      topLeft: Radius.circular(20.r),
+                                    ),
+                                  ),
+                                  child: Text(controller.conta.email,
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey
+                                  ),),
+                                ),
                                 SizedBox(height: 24.h),
                               ],
                             )),
@@ -57,6 +78,8 @@ class EditorContaView extends GetView<EditorContaController> {
                           child: ButtonBox(
                             text: 'Salvar Alterações',
                             function: controller.onEditConta,
+                            colortext: Colors.black,
+                            
                           ),
                         ),
                       ],
@@ -178,36 +201,3 @@ class EditorContaView extends GetView<EditorContaController> {
   
 }
 
-class ButtonBox extends StatelessWidget {
-  final String text;
-  final Future<void> Function() function;
-
-  ButtonBox({required this.text, required this.function});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: function,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFF69302),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20.r),
-                bottomRight: Radius.circular(20.r),
-                topLeft: Radius.circular(20.r),
-              ),
-            ),
-            padding: EdgeInsets.all(14.h)),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ),
-    );
-  }
-}

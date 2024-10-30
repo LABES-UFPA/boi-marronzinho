@@ -3,11 +3,14 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:boi_marronzinho/app/data/controllers/base_controller.dart';
+import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/models/oficinas_response/oficinas_response.dart';
-import 'package:boi_marronzinho/app/modules/administrador/oficinas_adm/oficinas_adm_module.dart';
+import 'package:boi_marronzinho/app/data/repositories/oficinas/oficinas_repository.dart';
+import 'package:boi_marronzinho/app/data/util/api/api_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class EditorOficinaController extends BaseController {
   final TextEditingController nomeController = TextEditingController();
@@ -24,8 +27,10 @@ class EditorOficinaController extends BaseController {
   late Oficina oficina;
   var selectDate = DateTime.now().obs;
   var _image = Rxn<File>();
-  var _imageCarregda = Rxn<File>();
   File? get image => _image.value;
+  File? imagem;
+  String url='';
+  late ApiHelpers apiHelpers = ApiHelpers();
 
   @override
   void onInit() {
@@ -37,6 +42,11 @@ class EditorOficinaController extends BaseController {
     precoBoicoinsController.text = oficina.precoBoicoin.toString();
     precoReaisController.text = oficina.precoReal.toString();
     participantesController.text = oficina.limiteParticipantes.toString();
+    url = ApiHelpers().buildUrl(
+      url:oficina.imagem,
+      endpoint: Endpoints.MINIO
+    );
+    print('url ----->>>>>> ${url}');
   }
   
   String? validateText(String? value) {
@@ -72,6 +82,7 @@ class EditorOficinaController extends BaseController {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       _image.value = File(pickedFile.path);
+      imagem = File(pickedFile.path);
     }
   }
 
@@ -92,28 +103,47 @@ class EditorOficinaController extends BaseController {
     }
   }
 
-  Future<void> onEditOficina() async {
-    if (editOficinaFormKey2.currentState?.validate() ?? false) {
-      setLoading(true);
+  Future<void> onEditarOficina() async {
+  if (editOficinaFormKey2.currentState?.validate() ?? false) {
+    setLoading(true);
+    try {
+      double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
+      double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
+
+      DateTime? parsedDate;
       try {
-        double precoBoicoins = double.tryParse(precoBoicoinsController.text) ?? 0.0;
-        double precoReais = double.tryParse(precoReaisController.text) ?? 0.0;
-
-        /*final registerOficina = await OficinasRepository().cadastrarOficina(
-          nome: nomeController.text,
-          descricao: descricaoController.text,
-          precoBoicoin: precoBoicoins,
-          precoReal: precoReais,
-          dataOficina: dateController.text,
-          limiteOficina: int.tryParse(participantesController.text) ?? 20,
-        );*/
-
-        Get.back();
-      } finally {
+        parsedDate = DateFormat("dd/MM/yyyy").parse(dateController.text);
+      } catch (e) {
+        print("Formato de data inválido: ${dateController.text}");
         setLoading(false);
+        return;
       }
+
+      String isoDate = parsedDate.toUtc().toIso8601String();
+
+      // Crie a requisição de atualização
+      final editarOficina = await OficinasRepository().editarOficina(
+        id: oficina.id, // Inclua o ID da oficina para identificar qual será atualizada
+        nome: nomeController.text,
+        descricao: descricaoController.text,
+        precoBoicoins: precoBoicoins,
+        precoReal: precoReais,
+        dataOficina: isoDate, 
+        limiteOficina: int.tryParse(participantesController.text) ?? 20,
+        imagem: imagem!,
+        urlEndereco: enderecoController.text,
+      );
+
+      Get.back();
+    } catch (e) {
+      print("Erro ao editar oficina: $e");
+    } finally {
+      setLoading(false);
     }
   }
+}
+
+
 
 
 }

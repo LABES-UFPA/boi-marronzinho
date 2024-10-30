@@ -21,7 +21,7 @@ class Evento {
       nome: map['nome'],
       descricao: map['descricao'],
       dataEvento: DateTime.parse(map['dataEvento']),
-      imagem: map['imagem'] ?? '', // Prevenir null
+      imagem: map['imagem'] ?? '',
       linkEndereco: map['linkEndereco'],
     );
   }
@@ -32,6 +32,7 @@ class Evento {
       'nome': nome,
       'descricao': descricao,
       'dataEvento': dataEvento.toIso8601String(),
+      'imagem':imagem,
       'linkEndereco': linkEndereco,
     };
   }

@@ -27,11 +27,24 @@ final class TrocaReposity extends RequestRepository implements ITroca {
     throw UnimplementedError();
   }
 
-  @override
-  Future deletarItemTroca({required String id}) {
-    // TODO: implement deletarItemTroca
-    throw UnimplementedError();
-  }
+   @override
+   Future deletarItemTroca({required String id}) async {
+  //   final url = apiHelpers.buildUrl(
+  //       url: deletarItemTrocaUrl + id, endpoint: Endpoints.BOI_MARRONZINHO);
+
+  //   try {
+  //     final response = await client.delete(url, {});
+  //     final invalidResponse = isValidResponse(response);
+  //     if (!invalidResponse.valid) {
+  //       return invalidResponse;
+  //     }
+
+  //     return (valid: true, reason: null, data: null);
+  //   } catch (error, trace) {
+  //     return errorResponse(error, trace: trace);
+  //   }
+   }
+
 
   @override
   Future getItensTroca() async {

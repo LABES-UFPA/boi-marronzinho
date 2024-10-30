@@ -8,29 +8,28 @@ import 'package:get/get.dart';
 
 class ContasController extends BaseController {
   final contasRepo = UserPermissionRepository();
-  TextEditingController searchController = TextEditingController();
+  //TextEditingController searchController = TextEditingController();
   //RxBool get isLoading => super.isLoading;
   //var isLoading = true.obs;
   List<UserPermission> contas = <UserPermission>[];
-
+  var filteredContas = <UserPermission>[].obs;
   @override
   void onInit() {
     super.onInit();
     getContas();
+    //filteredContas.value = contas;
   }
 
   Future<void> getContas() async {
     setLoading(true);
-
-
 
     final response = await contasRepo.fetchAllUsers();
 
     final isValid = isValidResponse(response: response, title: response.reason);
     if (isValid && response.data != null) {
       contas = response.data;
+      filteredContas.value = contas;
     }
-
 
     setLoading(false);
     update();
@@ -70,6 +69,19 @@ class ContasController extends BaseController {
     );
   }
 
+  void filterContas(String value) {
+    final query = value.toLowerCase(); // Usa o valor passado para a pesquisa
+    if (query.isEmpty) {
+      filteredContas.value = contas; // Mostra todas as contas
+    } else {
+      filteredContas.value = contas
+          .where((conta) => '${conta.firstName} ${conta.lastName}'
+              .toLowerCase()
+              .contains(query))
+          .toList(); // Transforma em lista
+    }
+  }
+
   void goToEditConta(UserPermission conta) {
     Get.toNamed(EditorContaModule.path, arguments: conta);
   }
@@ -80,7 +92,8 @@ class ContasController extends BaseController {
 
   Future<void> onDeleteConta(UserPermission conta) async {
     try {
-      final deleteConta = await UserPermissionRepository().deleteUser(id: conta.id);
+      final deleteConta =
+          await UserPermissionRepository().deleteUser(id: conta.id);
 
       update();
       //Get.offAllNamed(ContasModule.path);

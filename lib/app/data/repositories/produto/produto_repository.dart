@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:boi_marronzinho/app/data/models/produto/carrinho.dart';
 import 'package:boi_marronzinho/app/data/models/produto/produto.dart';
 import 'package:boi_marronzinho/app/data/repositories/produto/produto_repository.interface.dart';
 import 'package:boi_marronzinho/app/data/enumerators/endpoints.enum.dart';
 import 'package:boi_marronzinho/app/data/request_repository.dart';
+import 'package:dio/dio.dart';
 
 final class ProdutoRepository extends RequestRepository
     implements IProdutosRepository {
@@ -181,17 +184,59 @@ final class ProdutoRepository extends RequestRepository
         return invalidResponse;
       }
 
-      return (
-      valid: true,
-      reason: 'Sucesso ao finalizar sua compra!',
-      data: 'Compra finalizada');
-    } catch (e, stackTrace) {
-      log('Error ', error: e, stackTrace: stackTrace);
-      return (
-      valid: false,
-      reason: 'Erro interno durante a requisição',
-      data: e
-      );
+      return (valid: true, reason: 'Compra realizada com sucesso!', data: response.data);
+    } catch (error, trace) {
+      return errorResponse(error, trace: trace);
+    }
+  }
+
+  @override
+  Future<dynamic> addProduto({
+    required String nome,
+    required String descricao,
+    required double precoBoicoins,
+    required double precoReal,
+    required int quantidadeEmEstoque,
+    required File image, // Arquivo de imagem para upload
+  }) async {
+    final url = apiHelpers.buildUrl(
+        url: adicionarProdutoUrl, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    // Crie o JSON com os dados do produto como uma string JSON válida
+    final productData = {
+      'nome': nome,
+      'descricao': descricao,
+      'precoBoicoins': precoBoicoins,
+      'precoReal': precoReal,
+      'quantidadeEmEstoque': quantidadeEmEstoque,
+    };
+
+    // Use jsonEncode para converter o mapa em uma string JSON válida
+    final productDataString = jsonEncode(productData);
+
+    // Crie um FormData para enviar o multipart/form-data
+    final formData = FormData.fromMap({
+      'request': productDataString, // Adicione o JSON como string no campo 'request'
+      'file': await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
+    });
+
+    try {
+      // Faça a requisição POST com multipart/form-data
+      final response = await client.post(url, formData);
+
+      if (response.statusCode == 200) {
+        return (valid: true, reason: null, data: response.data);
+      } else {
+        return (
+          valid: false,
+          reason: response.statusMessage,
+          data: response.data
+        );
+      }
+    } catch (error, stacktrace) {
+      print("Erro: $error");
+      print("Stacktrace: $stacktrace");
+      return errorResponse(error, trace: stacktrace);
     }
   }
 
@@ -226,23 +271,30 @@ final class ProdutoRepository extends RequestRepository
     }
   }
 
-  // Administrador
-
-  @override
-  Future addProduto() {
-    // TODO: implement addProduto
-    throw UnimplementedError();
-  }
-
-  @override
-  Future removeProduto({required String produtoId}) {
-    // TODO: implement removeProduto
-    throw UnimplementedError();
-  }
 
   @override
   Future atualizaProduto({required String produtoId}) {
     // TODO: implement atualizaProduto
     throw UnimplementedError();
+  }
+
+
+
+  @override
+  Future removeProduto({required String produtoId}) async {
+    final url = apiHelpers.buildUrl(
+        url: removerProdutoUrl + produtoId, endpoint: Endpoints.BOI_MARRONZINHO);
+
+    try {
+      final response = await client.delete(url, {});
+      final invalidResponse = isValidResponse(response);
+      if (!invalidResponse.valid) {
+        return invalidResponse;
+      }
+
+      return (valid: true, reason: null, data: null);
+    } catch (error, trace) {
+      return errorResponse(error, trace: trace);
+    }
   }
 }
